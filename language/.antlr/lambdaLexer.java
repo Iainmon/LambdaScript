@@ -1,4 +1,4 @@
-// Generated from /Users/iainmoncrief/Documents/Github/extended-lambda-calculus-language/language/lambda.g4 by ANTLR 4.8
+// Generated from /home/iainmoncrief/Documents/Github/extended-lambda-calculus-language/language/lambda copy.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -84,7 +84,7 @@ public class lambdaLexer extends Lexer {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "lambda.g4"; }
+	public String getGrammarFileName() { return "lambda copy.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
