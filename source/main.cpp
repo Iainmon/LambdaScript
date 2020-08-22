@@ -11,31 +11,34 @@ struct Variable;
 using HashMap = std::map<std::string, std::string>;
 using string = std::string;
 
-struct Object {
-
-};
+struct Object {};
 
 struct Variable {
     std::string name;
     int value;
 };
 
-void print(const std::string &input) {
-    std::cout << input << std::endl;
-}
+void print(const std::string &input) { std::cout << input << std::endl; }
 
 class TreeShapeListener : public lambdaBaseListener {
   private:
     HashMap scope;
+
   public:
-    void enterShow(lambdaParser::ShowContext *ctx) override {
+    void exitShow(lambdaParser::ShowContext *ctx) override {
         if (ctx->INT() != nullptr) {
             const std::string value = ctx->INT()->getText();
             print(value);
         } else if (ctx->VAR() != nullptr) {
-            const string value = scope[value];
+            const string name = ctx->VAR()->getText();
+            const string value = scope[name];
             print(value);
         }
+    }
+    void exitLet(lambdaParser::LetContext *ctx) override {
+        const string name = ctx->VAR()->getText();
+        const string value = ctx->INT()->getText();
+        scope[name] = value;
     }
 };
 
