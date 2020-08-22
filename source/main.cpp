@@ -48,8 +48,8 @@ int main(int argc, const char *argv[]) {
     lambdaParser parser(&tokens);
 
     tree::ParseTree *tree = parser.program();
-    // TreeShapeListener listener;
-    // tree::ParseTreeWalker::DEFAULT->walk(&listener, tree);
+    TreeShapeListener listener;
+    tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
 
     return 0;
 }

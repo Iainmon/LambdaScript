@@ -1,5 +1,7 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
 
+project(LambdaCalculus)
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # compiler must be 11 or 14
@@ -36,7 +38,9 @@ include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
 file(GLOB_RECURSE SOURCES "source/*.cpp")
 
 # add generated grammar to demo binary target
-add_executable(demo ${SOURCES}
+add_executable(lcalc ${SOURCES}
                ${ANTLR_SampleGrammarLexer_CXX_OUTPUTS}
-               ${ANTLR_SampleGrammarParser_CXX_OUTPUTS})
-target_link_libraries(demo antlr4_static)
+               ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
+               antlr4_runtime
+               )
+target_link_libraries(lcalc antlr4_static)
