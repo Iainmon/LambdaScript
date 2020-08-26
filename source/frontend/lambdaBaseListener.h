@@ -1,5 +1,5 @@
 
-// Generated from language/lambda.g4 by ANTLR 4.8
+// Generated from lambda.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -19,14 +19,41 @@ public:
   virtual void enterProgram(lambdaParser::ProgramContext * /*ctx*/) override { }
   virtual void exitProgram(lambdaParser::ProgramContext * /*ctx*/) override { }
 
-  virtual void enterStatement(lambdaParser::StatementContext * /*ctx*/) override { }
-  virtual void exitStatement(lambdaParser::StatementContext * /*ctx*/) override { }
+  virtual void enterBinaryExpression(lambdaParser::BinaryExpressionContext * /*ctx*/) override { }
+  virtual void exitBinaryExpression(lambdaParser::BinaryExpressionContext * /*ctx*/) override { }
 
-  virtual void enterLet(lambdaParser::LetContext * /*ctx*/) override { }
-  virtual void exitLet(lambdaParser::LetContext * /*ctx*/) override { }
+  virtual void enterConditional(lambdaParser::ConditionalContext * /*ctx*/) override { }
+  virtual void exitConditional(lambdaParser::ConditionalContext * /*ctx*/) override { }
 
-  virtual void enterShow(lambdaParser::ShowContext * /*ctx*/) override { }
-  virtual void exitShow(lambdaParser::ShowContext * /*ctx*/) override { }
+  virtual void enterApplication(lambdaParser::ApplicationContext * /*ctx*/) override { }
+  virtual void exitApplication(lambdaParser::ApplicationContext * /*ctx*/) override { }
+
+  virtual void enterAbstraction(lambdaParser::AbstractionContext * /*ctx*/) override { }
+  virtual void exitAbstraction(lambdaParser::AbstractionContext * /*ctx*/) override { }
+
+  virtual void enterVariable(lambdaParser::VariableContext * /*ctx*/) override { }
+  virtual void exitVariable(lambdaParser::VariableContext * /*ctx*/) override { }
+
+  virtual void enterPrintInstruction(lambdaParser::PrintInstructionContext * /*ctx*/) override { }
+  virtual void exitPrintInstruction(lambdaParser::PrintInstructionContext * /*ctx*/) override { }
+
+  virtual void enterLiteral(lambdaParser::LiteralContext * /*ctx*/) override { }
+  virtual void exitLiteral(lambdaParser::LiteralContext * /*ctx*/) override { }
+
+  virtual void enterAssign(lambdaParser::AssignContext * /*ctx*/) override { }
+  virtual void exitAssign(lambdaParser::AssignContext * /*ctx*/) override { }
+
+  virtual void enterBrackets(lambdaParser::BracketsContext * /*ctx*/) override { }
+  virtual void exitBrackets(lambdaParser::BracketsContext * /*ctx*/) override { }
+
+  virtual void enterBody(lambdaParser::BodyContext * /*ctx*/) override { }
+  virtual void exitBody(lambdaParser::BodyContext * /*ctx*/) override { }
+
+  virtual void enterCondition(lambdaParser::ConditionContext * /*ctx*/) override { }
+  virtual void exitCondition(lambdaParser::ConditionContext * /*ctx*/) override { }
+
+  virtual void enterImports(lambdaParser::ImportsContext * /*ctx*/) override { }
+  virtual void exitImports(lambdaParser::ImportsContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

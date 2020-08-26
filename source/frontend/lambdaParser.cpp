@@ -1,8 +1,9 @@
 
-// Generated from language/lambda.g4 by ANTLR 4.8
+// Generated from lambda.g4 by ANTLR 4.8
 
 
 #include "lambdaListener.h"
+#include "lambdaVisitor.h"
 
 #include "lambdaParser.h"
 
@@ -37,12 +38,8 @@ lambdaParser::ProgramContext::ProgramContext(ParserRuleContext *parent, size_t i
   : ParserRuleContext(parent, invokingState) {
 }
 
-std::vector<lambdaParser::StatementContext *> lambdaParser::ProgramContext::statement() {
-  return getRuleContexts<lambdaParser::StatementContext>();
-}
-
-lambdaParser::StatementContext* lambdaParser::ProgramContext::statement(size_t i) {
-  return getRuleContext<lambdaParser::StatementContext>(i);
+lambdaParser::ExpressionContext* lambdaParser::ProgramContext::expression() {
+  return getRuleContext<lambdaParser::ExpressionContext>(0);
 }
 
 
@@ -62,92 +59,42 @@ void lambdaParser::ProgramContext::exitRule(tree::ParseTreeListener *listener) {
     parserListener->exitProgram(this);
 }
 
+
+antlrcpp::Any lambdaParser::ProgramContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitProgram(this);
+  else
+    return visitor->visitChildren(this);
+}
+
 lambdaParser::ProgramContext* lambdaParser::program() {
   ProgramContext *_localctx = _tracker.createInstance<ProgramContext>(_ctx, getState());
   enterRule(_localctx, 0, lambdaParser::RuleProgram);
-  size_t _la = 0;
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
-    enterOuterAlt(_localctx, 1);
-    setState(9); 
-    _errHandler->sync(this);
-    _la = _input->LA(1);
-    do {
-      setState(8);
-      statement();
-      setState(11); 
-      _errHandler->sync(this);
-      _la = _input->LA(1);
-    } while (_la == lambdaParser::T__1
-
-    || _la == lambdaParser::VAR);
-   
-  }
-  catch (RecognitionException &e) {
-    _errHandler->reportError(this, e);
-    _localctx->exception = std::current_exception();
-    _errHandler->recover(this, _localctx->exception);
-  }
-
-  return _localctx;
-}
-
-//----------------- StatementContext ------------------------------------------------------------------
-
-lambdaParser::StatementContext::StatementContext(ParserRuleContext *parent, size_t invokingState)
-  : ParserRuleContext(parent, invokingState) {
-}
-
-lambdaParser::LetContext* lambdaParser::StatementContext::let() {
-  return getRuleContext<lambdaParser::LetContext>(0);
-}
-
-lambdaParser::ShowContext* lambdaParser::StatementContext::show() {
-  return getRuleContext<lambdaParser::ShowContext>(0);
-}
-
-
-size_t lambdaParser::StatementContext::getRuleIndex() const {
-  return lambdaParser::RuleStatement;
-}
-
-void lambdaParser::StatementContext::enterRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<lambdaListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->enterStatement(this);
-}
-
-void lambdaParser::StatementContext::exitRule(tree::ParseTreeListener *listener) {
-  auto parserListener = dynamic_cast<lambdaListener *>(listener);
-  if (parserListener != nullptr)
-    parserListener->exitStatement(this);
-}
-
-lambdaParser::StatementContext* lambdaParser::statement() {
-  StatementContext *_localctx = _tracker.createInstance<StatementContext>(_ctx, getState());
-  enterRule(_localctx, 2, lambdaParser::RuleStatement);
-
-  auto onExit = finally([=] {
-    exitRule();
-  });
-  try {
-    setState(15);
+    setState(12);
     _errHandler->sync(this);
     switch (_input->LA(1)) {
-      case lambdaParser::VAR: {
+      case lambdaParser::T__2:
+      case lambdaParser::T__3:
+      case lambdaParser::T__5:
+      case lambdaParser::Lambda:
+      case lambdaParser::Identifier:
+      case lambdaParser::Operator:
+      case lambdaParser::Bool:
+      case lambdaParser::Int: {
         enterOuterAlt(_localctx, 1);
-        setState(13);
-        let();
+        setState(10);
+        expression(0);
         break;
       }
 
-      case lambdaParser::T__1: {
+      case lambdaParser::EOF: {
         enterOuterAlt(_localctx, 2);
-        setState(14);
-        show();
+
         break;
       }
 
@@ -165,52 +112,479 @@ lambdaParser::StatementContext* lambdaParser::statement() {
   return _localctx;
 }
 
-//----------------- LetContext ------------------------------------------------------------------
+//----------------- ExpressionContext ------------------------------------------------------------------
 
-lambdaParser::LetContext::LetContext(ParserRuleContext *parent, size_t invokingState)
+lambdaParser::ExpressionContext::ExpressionContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* lambdaParser::LetContext::VAR() {
-  return getToken(lambdaParser::VAR, 0);
+
+size_t lambdaParser::ExpressionContext::getRuleIndex() const {
+  return lambdaParser::RuleExpression;
 }
 
-tree::TerminalNode* lambdaParser::LetContext::INT() {
-  return getToken(lambdaParser::INT, 0);
+void lambdaParser::ExpressionContext::copyFrom(ExpressionContext *ctx) {
+  ParserRuleContext::copyFrom(ctx);
 }
 
+//----------------- BinaryExpressionContext ------------------------------------------------------------------
 
-size_t lambdaParser::LetContext::getRuleIndex() const {
-  return lambdaParser::RuleLet;
+tree::TerminalNode* lambdaParser::BinaryExpressionContext::Operator() {
+  return getToken(lambdaParser::Operator, 0);
 }
 
-void lambdaParser::LetContext::enterRule(tree::ParseTreeListener *listener) {
+std::vector<lambdaParser::ExpressionContext *> lambdaParser::BinaryExpressionContext::expression() {
+  return getRuleContexts<lambdaParser::ExpressionContext>();
+}
+
+lambdaParser::ExpressionContext* lambdaParser::BinaryExpressionContext::expression(size_t i) {
+  return getRuleContext<lambdaParser::ExpressionContext>(i);
+}
+
+lambdaParser::BinaryExpressionContext::BinaryExpressionContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::BinaryExpressionContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<lambdaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterLet(this);
+    parserListener->enterBinaryExpression(this);
 }
-
-void lambdaParser::LetContext::exitRule(tree::ParseTreeListener *listener) {
+void lambdaParser::BinaryExpressionContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<lambdaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitLet(this);
+    parserListener->exitBinaryExpression(this);
 }
 
-lambdaParser::LetContext* lambdaParser::let() {
-  LetContext *_localctx = _tracker.createInstance<LetContext>(_ctx, getState());
-  enterRule(_localctx, 4, lambdaParser::RuleLet);
+antlrcpp::Any lambdaParser::BinaryExpressionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitBinaryExpression(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- ConditionalContext ------------------------------------------------------------------
+
+lambdaParser::ConditionContext* lambdaParser::ConditionalContext::condition() {
+  return getRuleContext<lambdaParser::ConditionContext>(0);
+}
+
+lambdaParser::ConditionalContext::ConditionalContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::ConditionalContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterConditional(this);
+}
+void lambdaParser::ConditionalContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitConditional(this);
+}
+
+antlrcpp::Any lambdaParser::ConditionalContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitConditional(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- ApplicationContext ------------------------------------------------------------------
+
+std::vector<lambdaParser::ExpressionContext *> lambdaParser::ApplicationContext::expression() {
+  return getRuleContexts<lambdaParser::ExpressionContext>();
+}
+
+lambdaParser::ExpressionContext* lambdaParser::ApplicationContext::expression(size_t i) {
+  return getRuleContext<lambdaParser::ExpressionContext>(i);
+}
+
+lambdaParser::ApplicationContext::ApplicationContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::ApplicationContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterApplication(this);
+}
+void lambdaParser::ApplicationContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitApplication(this);
+}
+
+antlrcpp::Any lambdaParser::ApplicationContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitApplication(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- AbstractionContext ------------------------------------------------------------------
+
+tree::TerminalNode* lambdaParser::AbstractionContext::Lambda() {
+  return getToken(lambdaParser::Lambda, 0);
+}
+
+tree::TerminalNode* lambdaParser::AbstractionContext::Identifier() {
+  return getToken(lambdaParser::Identifier, 0);
+}
+
+lambdaParser::ExpressionContext* lambdaParser::AbstractionContext::expression() {
+  return getRuleContext<lambdaParser::ExpressionContext>(0);
+}
+
+lambdaParser::AbstractionContext::AbstractionContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::AbstractionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAbstraction(this);
+}
+void lambdaParser::AbstractionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAbstraction(this);
+}
+
+antlrcpp::Any lambdaParser::AbstractionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitAbstraction(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- VariableContext ------------------------------------------------------------------
+
+tree::TerminalNode* lambdaParser::VariableContext::Identifier() {
+  return getToken(lambdaParser::Identifier, 0);
+}
+
+lambdaParser::VariableContext::VariableContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::VariableContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterVariable(this);
+}
+void lambdaParser::VariableContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitVariable(this);
+}
+
+antlrcpp::Any lambdaParser::VariableContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitVariable(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- PrintInstructionContext ------------------------------------------------------------------
+
+lambdaParser::ExpressionContext* lambdaParser::PrintInstructionContext::expression() {
+  return getRuleContext<lambdaParser::ExpressionContext>(0);
+}
+
+lambdaParser::PrintInstructionContext::PrintInstructionContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::PrintInstructionContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterPrintInstruction(this);
+}
+void lambdaParser::PrintInstructionContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitPrintInstruction(this);
+}
+
+antlrcpp::Any lambdaParser::PrintInstructionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitPrintInstruction(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- LiteralContext ------------------------------------------------------------------
+
+tree::TerminalNode* lambdaParser::LiteralContext::Int() {
+  return getToken(lambdaParser::Int, 0);
+}
+
+tree::TerminalNode* lambdaParser::LiteralContext::Bool() {
+  return getToken(lambdaParser::Bool, 0);
+}
+
+lambdaParser::LiteralContext::LiteralContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::LiteralContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterLiteral(this);
+}
+void lambdaParser::LiteralContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitLiteral(this);
+}
+
+antlrcpp::Any lambdaParser::LiteralContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitLiteral(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- AssignContext ------------------------------------------------------------------
+
+tree::TerminalNode* lambdaParser::AssignContext::Identifier() {
+  return getToken(lambdaParser::Identifier, 0);
+}
+
+lambdaParser::ExpressionContext* lambdaParser::AssignContext::expression() {
+  return getRuleContext<lambdaParser::ExpressionContext>(0);
+}
+
+lambdaParser::AssignContext::AssignContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::AssignContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterAssign(this);
+}
+void lambdaParser::AssignContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitAssign(this);
+}
+
+antlrcpp::Any lambdaParser::AssignContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitAssign(this);
+  else
+    return visitor->visitChildren(this);
+}
+//----------------- BracketsContext ------------------------------------------------------------------
+
+lambdaParser::ExpressionContext* lambdaParser::BracketsContext::expression() {
+  return getRuleContext<lambdaParser::ExpressionContext>(0);
+}
+
+lambdaParser::BracketsContext::BracketsContext(ExpressionContext *ctx) { copyFrom(ctx); }
+
+void lambdaParser::BracketsContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterBrackets(this);
+}
+void lambdaParser::BracketsContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitBrackets(this);
+}
+
+antlrcpp::Any lambdaParser::BracketsContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitBrackets(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+lambdaParser::ExpressionContext* lambdaParser::expression() {
+   return expression(0);
+}
+
+lambdaParser::ExpressionContext* lambdaParser::expression(int precedence) {
+  ParserRuleContext *parentContext = _ctx;
+  size_t parentState = getState();
+  lambdaParser::ExpressionContext *_localctx = _tracker.createInstance<ExpressionContext>(_ctx, parentState);
+  lambdaParser::ExpressionContext *previousContext = _localctx;
+  (void)previousContext; // Silence compiler, in case the context is not used by generated code.
+  size_t startState = 2;
+  enterRecursionRule(_localctx, 2, lambdaParser::RuleExpression, precedence);
+
+    size_t _la = 0;
+
+  auto onExit = finally([=] {
+    unrollRecursionContexts(parentContext);
+  });
+  try {
+    size_t alt;
+    enterOuterAlt(_localctx, 1);
+    setState(35);
+    _errHandler->sync(this);
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 1, _ctx)) {
+    case 1: {
+      _localctx = _tracker.createInstance<VariableContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+
+      setState(15);
+      match(lambdaParser::Identifier);
+      break;
+    }
+
+    case 2: {
+      _localctx = _tracker.createInstance<LiteralContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(16);
+      _la = _input->LA(1);
+      if (!(_la == lambdaParser::Bool
+
+      || _la == lambdaParser::Int)) {
+      _errHandler->recoverInline(this);
+      }
+      else {
+        _errHandler->reportMatch(this);
+        consume();
+      }
+      break;
+    }
+
+    case 3: {
+      _localctx = _tracker.createInstance<AbstractionContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(17);
+      match(lambdaParser::Lambda);
+      setState(18);
+      match(lambdaParser::Identifier);
+      setState(19);
+      match(lambdaParser::T__0);
+      setState(20);
+      expression(6);
+      break;
+    }
+
+    case 4: {
+      _localctx = _tracker.createInstance<AssignContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(21);
+      match(lambdaParser::Identifier);
+      setState(22);
+      match(lambdaParser::T__1);
+      setState(23);
+      expression(5);
+      break;
+    }
+
+    case 5: {
+      _localctx = _tracker.createInstance<ConditionalContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(24);
+      condition();
+      break;
+    }
+
+    case 6: {
+      _localctx = _tracker.createInstance<BinaryExpressionContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(25);
+      match(lambdaParser::Operator);
+      setState(26);
+      expression(0);
+      setState(27);
+      expression(3);
+      break;
+    }
+
+    case 7: {
+      _localctx = _tracker.createInstance<PrintInstructionContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(29);
+      match(lambdaParser::T__2);
+      setState(30);
+      expression(2);
+      break;
+    }
+
+    case 8: {
+      _localctx = _tracker.createInstance<BracketsContext>(_localctx);
+      _ctx = _localctx;
+      previousContext = _localctx;
+      setState(31);
+      match(lambdaParser::T__3);
+      setState(32);
+      expression(0);
+      setState(33);
+      match(lambdaParser::T__4);
+      break;
+    }
+
+    }
+    _ctx->stop = _input->LT(-1);
+    setState(41);
+    _errHandler->sync(this);
+    alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 2, _ctx);
+    while (alt != 2 && alt != atn::ATN::INVALID_ALT_NUMBER) {
+      if (alt == 1) {
+        if (!_parseListeners.empty())
+          triggerExitRuleEvent();
+        previousContext = _localctx;
+        auto newContext = _tracker.createInstance<ApplicationContext>(_tracker.createInstance<ExpressionContext>(parentContext, parentState));
+        _localctx = newContext;
+        pushNewRecursionContext(newContext, startState, RuleExpression);
+        setState(37);
+
+        if (!(precpred(_ctx, 7))) throw FailedPredicateException(this, "precpred(_ctx, 7)");
+        setState(38);
+        expression(8); 
+      }
+      setState(43);
+      _errHandler->sync(this);
+      alt = getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 2, _ctx);
+    }
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+  return _localctx;
+}
+
+//----------------- BodyContext ------------------------------------------------------------------
+
+lambdaParser::BodyContext::BodyContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+lambdaParser::ExpressionContext* lambdaParser::BodyContext::expression() {
+  return getRuleContext<lambdaParser::ExpressionContext>(0);
+}
+
+
+size_t lambdaParser::BodyContext::getRuleIndex() const {
+  return lambdaParser::RuleBody;
+}
+
+void lambdaParser::BodyContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterBody(this);
+}
+
+void lambdaParser::BodyContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitBody(this);
+}
+
+
+antlrcpp::Any lambdaParser::BodyContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitBody(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+lambdaParser::BodyContext* lambdaParser::body() {
+  BodyContext *_localctx = _tracker.createInstance<BodyContext>(_ctx, getState());
+  enterRule(_localctx, 4, lambdaParser::RuleBody);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
     enterOuterAlt(_localctx, 1);
-    setState(17);
-    match(lambdaParser::VAR);
-    setState(18);
-    match(lambdaParser::T__0);
-    setState(19);
-    match(lambdaParser::INT);
+    setState(44);
+    expression(0);
    
   }
   catch (RecognitionException &e) {
@@ -222,59 +596,96 @@ lambdaParser::LetContext* lambdaParser::let() {
   return _localctx;
 }
 
-//----------------- ShowContext ------------------------------------------------------------------
+//----------------- ConditionContext ------------------------------------------------------------------
 
-lambdaParser::ShowContext::ShowContext(ParserRuleContext *parent, size_t invokingState)
+lambdaParser::ConditionContext::ConditionContext(ParserRuleContext *parent, size_t invokingState)
   : ParserRuleContext(parent, invokingState) {
 }
 
-tree::TerminalNode* lambdaParser::ShowContext::INT() {
-  return getToken(lambdaParser::INT, 0);
+lambdaParser::ExpressionContext* lambdaParser::ConditionContext::expression() {
+  return getRuleContext<lambdaParser::ExpressionContext>(0);
 }
 
-tree::TerminalNode* lambdaParser::ShowContext::VAR() {
-  return getToken(lambdaParser::VAR, 0);
+std::vector<lambdaParser::BodyContext *> lambdaParser::ConditionContext::body() {
+  return getRuleContexts<lambdaParser::BodyContext>();
+}
+
+lambdaParser::BodyContext* lambdaParser::ConditionContext::body(size_t i) {
+  return getRuleContext<lambdaParser::BodyContext>(i);
 }
 
 
-size_t lambdaParser::ShowContext::getRuleIndex() const {
-  return lambdaParser::RuleShow;
+size_t lambdaParser::ConditionContext::getRuleIndex() const {
+  return lambdaParser::RuleCondition;
 }
 
-void lambdaParser::ShowContext::enterRule(tree::ParseTreeListener *listener) {
+void lambdaParser::ConditionContext::enterRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<lambdaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->enterShow(this);
+    parserListener->enterCondition(this);
 }
 
-void lambdaParser::ShowContext::exitRule(tree::ParseTreeListener *listener) {
+void lambdaParser::ConditionContext::exitRule(tree::ParseTreeListener *listener) {
   auto parserListener = dynamic_cast<lambdaListener *>(listener);
   if (parserListener != nullptr)
-    parserListener->exitShow(this);
+    parserListener->exitCondition(this);
 }
 
-lambdaParser::ShowContext* lambdaParser::show() {
-  ShowContext *_localctx = _tracker.createInstance<ShowContext>(_ctx, getState());
-  enterRule(_localctx, 6, lambdaParser::RuleShow);
-  size_t _la = 0;
+
+antlrcpp::Any lambdaParser::ConditionContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitCondition(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+lambdaParser::ConditionContext* lambdaParser::condition() {
+  ConditionContext *_localctx = _tracker.createInstance<ConditionContext>(_ctx, getState());
+  enterRule(_localctx, 6, lambdaParser::RuleCondition);
 
   auto onExit = finally([=] {
     exitRule();
   });
   try {
-    enterOuterAlt(_localctx, 1);
-    setState(21);
-    match(lambdaParser::T__1);
-    setState(22);
-    _la = _input->LA(1);
-    if (!(_la == lambdaParser::VAR
+    setState(60);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case lambdaParser::T__5: {
+        enterOuterAlt(_localctx, 1);
+        setState(46);
+        match(lambdaParser::T__5);
+        setState(47);
+        expression(0);
+        setState(48);
+        match(lambdaParser::T__6);
+        setState(49);
+        body();
+        setState(50);
+        match(lambdaParser::T__7);
+        setState(51);
+        body();
+        break;
+      }
 
-    || _la == lambdaParser::INT)) {
-    _errHandler->recoverInline(this);
-    }
-    else {
-      _errHandler->reportMatch(this);
-      consume();
+      case lambdaParser::T__3: {
+        enterOuterAlt(_localctx, 2);
+        setState(53);
+        match(lambdaParser::T__3);
+        setState(54);
+        expression(0);
+        setState(55);
+        match(lambdaParser::T__8);
+        setState(56);
+        body();
+        setState(57);
+        match(lambdaParser::T__9);
+        setState(58);
+        body();
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
     }
    
   }
@@ -285,6 +696,110 @@ lambdaParser::ShowContext* lambdaParser::show() {
   }
 
   return _localctx;
+}
+
+//----------------- ImportsContext ------------------------------------------------------------------
+
+lambdaParser::ImportsContext::ImportsContext(ParserRuleContext *parent, size_t invokingState)
+  : ParserRuleContext(parent, invokingState) {
+}
+
+tree::TerminalNode* lambdaParser::ImportsContext::Identifier() {
+  return getToken(lambdaParser::Identifier, 0);
+}
+
+lambdaParser::ImportsContext* lambdaParser::ImportsContext::imports() {
+  return getRuleContext<lambdaParser::ImportsContext>(0);
+}
+
+
+size_t lambdaParser::ImportsContext::getRuleIndex() const {
+  return lambdaParser::RuleImports;
+}
+
+void lambdaParser::ImportsContext::enterRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->enterImports(this);
+}
+
+void lambdaParser::ImportsContext::exitRule(tree::ParseTreeListener *listener) {
+  auto parserListener = dynamic_cast<lambdaListener *>(listener);
+  if (parserListener != nullptr)
+    parserListener->exitImports(this);
+}
+
+
+antlrcpp::Any lambdaParser::ImportsContext::accept(tree::ParseTreeVisitor *visitor) {
+  if (auto parserVisitor = dynamic_cast<lambdaVisitor*>(visitor))
+    return parserVisitor->visitImports(this);
+  else
+    return visitor->visitChildren(this);
+}
+
+lambdaParser::ImportsContext* lambdaParser::imports() {
+  ImportsContext *_localctx = _tracker.createInstance<ImportsContext>(_ctx, getState());
+  enterRule(_localctx, 8, lambdaParser::RuleImports);
+
+  auto onExit = finally([=] {
+    exitRule();
+  });
+  try {
+    setState(68);
+    _errHandler->sync(this);
+    switch (_input->LA(1)) {
+      case lambdaParser::T__10: {
+        enterOuterAlt(_localctx, 1);
+        setState(62);
+        match(lambdaParser::T__10);
+        setState(63);
+        match(lambdaParser::Identifier);
+        break;
+      }
+
+      case lambdaParser::T__3: {
+        enterOuterAlt(_localctx, 2);
+        setState(64);
+        match(lambdaParser::T__3);
+        setState(65);
+        imports();
+        setState(66);
+        match(lambdaParser::T__4);
+        break;
+      }
+
+    default:
+      throw NoViableAltException(this);
+    }
+   
+  }
+  catch (RecognitionException &e) {
+    _errHandler->reportError(this, e);
+    _localctx->exception = std::current_exception();
+    _errHandler->recover(this, _localctx->exception);
+  }
+
+  return _localctx;
+}
+
+bool lambdaParser::sempred(RuleContext *context, size_t ruleIndex, size_t predicateIndex) {
+  switch (ruleIndex) {
+    case 1: return expressionSempred(dynamic_cast<ExpressionContext *>(context), predicateIndex);
+
+  default:
+    break;
+  }
+  return true;
+}
+
+bool lambdaParser::expressionSempred(ExpressionContext *_localctx, size_t predicateIndex) {
+  switch (predicateIndex) {
+    case 0: return precpred(_ctx, 7);
+
+  default:
+    break;
+  }
+  return true;
 }
 
 // Static vars and initialization.
@@ -296,15 +811,17 @@ atn::ATN lambdaParser::_atn;
 std::vector<uint16_t> lambdaParser::_serializedATN;
 
 std::vector<std::string> lambdaParser::_ruleNames = {
-  "program", "statement", "let", "show"
+  "program", "expression", "body", "condition", "imports"
 };
 
 std::vector<std::string> lambdaParser::_literalNames = {
-  "", "'<-'", "'show'"
+  "", "'.'", "'='", "'print'", "'('", "')'", "'if'", "'then'", "'else'", 
+  "'->'", "'|'", "'import'"
 };
 
 std::vector<std::string> lambdaParser::_symbolicNames = {
-  "", "", "", "VAR", "INT", "WS"
+  "", "", "", "", "", "", "", "", "", "", "", "", "Lambda", "Identifier", 
+  "Operator", "Bool", "Int", "WS"
 };
 
 dfa::Vocabulary lambdaParser::_vocabulary(_literalNames, _symbolicNames);
@@ -327,22 +844,54 @@ lambdaParser::Initializer::Initializer() {
 
   _serializedATN = {
     0x3, 0x608b, 0xa72a, 0x8133, 0xb9ed, 0x417c, 0x3be7, 0x7786, 0x5964, 
-    0x3, 0x7, 0x1b, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
-    0x4, 0x4, 0x5, 0x9, 0x5, 0x3, 0x2, 0x6, 0x2, 0xc, 0xa, 0x2, 0xd, 0x2, 
-    0xe, 0x2, 0xd, 0x3, 0x3, 0x3, 0x3, 0x5, 0x3, 0x12, 0xa, 0x3, 0x3, 0x4, 
-    0x3, 0x4, 0x3, 0x4, 0x3, 0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 
-    0x2, 0x2, 0x6, 0x2, 0x4, 0x6, 0x8, 0x2, 0x3, 0x3, 0x2, 0x5, 0x6, 0x2, 
-    0x18, 0x2, 0xb, 0x3, 0x2, 0x2, 0x2, 0x4, 0x11, 0x3, 0x2, 0x2, 0x2, 0x6, 
-    0x13, 0x3, 0x2, 0x2, 0x2, 0x8, 0x17, 0x3, 0x2, 0x2, 0x2, 0xa, 0xc, 0x5, 
-    0x4, 0x3, 0x2, 0xb, 0xa, 0x3, 0x2, 0x2, 0x2, 0xc, 0xd, 0x3, 0x2, 0x2, 
-    0x2, 0xd, 0xb, 0x3, 0x2, 0x2, 0x2, 0xd, 0xe, 0x3, 0x2, 0x2, 0x2, 0xe, 
-    0x3, 0x3, 0x2, 0x2, 0x2, 0xf, 0x12, 0x5, 0x6, 0x4, 0x2, 0x10, 0x12, 
-    0x5, 0x8, 0x5, 0x2, 0x11, 0xf, 0x3, 0x2, 0x2, 0x2, 0x11, 0x10, 0x3, 
-    0x2, 0x2, 0x2, 0x12, 0x5, 0x3, 0x2, 0x2, 0x2, 0x13, 0x14, 0x7, 0x5, 
-    0x2, 0x2, 0x14, 0x15, 0x7, 0x3, 0x2, 0x2, 0x15, 0x16, 0x7, 0x6, 0x2, 
-    0x2, 0x16, 0x7, 0x3, 0x2, 0x2, 0x2, 0x17, 0x18, 0x7, 0x4, 0x2, 0x2, 
-    0x18, 0x19, 0x9, 0x2, 0x2, 0x2, 0x19, 0x9, 0x3, 0x2, 0x2, 0x2, 0x4, 
-    0xd, 0x11, 
+    0x3, 0x13, 0x49, 0x4, 0x2, 0x9, 0x2, 0x4, 0x3, 0x9, 0x3, 0x4, 0x4, 0x9, 
+    0x4, 0x4, 0x5, 0x9, 0x5, 0x4, 0x6, 0x9, 0x6, 0x3, 0x2, 0x3, 0x2, 0x5, 
+    0x2, 0xf, 0xa, 0x2, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
+    0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
+    0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 
+    0x3, 0x3, 0x3, 0x3, 0x5, 0x3, 0x26, 0xa, 0x3, 0x3, 0x3, 0x3, 0x3, 0x7, 
+    0x3, 0x2a, 0xa, 0x3, 0xc, 0x3, 0xe, 0x3, 0x2d, 0xb, 0x3, 0x3, 0x4, 0x3, 
+    0x4, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 
+    0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 0x5, 0x3, 
+    0x5, 0x5, 0x5, 0x3f, 0xa, 0x5, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 0x3, 0x6, 
+    0x3, 0x6, 0x3, 0x6, 0x5, 0x6, 0x47, 0xa, 0x6, 0x3, 0x6, 0x2, 0x3, 0x4, 
+    0x7, 0x2, 0x4, 0x6, 0x8, 0xa, 0x2, 0x3, 0x3, 0x2, 0x11, 0x12, 0x2, 0x4e, 
+    0x2, 0xe, 0x3, 0x2, 0x2, 0x2, 0x4, 0x25, 0x3, 0x2, 0x2, 0x2, 0x6, 0x2e, 
+    0x3, 0x2, 0x2, 0x2, 0x8, 0x3e, 0x3, 0x2, 0x2, 0x2, 0xa, 0x46, 0x3, 0x2, 
+    0x2, 0x2, 0xc, 0xf, 0x5, 0x4, 0x3, 0x2, 0xd, 0xf, 0x3, 0x2, 0x2, 0x2, 
+    0xe, 0xc, 0x3, 0x2, 0x2, 0x2, 0xe, 0xd, 0x3, 0x2, 0x2, 0x2, 0xf, 0x3, 
+    0x3, 0x2, 0x2, 0x2, 0x10, 0x11, 0x8, 0x3, 0x1, 0x2, 0x11, 0x26, 0x7, 
+    0xf, 0x2, 0x2, 0x12, 0x26, 0x9, 0x2, 0x2, 0x2, 0x13, 0x14, 0x7, 0xe, 
+    0x2, 0x2, 0x14, 0x15, 0x7, 0xf, 0x2, 0x2, 0x15, 0x16, 0x7, 0x3, 0x2, 
+    0x2, 0x16, 0x26, 0x5, 0x4, 0x3, 0x8, 0x17, 0x18, 0x7, 0xf, 0x2, 0x2, 
+    0x18, 0x19, 0x7, 0x4, 0x2, 0x2, 0x19, 0x26, 0x5, 0x4, 0x3, 0x7, 0x1a, 
+    0x26, 0x5, 0x8, 0x5, 0x2, 0x1b, 0x1c, 0x7, 0x10, 0x2, 0x2, 0x1c, 0x1d, 
+    0x5, 0x4, 0x3, 0x2, 0x1d, 0x1e, 0x5, 0x4, 0x3, 0x5, 0x1e, 0x26, 0x3, 
+    0x2, 0x2, 0x2, 0x1f, 0x20, 0x7, 0x5, 0x2, 0x2, 0x20, 0x26, 0x5, 0x4, 
+    0x3, 0x4, 0x21, 0x22, 0x7, 0x6, 0x2, 0x2, 0x22, 0x23, 0x5, 0x4, 0x3, 
+    0x2, 0x23, 0x24, 0x7, 0x7, 0x2, 0x2, 0x24, 0x26, 0x3, 0x2, 0x2, 0x2, 
+    0x25, 0x10, 0x3, 0x2, 0x2, 0x2, 0x25, 0x12, 0x3, 0x2, 0x2, 0x2, 0x25, 
+    0x13, 0x3, 0x2, 0x2, 0x2, 0x25, 0x17, 0x3, 0x2, 0x2, 0x2, 0x25, 0x1a, 
+    0x3, 0x2, 0x2, 0x2, 0x25, 0x1b, 0x3, 0x2, 0x2, 0x2, 0x25, 0x1f, 0x3, 
+    0x2, 0x2, 0x2, 0x25, 0x21, 0x3, 0x2, 0x2, 0x2, 0x26, 0x2b, 0x3, 0x2, 
+    0x2, 0x2, 0x27, 0x28, 0xc, 0x9, 0x2, 0x2, 0x28, 0x2a, 0x5, 0x4, 0x3, 
+    0xa, 0x29, 0x27, 0x3, 0x2, 0x2, 0x2, 0x2a, 0x2d, 0x3, 0x2, 0x2, 0x2, 
+    0x2b, 0x29, 0x3, 0x2, 0x2, 0x2, 0x2b, 0x2c, 0x3, 0x2, 0x2, 0x2, 0x2c, 
+    0x5, 0x3, 0x2, 0x2, 0x2, 0x2d, 0x2b, 0x3, 0x2, 0x2, 0x2, 0x2e, 0x2f, 
+    0x5, 0x4, 0x3, 0x2, 0x2f, 0x7, 0x3, 0x2, 0x2, 0x2, 0x30, 0x31, 0x7, 
+    0x8, 0x2, 0x2, 0x31, 0x32, 0x5, 0x4, 0x3, 0x2, 0x32, 0x33, 0x7, 0x9, 
+    0x2, 0x2, 0x33, 0x34, 0x5, 0x6, 0x4, 0x2, 0x34, 0x35, 0x7, 0xa, 0x2, 
+    0x2, 0x35, 0x36, 0x5, 0x6, 0x4, 0x2, 0x36, 0x3f, 0x3, 0x2, 0x2, 0x2, 
+    0x37, 0x38, 0x7, 0x6, 0x2, 0x2, 0x38, 0x39, 0x5, 0x4, 0x3, 0x2, 0x39, 
+    0x3a, 0x7, 0xb, 0x2, 0x2, 0x3a, 0x3b, 0x5, 0x6, 0x4, 0x2, 0x3b, 0x3c, 
+    0x7, 0xc, 0x2, 0x2, 0x3c, 0x3d, 0x5, 0x6, 0x4, 0x2, 0x3d, 0x3f, 0x3, 
+    0x2, 0x2, 0x2, 0x3e, 0x30, 0x3, 0x2, 0x2, 0x2, 0x3e, 0x37, 0x3, 0x2, 
+    0x2, 0x2, 0x3f, 0x9, 0x3, 0x2, 0x2, 0x2, 0x40, 0x41, 0x7, 0xd, 0x2, 
+    0x2, 0x41, 0x47, 0x7, 0xf, 0x2, 0x2, 0x42, 0x43, 0x7, 0x6, 0x2, 0x2, 
+    0x43, 0x44, 0x5, 0xa, 0x6, 0x2, 0x44, 0x45, 0x7, 0x7, 0x2, 0x2, 0x45, 
+    0x47, 0x3, 0x2, 0x2, 0x2, 0x46, 0x40, 0x3, 0x2, 0x2, 0x2, 0x46, 0x42, 
+    0x3, 0x2, 0x2, 0x2, 0x47, 0xb, 0x3, 0x2, 0x2, 0x2, 0x7, 0xe, 0x25, 0x2b, 
+    0x3e, 0x46, 
   };
 
   atn::ATNDeserializer deserializer;

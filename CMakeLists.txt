@@ -35,6 +35,8 @@ antlr_target(Sample lambda.g4)
 include_directories(${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
 
+include_directories(${PROJECT_SOURCE_DIR}/thirdparty/color-console/include)
+
 file(GLOB_RECURSE SOURCES "source/*.cpp")
 
 # add generated grammar to demo binary target

@@ -1,5 +1,5 @@
 
-// Generated from language/lambda.g4 by ANTLR 4.8
+// Generated from lambda.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -12,7 +12,9 @@
 class  lambdaLexer : public antlr4::Lexer {
 public:
   enum {
-    T__0 = 1, T__1 = 2, VAR = 3, INT = 4, WS = 5
+    T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, Lambda = 12, Identifier = 13, 
+    Operator = 14, Bool = 15, Int = 16, WS = 17
   };
 
   lambdaLexer(antlr4::CharStream *input);
