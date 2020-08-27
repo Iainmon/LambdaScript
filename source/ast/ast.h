@@ -14,6 +14,7 @@ bool text_as_bool(const string &b);
 
 enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL };
 class ASTNode {
+    public:
     ASTNodeType type;
 };
 
@@ -23,8 +24,10 @@ using node_reference = shared_ptr<ASTNode>;
 using scope_reference = shared_ptr<Scope>;
 
 class Scope {
+    private:
     map<string, ASTNode> scope;
     shared_ptr<Scope> copy(const map<string, ASTNode> &_scope);
+    public:
     Scope();
     Scope(const map<string, ASTNode> &_scope);
     shared_ptr<Scope> copy();
@@ -34,6 +37,7 @@ class Scope {
 };
 
 class Abstraction : public ASTNode {
+    public:
     string argument;
     node_reference body;
     scope_reference scope;
@@ -41,6 +45,7 @@ class Abstraction : public ASTNode {
 };
 
 class Application : public ASTNode {
+    public:
     node_reference lhs;
     node_reference rhs;
     Application(node_reference _lhs, node_reference _rhs);
@@ -51,6 +56,7 @@ const string NILVAL = "nil";
 
 enum LiteralType { Bool, Int, Nil };
 class Literal : public ASTNode {
+    public:
     string value;
     LiteralType valueType;
     Literal(bool val);
@@ -62,12 +68,14 @@ class Literal : public ASTNode {
 };
 
 class Variable : public ASTNode {
+    public:
     string identifier;
     Variable(const string &name);
 };
 
 enum OperationType { NO_OP, ADD, SUBTRACT, MULTIPLY, DIVIDE, GREATER_THAN, LESS_THAN, GREATER_THAN_EQUAL, LESS_THAT_EQUAL, EQUALS };
 class Operation : public ASTNode {
+    public:
     OperationType opType;
     node_reference lhs;
     node_reference rhs;
@@ -76,13 +84,17 @@ class Operation : public ASTNode {
 };
 
 class Main : public ASTNode {
+    public:
     node_reference entry;
     Main(node_reference main);
 };
 
 class PrintInstruction : public ASTNode {
+    public:
     node_reference value;
     PrintInstruction(node_reference valueToPrint);
 };
+
+void evaluate(node_reference ast_root);
 
 } // namespace ast

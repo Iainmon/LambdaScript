@@ -3,7 +3,7 @@
 #include <memory>
 #include <switch>
 
-#include "ast.cpp"
+#include "ast/ast.h"
 
 using namespace std;
 
@@ -23,6 +23,8 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         // shared_ptr<Application> application = make_shared<Application>(lhs, rhs);
         // return application;
 
+
+        // std::bad_cast happens when node_reference is returned without being bound to variable
         ast::node_reference lhs = ctx->expression(0)->accept(this);
         ast::node_reference rhs = ctx->expression(1)->accept(this);
         ast::node_reference application = make_shared<ast::Application>(lhs, rhs);
@@ -40,7 +42,9 @@ class InterpreterVisitor : public lambdaBaseVisitor {
 
         if (ctx->Int() != nullptr) {
             const int value = stoi(ctx->Int()->getText());
-            return make_shared<ast::Literal>(value);
+            ast::node_reference lit = make_shared<ast::Literal>(value);
+            cout << "casted!" << endl;
+            return lit;
         }
         if (ctx->Bool() != nullptr) {
             const string boolean = ctx->Bool()->getText();
