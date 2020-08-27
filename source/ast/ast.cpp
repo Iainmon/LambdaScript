@@ -90,7 +90,7 @@ int Literal::getInt() { return stoi(value); }
 string Literal::getNil() { return nil; }
 string Literal::to_string() {
     stringstream ss;
-    ss << "Literal ( " << value << " )";
+    ss << "Literal ( " << yellow << value << reset << " )";
     return ss.str();
 }
 

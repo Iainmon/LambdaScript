@@ -7,6 +7,7 @@
 
 #include <switch>
 
+
 #ifndef AST_H
 #define AST_H
 
@@ -15,6 +16,9 @@ std::string int_to_string(int &in);
 using namespace std;
 
 namespace ast {
+
+    #include "consolecolors.h"
+
 
 string bool_as_text(const bool &b);
 bool text_as_bool(const string &b);

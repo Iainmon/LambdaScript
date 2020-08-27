@@ -23,7 +23,6 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         // shared_ptr<Application> application = make_shared<Application>(lhs, rhs);
         // return application;
 
-
         // std::bad_cast happens when node_reference is returned without being bound to variable
         ast::node_reference lhs = ctx->expression(0)->accept(this);
         ast::node_reference rhs = ctx->expression(1)->accept(this);
@@ -34,6 +33,11 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     antlrcpp::Any visitVariable(lambdaParser::VariableContext *ctx) override {
         cout << "VariableRefference" << endl;
         const string name = ctx->Identifier()->getText();
+        SWITCH(name)
+        CASE("tru") FALL CASE("true") ast::node_reference boolean = make_shared<ast::Literal>(true); return boolean;
+        BREAK
+        CASE("fls") FALL CASE("false") ast::node_reference boolean = make_shared<ast::Literal>(false); return boolean;
+        END
         return assigned[name];
     }
 
@@ -42,21 +46,20 @@ class InterpreterVisitor : public lambdaBaseVisitor {
 
         if (ctx->Int() != nullptr) {
             const int value = stoi(ctx->Int()->getText());
-            ast::node_reference lit = make_shared<ast::Literal>(value);
-            cout << "casted!" << endl;
-            return lit;
+            ast::node_reference integer = make_shared<ast::Literal>(value);
+            return integer;
         }
         if (ctx->Bool() != nullptr) {
             const string boolean = ctx->Bool()->getText();
             SWITCH(boolean)
-            CASE("tru") FALL CASE("true") return make_shared<ast::Literal>(true);
+            CASE("tru") FALL CASE("true") ast::node_reference boolean = make_shared<ast::Literal>(true); return boolean;
             BREAK
-            CASE("fls") FALL CASE("false") return make_shared<ast::Literal>(false);
+            CASE("fls") FALL CASE("false") ast::node_reference boolean = make_shared<ast::Literal>(false); return boolean;
             END
         }
 
-        cout << "FAIL" << endl;
-        return nullptr;
+        ast::node_reference nilLiteral = make_shared<ast::Literal>();
+        return nilLiteral;
     }
 
     antlrcpp::Any visitAssign(lambdaParser::AssignContext *ctx) override {
@@ -66,7 +69,8 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         ast::node_reference value = ctx->expression()->accept(this);
         assigned[name] = value;
 
-        return make_shared<ast::Literal>();
+        ast::node_reference assignment = make_shared<ast::Literal>();
+        return assignment;
     }
 
     antlrcpp::Any visitBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) override {

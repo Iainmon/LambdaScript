@@ -3,8 +3,8 @@ grammar lambda;
 program: expression|;
 
 expression:
-	Identifier                                  # variable
-	| (Int | Bool)                              # literal // used to be constant
+	(Int | Bool)                                # literal // used to be constant
+	| Identifier                                # variable
 	| expression expression						# application
 	| Lambda Identifier '.' expression		    # abstraction
 	| Identifier '=' expression         	    # assign

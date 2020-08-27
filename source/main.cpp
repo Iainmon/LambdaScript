@@ -61,6 +61,7 @@ int main(int argc, const char *argv[]) {
     print("Interpreting...");
     InterpreterVisitor visitor;
     ast::node_reference ast = visitor.visit(tree);
+    print("-- Abstract Syntax Tree --");
     print(ast->to_string());
 
     // std::string treeString = tree->toStringTree();
