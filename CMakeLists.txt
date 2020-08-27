@@ -1,6 +1,10 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
 # set(CMAKE_CXX_COMPILER "clang")
 
+
+# ANTLR_CMD = antlr4 -visitor lambda.g4 -o source/frontend/ -Dlanguage=Cpp
+
+
 project(LambdaCalculus)
 
 set(ANTLR4_ZIP_REPOSITORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/antlr/antlr4-master.zip)
@@ -8,10 +12,11 @@ set(ANTLR4_ZIP_REPOSITORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/antlr/antlr4-ma
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # compiler must be 11 or 14
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 
 # required if linking to static library
-add_definitions(-DANTLR4CPP_STATIC)
+# add_definitions(-DANTLR4CPP_STATIC)
+add_definitions(-DANTLR4CPP_SHARED)
 
 # using /MD flag for antlr4_runtime (for Visual C++ compilers only)
 set(ANTLR4_WITH_STATIC_CRT OFF)
@@ -48,4 +53,5 @@ add_executable(lcalc ${SOURCES}
                ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
                antlr4_runtime
                )
-target_link_libraries(lcalc antlr4_static)
+# target_link_libraries(lcalc antlr4_static)
+target_link_libraries(lcalc antlr4_shared)

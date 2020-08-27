@@ -47,11 +47,20 @@ int main(int argc, const char *argv[]) {
     std::ifstream stream;
     stream.open(argv[1]);
     ANTLRInputStream input(stream);
+    print("Lexing...");
     lambdaLexer lexer(&input);
+    print("Parsing...");
     CommonTokenStream tokens(&lexer);
     lambdaParser parser(&tokens);
 
-    tree::ParseTree *tree = parser.program()->accept(new InterpreterVisitor());
+    tree::ParseTree *tree = parser.program();
+    std::wstring s = antlrcpp::s2ws(tree->toStringTree(&parser)) + L"\n";
+    std::wcout << "Parse Tree: " << s << std::endl;
+
+    print("Interpreting...");
+    InterpreterVisitor visitor;
+    visitor.visit(tree);
+
     // std::string treeString = tree->toStringTree();
     // std::cout << treeString << std::endl;
 

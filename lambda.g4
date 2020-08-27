@@ -1,6 +1,6 @@
 grammar lambda;
 
-program: expression |;
+program: expression|;
 
 expression:
 	Identifier                                  # variable
