@@ -17,7 +17,7 @@ body: expression;
 condition: 'if' expression 'then' body 'else' body
     | '(' expression '->' body '|' body;
 
-imports: 'import' Identifier | '(' imports ')';
+// imports: 'import' Identifier | '(' imports ')';
 
 Lambda: '\\' | 'λ';
 Identifier: ('a' ..'z') ('a' ..'z' | '0' ..'9')*;

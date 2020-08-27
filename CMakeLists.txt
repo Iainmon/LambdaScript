@@ -2,6 +2,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
 
 project(LambdaCalculus)
 
+set(ANTLR4_ZIP_REPOSITORY ${CMAKE_CURRENT_SOURCE_DIR}/thirdparty/antlr/antlr4-master.zip)
+
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 # compiler must be 11 or 14
@@ -35,7 +37,7 @@ antlr_target(Sample lambda.g4)
 include_directories(${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
 
-include_directories(${PROJECT_SOURCE_DIR}/thirdparty/color-console/include)
+# include_directories(${PROJECT_SOURCE_DIR}/thirdparty/color-console/include)
 
 file(GLOB_RECURSE SOURCES "source/*.cpp")
 

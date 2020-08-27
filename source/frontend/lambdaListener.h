@@ -50,9 +50,6 @@ public:
   virtual void enterCondition(lambdaParser::ConditionContext *ctx) = 0;
   virtual void exitCondition(lambdaParser::ConditionContext *ctx) = 0;
 
-  virtual void enterImports(lambdaParser::ImportsContext *ctx) = 0;
-  virtual void exitImports(lambdaParser::ImportsContext *ctx) = 0;
-
 
 };
 

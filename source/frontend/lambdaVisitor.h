@@ -43,8 +43,6 @@ public:
 
     virtual antlrcpp::Any visitCondition(lambdaParser::ConditionContext *context) = 0;
 
-    virtual antlrcpp::Any visitImports(lambdaParser::ImportsContext *context) = 0;
-
 
 };
 

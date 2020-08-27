@@ -63,10 +63,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitImports(lambdaParser::ImportsContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
 
 };
 

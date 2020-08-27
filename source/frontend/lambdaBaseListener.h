@@ -52,9 +52,6 @@ public:
   virtual void enterCondition(lambdaParser::ConditionContext * /*ctx*/) override { }
   virtual void exitCondition(lambdaParser::ConditionContext * /*ctx*/) override { }
 
-  virtual void enterImports(lambdaParser::ImportsContext * /*ctx*/) override { }
-  virtual void exitImports(lambdaParser::ImportsContext * /*ctx*/) override { }
-
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
   virtual void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

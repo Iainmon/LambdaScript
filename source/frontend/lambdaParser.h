@@ -13,13 +13,12 @@ class  lambdaParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, Lambda = 12, Identifier = 13, 
-    Operator = 14, Bool = 15, Int = 16, WS = 17
+    T__7 = 8, T__8 = 9, T__9 = 10, Lambda = 11, Identifier = 12, Operator = 13, 
+    Bool = 14, Int = 15, WS = 16
   };
 
   enum {
-    RuleProgram = 0, RuleExpression = 1, RuleBody = 2, RuleCondition = 3, 
-    RuleImports = 4
+    RuleProgram = 0, RuleExpression = 1, RuleBody = 2, RuleCondition = 3
   };
 
   lambdaParser(antlr4::TokenStream *input);
@@ -35,8 +34,7 @@ public:
   class ProgramContext;
   class ExpressionContext;
   class BodyContext;
-  class ConditionContext;
-  class ImportsContext; 
+  class ConditionContext; 
 
   class  ProgramContext : public antlr4::ParserRuleContext {
   public:
@@ -205,22 +203,6 @@ public:
   };
 
   ConditionContext* condition();
-
-  class  ImportsContext : public antlr4::ParserRuleContext {
-  public:
-    ImportsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
-    virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *Identifier();
-    ImportsContext *imports();
-
-    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
-    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
-
-    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
-   
-  };
-
-  ImportsContext* imports();
 
 
   virtual bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
