@@ -13,8 +13,8 @@ class  lambdaLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, Lambda = 11, Identifier = 12, Operator = 13, 
-    Bool = 14, Int = 15, WS = 16
+    T__7 = 8, T__8 = 9, T__9 = 10, Lambda = 11, Bool = 12, Int = 13, Identifier = 14, 
+    Operator = 15, WS = 16
   };
 
   lambdaLexer(antlr4::CharStream *input);

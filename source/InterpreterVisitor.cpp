@@ -33,11 +33,11 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     antlrcpp::Any visitVariable(lambdaParser::VariableContext *ctx) override {
         cout << "VariableRefference" << endl;
         const string name = ctx->Identifier()->getText();
-        SWITCH(name)
-        CASE("tru") FALL CASE("true") ast::node_reference boolean = make_shared<ast::Literal>(true); return boolean;
-        BREAK
-        CASE("fls") FALL CASE("false") ast::node_reference boolean = make_shared<ast::Literal>(false); return boolean;
-        END
+        // SWITCH(name)
+        // CASE("tru") FALL CASE("true") ast::node_reference boolean = make_shared<ast::Literal>(true); return boolean;
+        // BREAK
+        // CASE("fls") FALL CASE("false") ast::node_reference boolean = make_shared<ast::Literal>(false); return boolean;
+        // END
         return assigned[name];
     }
 

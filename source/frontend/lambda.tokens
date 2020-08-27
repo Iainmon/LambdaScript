@@ -9,10 +9,10 @@ T__7=8
 T__8=9
 T__9=10
 Lambda=11
-Identifier=12
-Operator=13
-Bool=14
-Int=15
+Bool=12
+Int=13
+Identifier=14
+Operator=15
 WS=16
 '.'=1
 '='=2

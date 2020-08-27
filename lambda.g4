@@ -20,6 +20,8 @@ condition: 'if' expression 'then' body 'else' body
 // imports: 'import' Identifier | '(' imports ')';
 
 Lambda: '\\' | 'λ';
+Bool : 'tru' | 'fls' | 'true' | 'false';
+Int: [0-9]+;
 Identifier: ('a' ..'z') ('a' ..'z' | '0' ..'9')*;
 Operator:
 	'+'
@@ -31,8 +33,5 @@ Operator:
 	| '<='
 	| '>='
 	| '==';
-
-Bool: 'tru' | 'fls' | 'true' | 'false';
-Int: [0-9]+;
 
 WS: [ \n\t\r]+ -> skip;
