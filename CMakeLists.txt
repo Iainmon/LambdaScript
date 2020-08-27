@@ -1,4 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
+# set(CMAKE_CXX_COMPILER "clang")
 
 project(LambdaCalculus)
 
@@ -37,7 +38,7 @@ antlr_target(Sample lambda.g4)
 include_directories(${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
 
-# include_directories(${PROJECT_SOURCE_DIR}/thirdparty/color-console/include)
+include_directories(${PROJECT_SOURCE_DIR}/thirdparty/switch/include)
 
 file(GLOB_RECURSE SOURCES "source/*.cpp")
 

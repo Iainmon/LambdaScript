@@ -3,6 +3,7 @@
 
 #include "antlr4-runtime.h"
 #include "frontend/frontend.h"
+#include "InterpreterVisitor.cpp"
 
 using namespace antlr4;
 
@@ -20,27 +21,27 @@ struct Variable {
 
 void print(const std::string &input) { std::cout << input << std::endl; }
 
-class TreeShapeListener : public lambdaBaseListener {
-  private:
-    HashMap scope;
+// class TreeShapeListener : public lambdaBaseListener {
+//   private:
+//     HashMap scope;
 
-  public:
-    void exitShow(lambdaParser::ShowContext *ctx) override {
-        if (ctx->INT() != nullptr) {
-            const std::string value = ctx->INT()->getText();
-            print(value);
-        } else if (ctx->VAR() != nullptr) {
-            const string name = ctx->VAR()->getText();
-            const string value = scope[name];
-            print(value);
-        }
-    }
-    void exitLet(lambdaParser::LetContext *ctx) override {
-        const string name = ctx->VAR()->getText();
-        const string value = ctx->INT()->getText();
-        scope[name] = value;
-    }
-};
+//   public:
+//     void exitShow(lambdaParser::ShowContext *ctx) override {
+//         if (ctx->INT() != nullptr) {
+//             const std::string value = ctx->INT()->getText();
+//             print(value);
+//         } else if (ctx->VAR() != nullptr) {
+//             const string name = ctx->VAR()->getText();
+//             const string value = scope[name];
+//             print(value);
+//         }
+//     }
+//     void exitLet(lambdaParser::LetContext *ctx) override {
+//         const string name = ctx->VAR()->getText();
+//         const string value = ctx->INT()->getText();
+//         scope[name] = value;
+//     }
+// };
 
 int main(int argc, const char *argv[]) {
     std::ifstream stream;
@@ -50,9 +51,13 @@ int main(int argc, const char *argv[]) {
     CommonTokenStream tokens(&lexer);
     lambdaParser parser(&tokens);
 
-    tree::ParseTree *tree = parser.program();
-    TreeShapeListener listener;
-    tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
+    tree::ParseTree *tree = parser.program()->accept(new InterpreterVisitor());
+    // std::string treeString = tree->toStringTree();
+    // std::cout << treeString << std::endl;
+
+    // tree::ParseTree *tree = parser.program();
+    // TreeShapeListener listener;
+    // tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
 
     return 0;
 }
