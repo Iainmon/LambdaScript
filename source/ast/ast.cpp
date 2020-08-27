@@ -1,5 +1,10 @@
 #include "ast.h"
 
+
+std::string int_to_string(int &in) {
+    return std::to_string(in);
+}
+
 using namespace std;
 
 string ast::bool_as_text(const bool &b) { return b ? "true" : "false"; }
@@ -13,6 +18,12 @@ bool ast::text_as_bool(const string &b) {
 
 
 using namespace ast;
+
+string ASTNode::to_string() {
+    stringstream ss;
+    ss << "( ASTNode )";
+    return ss.str();
+}
 
 shared_ptr<Scope> Scope::copy(const map<string, ASTNode> &_scope) {
     shared_ptr<Scope> duplicate = make_shared<Scope>(_scope);
@@ -42,11 +53,21 @@ Abstraction::Abstraction(const string &_argument, node_reference _body, scope_re
     body = _body;
     scope = _scope;
 }
+string Abstraction::to_string() {
+    stringstream ss;
+    ss << "Abstraction (λ" << argument << ". " << body->to_string() << " )";
+    return ss.str();
+}
 
 Application::Application(node_reference _lhs, node_reference _rhs) {
     type = APPLICATION;
     lhs = _lhs;
     rhs = _rhs;
+}
+string Application::to_string() {
+    stringstream ss;
+    ss << "Application ( " << lhs->to_string() << " ) ( " << rhs->to_string() << " )";
+    return ss.str();
 }
 
 Literal::Literal(bool val) {
@@ -56,7 +77,7 @@ Literal::Literal(bool val) {
 }
 Literal::Literal(int val) {
     type = LITERAL;
-    value = to_string(val);
+    value = int_to_string(val);
     valueType = Int;
 }
 Literal::Literal() {
@@ -67,10 +88,20 @@ Literal::Literal() {
 bool Literal::getBool() { return text_as_bool(value); }
 int Literal::getInt() { return stoi(value); }
 string Literal::getNil() { return nil; }
+string Literal::to_string() {
+    stringstream ss;
+    ss << "Literal ( " << value << " )";
+    return ss.str();
+}
 
 Variable::Variable(const string &name) {
     type = VARIABLE;
     identifier = name;
+}
+string Variable::to_string() {
+    stringstream ss;
+    ss << "Identifier ( \"" << identifier << "\" )";
+    return ss.str();
 }
 
 Operation::Operation(OperationType _opType, node_reference _lhs, node_reference _rhs) {
@@ -78,6 +109,11 @@ Operation::Operation(OperationType _opType, node_reference _lhs, node_reference 
     opType = _opType;
     lhs = _lhs;
     rhs = _rhs;
+}
+string Operation::to_string() {
+    stringstream ss;
+    ss << "OPPERATION ( " << lhs->to_string() << " ) ( " << rhs->to_string() << " )";
+    return ss.str();
 }
 // TODO - Change this to a map lookup.
 OperationType Operation::matchOperationType(const string &op) {
@@ -110,8 +146,19 @@ Main::Main(node_reference main) {
     type = MAIN;
     entry = main;
 }
+string Main::to_string() {
+    stringstream ss;
+    ss << "( main = " << entry->to_string() << " )";
+    return ss.str();
+}
 
 PrintInstruction::PrintInstruction(node_reference valueToPrint) {
     type = PRINT;
     value = valueToPrint;
+}
+
+string PrintInstruction::to_string() {
+    stringstream ss;
+    ss << "print ( " << value->to_string() << " )";
+    return ss.str();
 }

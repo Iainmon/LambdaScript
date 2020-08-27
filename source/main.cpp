@@ -4,6 +4,7 @@
 #include "antlr4-runtime.h"
 #include "frontend/frontend.h"
 #include "InterpreterVisitor.cpp"
+#include "ast/ast.h"
 
 using namespace antlr4;
 
@@ -59,7 +60,8 @@ int main(int argc, const char *argv[]) {
 
     print("Interpreting...");
     InterpreterVisitor visitor;
-    visitor.visit(tree);
+    ast::node_reference ast = visitor.visit(tree);
+    print(ast->to_string());
 
     // std::string treeString = tree->toStringTree();
     // std::cout << treeString << std::endl;
