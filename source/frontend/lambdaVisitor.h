@@ -19,7 +19,7 @@ public:
   /**
    * Visit parse trees produced by lambdaParser.
    */
-    virtual antlrcpp::Any visitProgram(lambdaParser::ProgramContext *context) = 0;
+    virtual antlrcpp::Any visitInstructionLine(lambdaParser::InstructionLineContext *context) = 0;
 
     virtual antlrcpp::Any visitBinaryExpression(lambdaParser::BinaryExpressionContext *context) = 0;
 

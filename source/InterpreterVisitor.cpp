@@ -13,36 +13,28 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     map<string, ast::node_reference> assigned;
 
     antlrcpp::Any visitApplication(lambdaParser::ApplicationContext *ctx) override {
-        // Apply β-reduction
-        // shared_ptr<InterpreterVisitor> visitor;
-        // return callee.getBody().accept(visitor.get());
-
-        // shared_ptr<Abstraction> lhs = make_shared<Abstraction>(ctx->expression(0)->accept(this));
-        // shared_ptr<Value> rhs = make_shared<Value>(ctx->expression(1)->accept(this));
-        // shared_ptr<Application> application = make_shared<Application>(lhs, rhs);
-        // return application;
-
+        
         // std::bad_cast happens when node_reference is returned without being bound to variable
         ast::node_reference lhs = ctx->expression(0)->accept(this);
         ast::node_reference rhs = ctx->expression(1)->accept(this);
         // Check if lhs is an abstraction. If not, return ast::Grouping instead of ast::Application
-        if (lhs->type == ast::ASTNodeType::ABSTRACTION) {
+        // if (lhs->type == ast::ASTNodeType::ABSTRACTION) {
             cout << "Application" << endl;
             ast::node_reference application = make_shared<ast::Application>(lhs, rhs);
             return application;
-        } else {
-            cout << "Grouping" << endl;
-            shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
-            grouping->nodes.push_back(lhs);
-            grouping->nodes.push_back(rhs);
+        // } else {
+        //     cout << "Grouping" << endl;
+        //     shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
+        //     grouping->nodes.push_back(lhs);
+        //     grouping->nodes.push_back(rhs);
             
-            return (ast::node_reference)grouping;
-        }
+        //     return (ast::node_reference)grouping;
+        // }
 
     }
 
     antlrcpp::Any visitVariable(lambdaParser::VariableContext *ctx) override {
-        cout << "VariableRefference" << endl;
+        cout << "VariableRefference " << ctx->Identifier()->getText() << endl;
         const string name = ctx->Identifier()->getText();
         // SWITCH(name)
         // CASE("tru") FALL CASE("true") ast::node_reference boolean = make_shared<ast::Literal>(true); return boolean;
@@ -52,6 +44,19 @@ class InterpreterVisitor : public lambdaBaseVisitor {
 
         ast::node_reference identifier = make_shared<ast::Variable>(name);
         return identifier;
+    }
+
+    antlrcpp::Any visitInstructionLine(lambdaParser::InstructionLineContext *ctx) override {
+        cout << "InstructionLiteral" << endl;
+        if (ctx->expression().size() == 1) {
+            return ctx->expression(0)->accept(this);
+        }
+        shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
+        for (lambdaParser::ExpressionContext* &line_expression : ctx->expression()) {
+            ast::node_reference expression = line_expression->accept(this);
+            grouping->nodes.push_back(expression);
+        }
+        return (ast::node_reference)grouping;
     }
 
     antlrcpp::Any visitLiteral(lambdaParser::LiteralContext *ctx) override {

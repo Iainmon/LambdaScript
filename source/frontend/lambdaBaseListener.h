@@ -16,8 +16,8 @@
 class  lambdaBaseListener : public lambdaListener {
 public:
 
-  virtual void enterProgram(lambdaParser::ProgramContext * /*ctx*/) override { }
-  virtual void exitProgram(lambdaParser::ProgramContext * /*ctx*/) override { }
+  virtual void enterInstructionLine(lambdaParser::InstructionLineContext * /*ctx*/) override { }
+  virtual void exitInstructionLine(lambdaParser::InstructionLineContext * /*ctx*/) override { }
 
   virtual void enterBinaryExpression(lambdaParser::BinaryExpressionContext * /*ctx*/) override { }
   virtual void exitBinaryExpression(lambdaParser::BinaryExpressionContext * /*ctx*/) override { }

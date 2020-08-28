@@ -1,6 +1,7 @@
 grammar lambda;
 
-program: expression|;
+// program: expression|;
+program: ( expression NL )*  # instructionLine;
 
 expression:
 	(Int | Bool)                                # literal // used to be constant
@@ -13,7 +14,7 @@ expression:
     | 'print' expression                        # printInstruction
 	| '(' expression ')'						# brackets;
 
-body: expression;
+body: expression ;
 condition: 'if' expression 'then' body 'else' body
     | '(' expression '->' body '|' body ')';
 
@@ -34,4 +35,5 @@ Operator:
 	| '>='
 	| '==';
 
-WS: [ \n\t\r]+ -> skip;
+WS: [ \t\r]+ -> skip;
+NL: [\n;]+;

@@ -14,6 +14,7 @@ Int=13
 Identifier=14
 Operator=15
 WS=16
+NL=17
 '.'=1
 '='=2
 'print'=3

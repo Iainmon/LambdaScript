@@ -15,7 +15,7 @@
 class  lambdaBaseVisitor : public lambdaVisitor {
 public:
 
-  virtual antlrcpp::Any visitProgram(lambdaParser::ProgramContext *ctx) override {
+  virtual antlrcpp::Any visitInstructionLine(lambdaParser::InstructionLineContext *ctx) override {
     return visitChildren(ctx);
   }
 

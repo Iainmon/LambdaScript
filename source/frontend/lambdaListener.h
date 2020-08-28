@@ -14,8 +14,8 @@
 class  lambdaListener : public antlr4::tree::ParseTreeListener {
 public:
 
-  virtual void enterProgram(lambdaParser::ProgramContext *ctx) = 0;
-  virtual void exitProgram(lambdaParser::ProgramContext *ctx) = 0;
+  virtual void enterInstructionLine(lambdaParser::InstructionLineContext *ctx) = 0;
+  virtual void exitInstructionLine(lambdaParser::InstructionLineContext *ctx) = 0;
 
   virtual void enterBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) = 0;
   virtual void exitBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) = 0;
