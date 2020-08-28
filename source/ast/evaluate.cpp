@@ -3,12 +3,28 @@
 
 using namespace std;
 
+ast::node_reference apply_beta_reduction(shared_ptr<ast::Application> application) {
+    shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
+    ast::node_reference rhs = application->rhs;
+    lhs->scope->set(lhs->argument, rhs);
+    return ast::evaluate(lhs->body, lhs->scope);
+}
+
 ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
     // while (true) {
         if (ast->type == ast::ASTNodeType::APPLICATION) {
             // Reduce both sides, then apply beta reduction.
-            return ast;
-        } else if (ast->type == ast::ASTNodeType::GROUPING) {
+            shared_ptr<ast::Application> application = static_pointer_cast<ast::Application>(ast);
+            return apply_beta_reduction(application);
+            // return ast;
+        } 
+        else if (ast->type == ast::ASTNodeType::ABSTRACTION) {
+            shared_ptr<ast::Abstraction> abstraction = static_pointer_cast<ast::Abstraction>(ast);
+            abstraction->scope->set(abstraction->argument, abstraction->body);
+
+            return (ast::node_reference)abstraction;
+        } 
+        else if (ast->type == ast::ASTNodeType::GROUPING) {
             // cout << "GROUPING" << endl;
             shared_ptr<ast::Grouping> grouping = static_pointer_cast<ast::Grouping>(ast);
             shared_ptr<ast::Grouping> evaluated_grouping = make_shared<ast::Grouping>();
@@ -55,5 +71,7 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
             ast::node_reference nil = make_shared<ast::Literal>();
             return nil;
         }
+        cout << "No evaluation rule defined." << endl;
+        return ast;
     // }
 }

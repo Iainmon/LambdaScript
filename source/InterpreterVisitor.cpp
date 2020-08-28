@@ -12,6 +12,14 @@ class InterpreterVisitor : public lambdaBaseVisitor {
   public:
     map<string, ast::node_reference> assigned;
 
+    antlrcpp::Any visitAbstraction(lambdaParser::AbstractionContext *ctx) override {
+        const string argument = ctx->Identifier()->getText();
+        ast::node_reference body = ctx->expression()->accept(this);
+        ast::scope_reference scope = make_shared<ast::Scope>();
+        shared_ptr<ast::Abstraction> abstraction = make_shared<ast::Abstraction>(argument, body, scope);
+        return (ast::node_reference)abstraction;
+    }
+
     antlrcpp::Any visitApplication(lambdaParser::ApplicationContext *ctx) override {
         
         // std::bad_cast happens when node_reference is returned without being bound to variable

@@ -64,6 +64,7 @@ void run_loop() {
         // AST Construction
         InterpreterVisitor visitor;
         ast::node_reference ast = visitor.visit(tree);
+        print("-- Constructed AST --");
         print(ast->to_string());
         
         // Evaluation
@@ -77,6 +78,7 @@ void run_loop() {
         //         print(grouping->to_string());
         //     // }
         // } else {
+            print("-- Evaluated AST --");
             print(evaluated_ast->to_string());
         // }
     }
