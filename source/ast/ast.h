@@ -4,6 +4,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include <switch>
 
@@ -23,7 +24,7 @@ namespace ast {
 string bool_as_text(const bool &b);
 bool text_as_bool(const string &b);
 
-enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL };
+enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL, GROUPING, ASSIGNMENT };
 class ASTNode {
     public:
     ASTNodeType type;
@@ -111,6 +112,21 @@ class PrintInstruction : public ASTNode {
     public:
     node_reference value;
     PrintInstruction(node_reference valueToPrint);
+    string to_string() override;
+};
+
+class Grouping : public ASTNode {
+    public:
+    vector<node_reference> nodes;
+    Grouping();
+    string to_string() override;
+};
+
+class Assignment : public ASTNode {
+    public:
+    string identifier;
+    node_reference value;
+    Assignment(const string &_identifier, node_reference _value);
     string to_string() override;
 };
 

@@ -15,7 +15,7 @@ expression:
 
 body: expression;
 condition: 'if' expression 'then' body 'else' body
-    | '(' expression '->' body '|' body;
+    | '(' expression '->' body '|' body ')';
 
 // imports: 'import' Identifier | '(' imports ')';
 

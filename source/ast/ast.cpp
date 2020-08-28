@@ -20,6 +20,7 @@ bool ast::text_as_bool(const string &b) {
 using namespace ast;
 
 string ASTNode::to_string() {
+    cout << "ASTNodePrint" << endl;
     stringstream ss;
     ss << "( ASTNode )";
     return ss.str();
@@ -54,6 +55,7 @@ Abstraction::Abstraction(const string &_argument, node_reference _body, scope_re
     scope = _scope;
 }
 string Abstraction::to_string() {
+    cout << "AbstractionPrint" << endl;
     stringstream ss;
     ss << "Abstraction (λ" << argument << ". " << body->to_string() << " )";
     return ss.str();
@@ -65,6 +67,7 @@ Application::Application(node_reference _lhs, node_reference _rhs) {
     rhs = _rhs;
 }
 string Application::to_string() {
+    cout << "ApplicationPrint" << endl;
     stringstream ss;
     ss << "Application ( " << lhs->to_string() << " ) ( " << rhs->to_string() << " )";
     return ss.str();
@@ -89,6 +92,7 @@ bool Literal::getBool() { return text_as_bool(value); }
 int Literal::getInt() { return stoi(value); }
 string Literal::getNil() { return nil; }
 string Literal::to_string() {
+    cout << "LiteralPrint" << endl;
     stringstream ss;
     ss << "Literal ( " << yellow << value << reset << " )";
     return ss.str();
@@ -99,8 +103,9 @@ Variable::Variable(const string &name) {
     identifier = name;
 }
 string Variable::to_string() {
+    cout << "VariablePrint" << endl;
     stringstream ss;
-    ss << "Identifier ( \"" << identifier << "\" )";
+    ss << "Identifier ( " << cyan << "\"" << identifier << "\"" << reset << " )";
     return ss.str();
 }
 
@@ -111,6 +116,7 @@ Operation::Operation(OperationType _opType, node_reference _lhs, node_reference 
     rhs = _rhs;
 }
 string Operation::to_string() {
+    cout << "OperationPrint" << endl;
     stringstream ss;
     ss << "OPPERATION ( " << lhs->to_string() << " ) ( " << rhs->to_string() << " )";
     return ss.str();
@@ -147,6 +153,7 @@ Main::Main(node_reference main) {
     entry = main;
 }
 string Main::to_string() {
+    cout << "MainPrint" << endl;
     stringstream ss;
     ss << "( main = " << entry->to_string() << " )";
     return ss.str();
@@ -158,7 +165,34 @@ PrintInstruction::PrintInstruction(node_reference valueToPrint) {
 }
 
 string PrintInstruction::to_string() {
+    cout << "PrintPrint" << endl;
     stringstream ss;
     ss << "print ( " << value->to_string() << " )";
+    return ss.str();
+}
+
+Grouping::Grouping() {
+    type = GROUPING;
+}
+string Grouping::to_string() {
+    cout << "GroupPrint" << endl;
+    stringstream ss;
+    ss << "Grouping ( ";
+    for (node_reference& node : nodes) {
+        ss << "( " << node->to_string() << " ) ";
+    }
+    ss << ")";
+    return ss.str();
+}
+
+Assignment::Assignment(const string &_identifier, node_reference _value) {
+    type = ASSIGNMENT;
+    identifier = _identifier;
+    value = _value;
+}
+string Assignment::to_string() {
+    cout << "AssignmentPrint" << endl;
+    stringstream ss;
+    ss << "Assignment ( " << Bcyan << identifier << blue << " = " << reset << "( " << value->to_string() << " ) )";
     return ss.str();
 }

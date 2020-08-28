@@ -16,7 +16,6 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         // Apply β-reduction
         // shared_ptr<InterpreterVisitor> visitor;
         // return callee.getBody().accept(visitor.get());
-        cout << "Application" << endl;
 
         // shared_ptr<Abstraction> lhs = make_shared<Abstraction>(ctx->expression(0)->accept(this));
         // shared_ptr<Value> rhs = make_shared<Value>(ctx->expression(1)->accept(this));
@@ -26,8 +25,20 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         // std::bad_cast happens when node_reference is returned without being bound to variable
         ast::node_reference lhs = ctx->expression(0)->accept(this);
         ast::node_reference rhs = ctx->expression(1)->accept(this);
-        ast::node_reference application = make_shared<ast::Application>(lhs, rhs);
-        return application;
+        // Check if lhs is an abstraction. If not, return ast::Grouping instead of ast::Application
+        if (lhs->type == ast::ASTNodeType::ABSTRACTION) {
+            cout << "Application" << endl;
+            ast::node_reference application = make_shared<ast::Application>(lhs, rhs);
+            return application;
+        } else {
+            cout << "Grouping" << endl;
+            shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
+            grouping->nodes.push_back(lhs);
+            grouping->nodes.push_back(rhs);
+            
+            return (ast::node_reference)grouping;
+        }
+
     }
 
     antlrcpp::Any visitVariable(lambdaParser::VariableContext *ctx) override {
@@ -38,7 +49,9 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         // BREAK
         // CASE("fls") FALL CASE("false") ast::node_reference boolean = make_shared<ast::Literal>(false); return boolean;
         // END
-        return assigned[name];
+
+        ast::node_reference identifier = make_shared<ast::Variable>(name);
+        return identifier;
     }
 
     antlrcpp::Any visitLiteral(lambdaParser::LiteralContext *ctx) override {
@@ -58,6 +71,8 @@ class InterpreterVisitor : public lambdaBaseVisitor {
             END
         }
 
+        cout << "HELLO " << ctx->getText() << endl;
+
         ast::node_reference nilLiteral = make_shared<ast::Literal>();
         return nilLiteral;
     }
@@ -69,8 +84,9 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         ast::node_reference value = ctx->expression()->accept(this);
         assigned[name] = value;
 
-        ast::node_reference assignment = make_shared<ast::Literal>();
+        ast::node_reference assignment = make_shared<ast::Assignment>(name, value);
         return assignment;
+        // return value; // Returns value of assignment instead of Assignment node.
     }
 
     antlrcpp::Any visitBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) override {
