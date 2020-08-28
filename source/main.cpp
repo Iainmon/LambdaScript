@@ -1,5 +1,8 @@
 #include <iostream>
 #include <map>
+#include <sstream>
+#include <string>
+
 
 #include "antlr4-runtime.h"
 #include "frontend/frontend.h"
@@ -45,19 +48,37 @@ void print(const std::string &input) { std::cout << input << std::endl; }
 // };
 
 void run_loop() {
+    // std::stringstream ss;
     while (true) {
-        std::string inputLine;
-        getline(std::cin, inputLine);
-        // print(inputLine);
-        ANTLRInputStream input(inputLine);
+        std::string input_line;
+        getline(std::cin, input_line);
+        // ss << input_line << std::endl;
+        ANTLRInputStream input(input_line);
         lambdaLexer lexer(&input);
         CommonTokenStream tokens(&lexer);
         lambdaParser parser(&tokens);
 
+        // Parsing
         tree::ParseTree *tree = parser.program();
+
+        // AST Construction
         InterpreterVisitor visitor;
         ast::node_reference ast = visitor.visit(tree);
         print(ast->to_string());
+        
+        // Evaluation
+        ast::scope_reference global_scope = make_shared<ast::Scope>();
+        ast::node_reference evaluated_ast = ast::evaluate(ast, global_scope);
+        // if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
+        //     shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
+        //     if (!grouping->nodes.empty()) {
+        //         print(grouping->nodes.front()->to_string());
+        //     } // else {
+        //         print(grouping->to_string());
+        //     // }
+        // } else {
+            print(evaluated_ast->to_string());
+        // }
     }
 }
 

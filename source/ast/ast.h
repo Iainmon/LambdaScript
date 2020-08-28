@@ -38,14 +38,15 @@ using scope_reference = shared_ptr<Scope>;
 
 class Scope {
     private:
-    map<string, ASTNode> scope;
-    shared_ptr<Scope> copy(const map<string, ASTNode> &_scope);
+    map<string, node_reference> scope;
+    shared_ptr<Scope> copy(const map<string, node_reference> &_scope);
+    node_reference unsafe_get(const string &name);
     public:
     Scope();
-    Scope(const map<string, ASTNode> &_scope);
+    Scope(const map<string, node_reference> &_scope);
     shared_ptr<Scope> copy();
-    shared_ptr<Scope> set(const string &name, node_reference node);
-    shared_ptr<ASTNode> get(const string &name);
+    void set(const string &name, node_reference node);
+    node_reference get(const string &name);
     bool has(const string &name);
 };
 

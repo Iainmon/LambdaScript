@@ -26,24 +26,27 @@ string ASTNode::to_string() {
     return ss.str();
 }
 
-shared_ptr<Scope> Scope::copy(const map<string, ASTNode> &_scope) {
+shared_ptr<Scope> Scope::copy(const map<string, node_reference> &_scope) {
     shared_ptr<Scope> duplicate = make_shared<Scope>(_scope);
     return duplicate;
 }
-
-Scope::Scope(const map<string, ASTNode> &_scope) { scope = _scope; }
+Scope::Scope() { }
+Scope::Scope(const map<string, node_reference> &_scope) { scope = _scope; }
 shared_ptr<Scope> Scope::copy() {
     shared_ptr<Scope> duplicate = make_shared<Scope>(scope);
     return duplicate;
 }
-shared_ptr<Scope> Scope::set(const string &name, node_reference node) {
-    map<string, ASTNode> scopes = scope;
-    scopes[name] = *node;
-    return copy(scopes);
+void Scope::set(const string &name, node_reference node) {
+    scope[name] = node;
 }
-shared_ptr<ASTNode> Scope::get(const string &name) {
-    shared_ptr<ASTNode> value = make_shared<ASTNode>(scope[name]);
-    return value;
+node_reference Scope::unsafe_get(const string &name) {
+    return scope[name];
+}
+node_reference Scope::get(const string &name) {
+    if (has(name)) {
+        return scope[name];
+    }
+    return nullptr;
 }
 bool Scope::has(const string &name) { return !(scope.find(name) == scope.end()); }
 
