@@ -130,7 +130,7 @@ class Assignment : public ASTNode {
     string to_string() override;
 };
 
-node_reference evaluate(node_reference ast);
+node_reference evaluate(node_reference ast, scope_reference scope);
 
 } // namespace ast
 

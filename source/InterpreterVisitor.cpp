@@ -19,7 +19,7 @@ class InterpreterVisitor : public lambdaBaseVisitor {
         ast::node_reference rhs = ctx->expression(1)->accept(this);
         // Check if lhs is an abstraction. If not, return ast::Grouping instead of ast::Application
         // if (lhs->type == ast::ASTNodeType::ABSTRACTION) {
-            cout << "Application" << endl;
+            // cout << "Application" << endl;
             ast::node_reference application = make_shared<ast::Application>(lhs, rhs);
             return application;
         // } else {
@@ -34,7 +34,7 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     }
 
     antlrcpp::Any visitVariable(lambdaParser::VariableContext *ctx) override {
-        cout << "VariableRefference " << ctx->Identifier()->getText() << endl;
+        // cout << "VariableRefference " << ctx->Identifier()->getText() << endl;
         const string name = ctx->Identifier()->getText();
         // SWITCH(name)
         // CASE("tru") FALL CASE("true") ast::node_reference boolean = make_shared<ast::Literal>(true); return boolean;
@@ -47,7 +47,7 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     }
 
     antlrcpp::Any visitInstructionLine(lambdaParser::InstructionLineContext *ctx) override {
-        cout << "InstructionLiteral" << endl;
+        // cout << "InstructionLiteral" << endl;
         if (ctx->expression().size() == 1) {
             return ctx->expression(0)->accept(this);
         }
@@ -60,7 +60,7 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     }
 
     antlrcpp::Any visitLiteral(lambdaParser::LiteralContext *ctx) override {
-        cout << "Literal" << endl;
+        // cout << "Literal" << endl;
 
         if (ctx->Int() != nullptr) {
             const int value = stoi(ctx->Int()->getText());
@@ -83,7 +83,7 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     }
 
     antlrcpp::Any visitAssign(lambdaParser::AssignContext *ctx) override {
-        cout << "Assignment" << endl;
+        // cout << "Assignment" << endl;
 
         const string name = ctx->Identifier()->getText();
         ast::node_reference value = ctx->expression()->accept(this);
@@ -95,9 +95,7 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     }
 
     antlrcpp::Any visitBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) override {
-
-        cout << "BinaryExpression" << endl;
-
+        // cout << "BinaryExpression" << endl;
         ast::node_reference lhs = ctx->expression(0)->accept(this);
         ast::node_reference rhs = ctx->expression(1)->accept(this);
         ast::OperationType opType = ast::Operation::matchOperationType(ctx->Operator()->getText());
@@ -107,12 +105,12 @@ class InterpreterVisitor : public lambdaBaseVisitor {
 
     // Atom
     antlrcpp::Any visitBrackets(lambdaParser::BracketsContext *ctx) override {
-        cout << "Brackets" << endl;
+        // cout << "Brackets" << endl;
         return ctx->expression()->accept(this);
     }
 
     antlrcpp::Any visitPrintInstruction(lambdaParser::PrintInstructionContext *ctx) override {
-        cout << "PrintInstruction" << endl;
+        // cout << "PrintInstruction" << endl;
         cout << ctx->expression()->getText() << endl;
         ast::node_reference valueToPrint = ctx->expression()->accept(this);
         ast::node_reference printInstr = make_shared<ast::PrintInstruction>(valueToPrint);

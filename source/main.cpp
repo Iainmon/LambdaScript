@@ -44,6 +44,23 @@ void print(const std::string &input) { std::cout << input << std::endl; }
 //     }
 // };
 
+void run_loop() {
+    while (true) {
+        std::string inputLine;
+        getline(std::cin, inputLine);
+        // print(inputLine);
+        ANTLRInputStream input(inputLine);
+        lambdaLexer lexer(&input);
+        CommonTokenStream tokens(&lexer);
+        lambdaParser parser(&tokens);
+
+        tree::ParseTree *tree = parser.program();
+        InterpreterVisitor visitor;
+        ast::node_reference ast = visitor.visit(tree);
+        print(ast->to_string());
+    }
+}
+
 int main(int argc, const char *argv[]) {
     std::ifstream stream;
     stream.open(argv[1]);
@@ -63,6 +80,8 @@ int main(int argc, const char *argv[]) {
     ast::node_reference ast = visitor.visit(tree);
     print("-- Abstract Syntax Tree --");
     print(ast->to_string());
+
+    run_loop();
 
     // std::string treeString = tree->toStringTree();
     // std::cout << treeString << std::endl;
