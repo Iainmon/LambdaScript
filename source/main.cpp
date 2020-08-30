@@ -10,19 +10,9 @@
 #include "InterpreterVisitor.cpp"
 #include "ast/ast.h"
 
+#include "argh.h"
+
 using namespace antlr4;
-
-struct Variable;
-
-using HashMap = std::map<std::string, std::string>;
-using string = std::string;
-
-struct Object {};
-
-struct Variable {
-    std::string name;
-    int value;
-};
 
 void print(const std::string &input) { std::cout << input << std::endl; }
 
@@ -49,12 +39,13 @@ void print(const std::string &input) { std::cout << input << std::endl; }
 // };
 
 void run_loop() {
-    // std::stringstream ss;
+    std::stringstream ss;
     while (true) {
         std::string input_line;
         getline(std::cin, input_line);
-        // ss << input_line << std::endl;
-        ANTLRInputStream input(input_line);
+        ss << input_line << std::endl;
+        // ANTLRInputStream input(input_line);
+        ANTLRInputStream input(ss.str());
         lambdaLexer lexer(&input);
         CommonTokenStream tokens(&lexer);
         lambdaParser parser(&tokens);
@@ -86,24 +77,24 @@ void run_loop() {
 }
 
 int main(int argc, const char *argv[]) {
-    // std::ifstream stream;
-    // stream.open(argv[1]);
-    // ANTLRInputStream input(stream);
-    // print("Lexing...");
-    // lambdaLexer lexer(&input);
-    // print("Parsing...");
-    // CommonTokenStream tokens(&lexer);
-    // lambdaParser parser(&tokens);
+    std::ifstream stream;
+    stream.open(argv[1]);
+    ANTLRInputStream input(stream);
+    print("Lexing...");
+    lambdaLexer lexer(&input);
+    print("Parsing...");
+    CommonTokenStream tokens(&lexer);
+    lambdaParser parser(&tokens);
 
-    // tree::ParseTree *tree = parser.program();
-    // std::wstring s = antlrcpp::s2ws(tree->toStringTree(&parser)) + L"\n";
-    // std::wcout << "Parse Tree: " << s << std::endl;
+    tree::ParseTree *tree = parser.program();
+    std::wstring s = antlrcpp::s2ws(tree->toStringTree(&parser)) + L"\n";
+    std::wcout << "Parse Tree: " << s << std::endl;
 
-    // print("Interpreting...");
-    // InterpreterVisitor visitor;
-    // ast::node_reference ast = visitor.visit(tree);
-    // print("-- Abstract Syntax Tree --");
-    // print(ast->to_string());
+    print("Interpreting...");
+    InterpreterVisitor visitor;
+    ast::node_reference ast = visitor.visit(tree);
+    print("-- Abstract Syntax Tree --");
+    print(ast->to_string());
 
     run_loop();
 

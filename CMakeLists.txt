@@ -44,6 +44,7 @@ include_directories(${ANTLR_SampleGrammarLexer_OUTPUT_DIR})
 include_directories(${ANTLR_SampleGrammarParser_OUTPUT_DIR})
 
 include_directories(${PROJECT_SOURCE_DIR}/thirdparty/switch/include)
+include_directories(${PROJECT_SOURCE_DIR}/thirdparty/argh/include)
 
 file(GLOB_RECURSE SOURCES "source/*.cpp")
 

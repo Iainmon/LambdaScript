@@ -133,6 +133,8 @@ class Assignment : public ASTNode {
 
 node_reference evaluate(node_reference ast, scope_reference scope);
 
+// node_reference pro
+
 } // namespace ast
 
 #endif

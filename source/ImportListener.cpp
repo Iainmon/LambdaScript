@@ -1,22 +1,21 @@
 // #include "frontend/frontend.h"
+// #include "ast/ast.h"
 // #include <iostream>
 // #include <map>
 
-// class ImportVisitor : public lambdaBaseVisitor {
+// class ImportListener : public lambdaBaseListener {
+//   private:
+//     HashMap imports;
+
 //   public:
-//     // antlrcpp::Any visitApplication(lambdaParser::ApplicationContext *ctx) override {}
-//     // antlrcpp::Any visitPrint() {
-//     //   cout << dye::aqua(...) << endl;
-//     // }
-//     antlrcpp::Any visitImport(lambdaParser::ImportContext *ctx) override {
-//         if (ctx->Identifier() != nullptr) {
-//             const std::string filename = ctx->Identifier()->getText();
-//             std::ifstream stream;
-//             stream.open(filename);
-//             ANTLRInputStream input(stream);
-//             lambdaLexer lexer(&input);
-//             CommonTokenStream tokens(&lexer);
-//             lambdaParser parser(&tokens);
+//     void exitShow(lambdaParser::ImportContext *ctx) override {
+//         if (ctx->INT() != nullptr) {
+//             const std::string value = ctx->INT()->getText();
+//             print(value);
+//         } else if (ctx->VAR() != nullptr) {
+//             const string name = ctx->VAR()->getText();
+//             const string value = scope[name];
+//             print(value);
 //         }
 //     }
 // };

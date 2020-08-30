@@ -79,7 +79,10 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
             ast::node_reference value_to_print = ast::evaluate(print_instruction->value, scope);
             if (value_to_print->type == ast::ASTNodeType::LITERAL) {
                 shared_ptr<ast::Literal> literal_to_print = static_pointer_cast<ast::Literal>(value_to_print);
-                cout << literal_to_print->value << endl;
+                cout << yellow << literal_to_print->value << reset << endl;
+            } else if (value_to_print->type == ast::ASTNodeType::ABSTRACTION) {
+                cout << magenta << "[ " << Bmagenta << "λ" << magenta << " function ]" << reset << endl;
+                cout << value_to_print->to_string() << endl;
             } else {
                 cout << value_to_print->to_string() << endl;
             }
