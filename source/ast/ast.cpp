@@ -44,23 +44,26 @@ node_reference Scope::unsafe_get(const string &name) {
 }
 node_reference Scope::get(const string &name) {
     if (has(name)) {
-        return scope[name];
+        return unsafe_get(name);
     }
-    return nullptr;
+    cout << "Variable \'" << name << "\' does not exist! Returning Nil Literal." << endl;
+    node_reference nil_literal = make_shared<Literal>();
+    return nil_literal;
+    // return nullptr;
 }
 bool Scope::has(const string &name) { return !(scope.find(name) == scope.end()); }
 
 
-Abstraction::Abstraction(const string &_argument, node_reference _body, scope_reference _scope) {
+Abstraction::Abstraction(const string &_argument, node_reference _body/*, scope_reference _scope*/) {
     type = ABSTRACTION;
     argument = _argument;
     body = _body;
-    scope = _scope;
+    // scope = _scope;
 }
 string Abstraction::to_string() {
     // cout << "AbstractionPrint" << endl;
     stringstream ss;
-    ss << "Abstraction (λ" << argument << ". " << body->to_string() << " )";
+    ss << "Abstraction (" << Bmagenta << "λ" << cyan << argument << reset << ". " << body->to_string() << " )";
     return ss.str();
 }
 
@@ -180,9 +183,13 @@ Grouping::Grouping() {
 string Grouping::to_string() {
     // cout << "GroupPrint" << endl;
     stringstream ss;
-    ss << "Grouping ( ";
+    if (nodes.empty()) {
+        ss << "Grouping ( ";
+    } else {
+        ss << "Grouping ( " << endl;
+    }
     for (node_reference& node : nodes) {
-        ss << "( " << node->to_string() << " ) ";
+        ss << "\t" << "( " << node->to_string() << " ) " << endl;
     }
     ss << ")";
     return ss.str();

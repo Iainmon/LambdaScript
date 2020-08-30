@@ -3,24 +3,39 @@
 
 using namespace std;
 
-ast::node_reference apply_beta_reduction(shared_ptr<ast::Application> application) {
-    shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
-    ast::node_reference rhs = application->rhs;
-    lhs->scope->set(lhs->argument, rhs);
-    return ast::evaluate(lhs->body, lhs->scope);
-}
+// ast::node_reference apply_beta_reduction(shared_ptr<ast::Application> application) {
+//     shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
+//     ast::node_reference rhs = application->rhs;
+//     lhs->scope->set(lhs->argument, rhs);
+//     return ast::evaluate(lhs->body, lhs->scope);
+// }
 
 ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
     // while (true) {
         if (ast->type == ast::ASTNodeType::APPLICATION) {
             // Reduce both sides, then apply beta reduction.
             shared_ptr<ast::Application> application = static_pointer_cast<ast::Application>(ast);
-            return apply_beta_reduction(application);
+
+            shared_ptr<ast::Abstraction> lhs;
+            if (application->lhs->type != ast::ASTNodeType::ABSTRACTION) {
+                lhs = static_pointer_cast<ast::Abstraction>(ast::evaluate(application->lhs, scope));
+            } else {
+                lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
+            }
+            ast::node_reference rhs = ast::evaluate(application->rhs, scope);
+            // ast::node_reference rhs = application->rhs;
+
+            ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
+            child_scope->set(lhs->argument, rhs);
+            return ast::evaluate(lhs->body, child_scope);
+
+            // return apply_beta_reduction(application);
             // return ast;
         } 
         else if (ast->type == ast::ASTNodeType::ABSTRACTION) {
             shared_ptr<ast::Abstraction> abstraction = static_pointer_cast<ast::Abstraction>(ast);
-            abstraction->scope->set(abstraction->argument, abstraction->body);
+            // abstraction->scope->set(abstraction->argument, abstraction->body);
+            // abstraction->scope = scope;
 
             return (ast::node_reference)abstraction;
         } 
@@ -68,10 +83,10 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
             } else {
                 cout << value_to_print->to_string() << endl;
             }
-            ast::node_reference nil = make_shared<ast::Literal>();
-            return nil;
+            ast::node_reference nil_literal = make_shared<ast::Literal>();
+            return nil_literal;
         }
-        cout << "No evaluation rule defined." << endl;
+        // cout << "No evaluation rule defined." << ast->to_string() << endl;
         return ast;
     // }
 }

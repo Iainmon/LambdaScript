@@ -54,8 +54,8 @@ class Abstraction : public ASTNode {
     public:
     string argument;
     node_reference body;
-    scope_reference scope;
-    Abstraction(const string &_argument, node_reference _body, scope_reference _scope);
+    // scope_reference scope = nullptr;
+    Abstraction(const string &_argument, node_reference _body/*, scope_reference _scope*/);
     string to_string() override;
 };
 

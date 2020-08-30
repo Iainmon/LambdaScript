@@ -3,6 +3,7 @@
 #include <sstream>
 #include <string>
 
+// GDB init command mac: set startup-with-shell off
 
 #include "antlr4-runtime.h"
 #include "frontend/frontend.h"
@@ -85,24 +86,24 @@ void run_loop() {
 }
 
 int main(int argc, const char *argv[]) {
-    std::ifstream stream;
-    stream.open(argv[1]);
-    ANTLRInputStream input(stream);
-    print("Lexing...");
-    lambdaLexer lexer(&input);
-    print("Parsing...");
-    CommonTokenStream tokens(&lexer);
-    lambdaParser parser(&tokens);
+    // std::ifstream stream;
+    // stream.open(argv[1]);
+    // ANTLRInputStream input(stream);
+    // print("Lexing...");
+    // lambdaLexer lexer(&input);
+    // print("Parsing...");
+    // CommonTokenStream tokens(&lexer);
+    // lambdaParser parser(&tokens);
 
-    tree::ParseTree *tree = parser.program();
-    std::wstring s = antlrcpp::s2ws(tree->toStringTree(&parser)) + L"\n";
-    std::wcout << "Parse Tree: " << s << std::endl;
+    // tree::ParseTree *tree = parser.program();
+    // std::wstring s = antlrcpp::s2ws(tree->toStringTree(&parser)) + L"\n";
+    // std::wcout << "Parse Tree: " << s << std::endl;
 
-    print("Interpreting...");
-    InterpreterVisitor visitor;
-    ast::node_reference ast = visitor.visit(tree);
-    print("-- Abstract Syntax Tree --");
-    print(ast->to_string());
+    // print("Interpreting...");
+    // InterpreterVisitor visitor;
+    // ast::node_reference ast = visitor.visit(tree);
+    // print("-- Abstract Syntax Tree --");
+    // print(ast->to_string());
 
     run_loop();
 

@@ -1,0 +1,4 @@
+# tru = (\x.\y.x)
+# fls = (\x.\y.y)
+# M = (\f.f f)
+# Y = (\f. (\x.f (x x)) (\x.f (x x)))

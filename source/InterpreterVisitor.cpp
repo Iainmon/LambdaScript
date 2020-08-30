@@ -15,8 +15,8 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     antlrcpp::Any visitAbstraction(lambdaParser::AbstractionContext *ctx) override {
         const string argument = ctx->Identifier()->getText();
         ast::node_reference body = ctx->expression()->accept(this);
-        ast::scope_reference scope = make_shared<ast::Scope>();
-        shared_ptr<ast::Abstraction> abstraction = make_shared<ast::Abstraction>(argument, body, scope);
+        // ast::scope_reference scope = make_shared<ast::Scope>();
+        shared_ptr<ast::Abstraction> abstraction = make_shared<ast::Abstraction>(argument, body);
         return (ast::node_reference)abstraction;
     }
 
