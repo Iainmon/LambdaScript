@@ -12,6 +12,7 @@
 
 #include "argh.h"
 
+using namespace antlr4;
 
 void print(const std::string &input) { std::cout << input << std::endl; }
 
@@ -37,7 +38,7 @@ void print(const std::string &input) { std::cout << input << std::endl; }
 //     }
 // };
 
-void run_loop(const std::string &pre_load = "") {
+void run_loop() {
     std::stringstream ss;
     while (true) {
         std::string input_line;
@@ -77,59 +78,33 @@ void run_loop(const std::string &pre_load = "") {
 }
 
 int main(int argc, const char *argv[]) {
+    std::ifstream stream;
+    stream.open(argv[1]);
+    ANTLRInputStream input(stream);
+    print("Lexing...");
+    lambdaLexer lexer(&input);
+    print("Parsing...");
+    CommonTokenStream tokens(&lexer);
+    lambdaParser parser(&tokens);
 
-    argh::parser cmdl(argv);
+    tree::ParseTree *tree = parser.program();
+    std::wstring s = antlrcpp::s2ws(tree->toStringTree(&parser)) + L"\n";
+    std::wcout << "Parse Tree: " << s << std::endl;
 
-    std::string file_name;
-    cmdl(1, "program.la") >> file_name;
+    print("Interpreting...");
+    language::InterpreterVisitor visitor;
+    ast::node_reference ast = visitor.visit(tree);
+    print("-- Abstract Syntax Tree --");
+    print(ast->to_string());
 
-    std::ifstream file_stream;
-    file_stream.open(file_name);
+    run_loop();
 
-    std::stringstream source;
-    if (file_stream)
-        source << file_stream.rdbuf() << std::endl;
+    // std::string treeString = tree->toStringTree();
+    // std::cout << treeString << std::endl;
 
-    const bool run_interactive_mode = !!cmdl[{"-i", "--interactive", "--repl"}];
-    const bool verbose_print = !!cmdl[{"--verbose"}];
-
-    bool main_file_done = false;
-
-    ast::scope_reference global_scope = make_shared<ast::Scope>();
-
-    do {
-
-        ast::node_reference ast = language::construct_syntax_tree(source.str());
-
-        if (verbose_print)
-            print(ast->to_string());
-
-        ast::node_reference evaluated_ast = ast::evaluate(ast, global_scope);
-
-        if (verbose_print)
-            print(evaluated_ast->to_string());
-        
-        if (!run_interactive_mode)
-            return 0;
-
-        if (!main_file_done)
-            main_file_done = true;
-
-        if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
-            std::shared_ptr<ast::Grouping> grouping = std::static_pointer_cast<ast::Grouping>(evaluated_ast);
-            if (!grouping->nodes.empty()) {
-                ast::node_reference last_node = grouping->nodes.back();
-                std::shared_ptr<ast::PrintInstruction> print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
-                ast::evaluate(print_instruction, global_scope);
-                // print(grouping->nodes.back()->to_string());
-            }
-        }
-        
-        std::string input_line;
-        getline(std::cin, input_line);
-        source << input_line << std::endl;
-
-    } while (run_interactive_mode);
+    // tree::ParseTree *tree = parser.program();
+    // TreeShapeListener listener;
+    // tree::ParseTreeWalker::DEFAULT.walk(&listener, tree);
 
     return 0;
 }
