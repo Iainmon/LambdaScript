@@ -1,11 +1,9 @@
-
 #include <iostream>
 #include <map>
 #include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
-
 #include <switch>
 
 
@@ -133,7 +131,6 @@ class Assignment : public ASTNode {
 
 node_reference evaluate(node_reference ast, scope_reference scope);
 
-// node_reference pro
 
 } // namespace ast
 

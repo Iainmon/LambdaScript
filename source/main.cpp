@@ -10,6 +10,7 @@
 #include "InterpreterVisitor.cpp"
 #include "ast/ast.h"
 
+
 #include "argh.h"
 
 using namespace antlr4;
@@ -56,6 +57,7 @@ void run_loop() {
         // AST Construction
         InterpreterVisitor visitor;
         ast::node_reference ast = visitor.visit(tree);
+        // ast::node_reference ast = ast::construct_syntax_tree(ss.str());
         print("-- Constructed AST --");
         print(ast->to_string());
         
