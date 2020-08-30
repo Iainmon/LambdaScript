@@ -97,6 +97,8 @@ int main(int argc, const char *argv[]) {
 
     ast::scope_reference global_scope = make_shared<ast::Scope>();
 
+    int last_group_count = 0;
+
     do {
 
         ast::node_reference ast = language::construct_syntax_tree(source.str());
@@ -118,10 +120,13 @@ int main(int argc, const char *argv[]) {
         if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
             std::shared_ptr<ast::Grouping> grouping = std::static_pointer_cast<ast::Grouping>(evaluated_ast);
             if (!grouping->nodes.empty()) {
-                ast::node_reference last_node = grouping->nodes.back();
-                std::shared_ptr<ast::PrintInstruction> print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
-                ast::evaluate(print_instruction, global_scope);
-                // print(grouping->nodes.back()->to_string());
+                if (last_group_count != grouping->nodes.size()) {
+                    ast::node_reference last_node = grouping->nodes.back();
+                    std::shared_ptr<ast::PrintInstruction> print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
+                    ast::evaluate(print_instruction, global_scope);
+                    // print(grouping->nodes.back()->to_string());
+                    last_group_count = grouping->nodes.size();
+                }
             }
         }
         

@@ -74,7 +74,7 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
             return (ast::node_reference)literal;
         } else if (ast->type == ast::ASTNodeType::PRINT) {
             // cout << "PRINT" << endl;
-
+            cout << magenta << "λ -> " << reset;
             shared_ptr<ast::PrintInstruction> print_instruction = static_pointer_cast<ast::PrintInstruction>(ast);
             ast::node_reference value_to_print = ast::evaluate(print_instruction->value, scope);
             if (value_to_print->type == ast::ASTNodeType::LITERAL) {
@@ -84,7 +84,7 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
                 cout << magenta << "[ " << Bmagenta << "λ" << magenta << " function ]" << reset << endl;
                 cout << value_to_print->to_string() << endl;
             } else {
-                cout << value_to_print->to_string() << endl;
+                cout << yellow << "[meta] " << reset << value_to_print->to_string() << endl;
             }
             ast::node_reference nil_literal = make_shared<ast::Literal>();
             return nil_literal;
