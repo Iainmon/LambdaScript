@@ -7,9 +7,8 @@
 
 #include "antlr4-runtime.h"
 #include "frontend/frontend.h"
-#include "InterpreterVisitor.cpp"
 #include "ast/ast.h"
-
+#include "language/language.h"
 
 #include "argh.h"
 
@@ -55,7 +54,7 @@ void run_loop() {
         tree::ParseTree *tree = parser.program();
 
         // AST Construction
-        InterpreterVisitor visitor;
+        language::InterpreterVisitor visitor;
         ast::node_reference ast = visitor.visit(tree);
         // ast::node_reference ast = ast::construct_syntax_tree(ss.str());
         print("-- Constructed AST --");
@@ -93,7 +92,7 @@ int main(int argc, const char *argv[]) {
     std::wcout << "Parse Tree: " << s << std::endl;
 
     print("Interpreting...");
-    InterpreterVisitor visitor;
+    language::InterpreterVisitor visitor;
     ast::node_reference ast = visitor.visit(tree);
     print("-- Abstract Syntax Tree --");
     print(ast->to_string());
