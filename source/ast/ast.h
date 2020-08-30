@@ -68,13 +68,14 @@ class Application : public ASTNode {
 const string NILVAL = "nil";
 #define nil NILVAL
 
-enum LiteralType { Bool, Int, Nil };
+enum LiteralType { Bool, Int, Nil, Base };
 class Literal : public ASTNode {
     public:
     string value;
     LiteralType valueType;
     Literal(bool val);
     Literal(int val);
+    Literal(char let);
     Literal();
     bool getBool();
     int getInt();

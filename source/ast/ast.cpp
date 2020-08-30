@@ -47,6 +47,8 @@ node_reference Scope::get(const string &name) {
         return unsafe_get(name);
     }
     // cout << "Variable \'" << name << "\' does not exist! Returning Nil Literal." << endl; // TODO temporary, and only for interactive mode.
+    // node_reference base_literal = make_shared<Literal>('l');
+    // return base_literal;
     node_reference nil_literal = make_shared<Literal>();
     return nil_literal;
     // return nullptr;
@@ -93,6 +95,11 @@ Literal::Literal() {
     type = LITERAL;
     value = nil;
     valueType = Nil;
+}
+Literal::Literal(char let) {
+    type = LITERAL;
+    value = "*";
+    valueType = Base;
 }
 bool Literal::getBool() { return text_as_bool(value); }
 int Literal::getInt() { return stoi(value); }

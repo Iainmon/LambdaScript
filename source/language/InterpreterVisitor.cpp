@@ -75,8 +75,8 @@ antlrcpp::Any InterpreterVisitor::visitLiteral(lambdaParser::LiteralContext *ctx
 
     cout << "HELLO " << ctx->getText() << endl;
 
-    ast::node_reference nilLiteral = make_shared<ast::Literal>();
-    return nilLiteral;
+    ast::node_reference base_literal = make_shared<ast::Literal>('l');
+    return base_literal;
 }
 antlrcpp::Any InterpreterVisitor::visitAssign(lambdaParser::AssignContext *ctx)  {
     // cout << "Assignment" << endl;

@@ -86,7 +86,9 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
             } else {
                 cout << yellow << "[meta] " << reset << value_to_print->to_string() << endl;
             }
-            ast::node_reference nil_literal = make_shared<ast::Literal>();
+            // ast::node_reference base_literal = make_shared<ast::Literal>('l');
+            // return base_literal;
+            ast::node_reference nil_literal = make_shared<ast::Literal>('l');
             return nil_literal;
         }
         // cout << "No evaluation rule defined." << ast->to_string() << endl;
