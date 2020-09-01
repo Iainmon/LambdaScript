@@ -25,6 +25,11 @@ string ASTNode::to_string() {
     ss << "( ASTNode )";
     return ss.str();
 }
+string ASTNode::pretty_print() {
+    stringstream ss;
+    ss << "( * )";
+    return ss.str();
+}
 
 shared_ptr<Scope> Scope::copy(const map<string, node_reference> &_scope) {
     shared_ptr<Scope> duplicate = make_shared<Scope>(_scope);
@@ -63,9 +68,13 @@ Abstraction::Abstraction(const string &_argument, node_reference _body/*, scope_
     // scope = _scope;
 }
 string Abstraction::to_string() {
-    // cout << "AbstractionPrint" << endl;
     stringstream ss;
     ss << "Abstraction (" << Bmagenta << "λ" << cyan << argument << reset << ". " << body->to_string() << " )";
+    return ss.str();
+}
+string Abstraction::pretty_print() {
+    stringstream ss;
+    ss << "(" << Bmagenta << "λ" << cyan << argument << reset << "." << body->pretty_print() << ")";
     return ss.str();
 }
 
@@ -78,6 +87,12 @@ string Application::to_string() {
     // cout << "ApplicationPrint" << endl;
     stringstream ss;
     ss << "Application ( " << lhs->to_string() << " ) ( " << rhs->to_string() << " )";
+    return ss.str();
+}
+string Application::pretty_print() {
+    // cout << "ApplicationPrint" << endl;
+    stringstream ss;
+    ss << "( " << lhs->pretty_print() << " ) ( " << rhs->pretty_print() << " )";
     return ss.str();
 }
 
@@ -110,6 +125,11 @@ string Literal::to_string() {
     ss << "Literal ( " << yellow << value << reset << " )";
     return ss.str();
 }
+string Literal::pretty_print() {
+    stringstream ss;
+    ss << yellow << value << reset;
+    return ss.str();
+}
 
 Variable::Variable(const string &name) {
     type = VARIABLE;
@@ -119,6 +139,11 @@ string Variable::to_string() {
     // cout << "VariablePrint" << endl;
     stringstream ss;
     ss << "Identifier ( " << cyan << "\"" << identifier << "\"" << reset << " )";
+    return ss.str();
+}
+string Variable::pretty_print() {
+    stringstream ss;
+    ss << cyan << identifier << reset;
     return ss.str();
 }
 
@@ -132,6 +157,11 @@ string Operation::to_string() {
     // cout << "OperationPrint" << endl;
     stringstream ss;
     ss << "OPPERATION ( " << lhs->to_string() << " ) ( " << rhs->to_string() << " )";
+    return ss.str();
+}
+string Operation::pretty_print() {
+    stringstream ss;
+    ss << "# (" << lhs->pretty_print() << ") (" << rhs->pretty_print() << ")";
     return ss.str();
 }
 // TODO - Change this to a map lookup.
@@ -171,6 +201,11 @@ string Main::to_string() {
     ss << "( main = " << entry->to_string() << " )";
     return ss.str();
 }
+string Main::pretty_print() {
+    stringstream ss;
+    ss << "( main = " << entry->pretty_print() << " )";
+    return ss.str();
+}
 
 PrintInstruction::PrintInstruction(node_reference valueToPrint) {
     type = PRINT;
@@ -181,6 +216,12 @@ string PrintInstruction::to_string() {
     // cout << "PrintPrint" << endl;
     stringstream ss;
     ss << "print ( " << value->to_string() << " )";
+    return ss.str();
+}
+string PrintInstruction::pretty_print() {
+    // cout << "PrintPrint" << endl;
+    stringstream ss;
+    ss << "print " << value->pretty_print();
     return ss.str();
 }
 
@@ -201,6 +242,19 @@ string Grouping::to_string() {
     ss << ")";
     return ss.str();
 }
+string Grouping::pretty_print() {
+    stringstream ss;
+    if (nodes.empty()) {
+        ss << "( ";
+    } else {
+        ss << "( " << endl;
+    }
+    for (node_reference& node : nodes) {
+        ss << "\t" << "( " << node->pretty_print() << " ) " << endl;
+    }
+    ss << ")";
+    return ss.str();
+}
 
 Assignment::Assignment(const string &_identifier, node_reference _value) {
     type = ASSIGNMENT;
@@ -211,5 +265,10 @@ string Assignment::to_string() {
     // cout << "AssignmentPrint" << endl;
     stringstream ss;
     ss << "Assignment ( " << Bcyan << identifier << blue << " = " << reset << "( " << value->to_string() << " ) )";
+    return ss.str();
+}
+string Assignment::pretty_print() {
+    stringstream ss;
+    ss << "(" << cyan << identifier << blue << " = " << reset << value->pretty_print() << ")";
     return ss.str();
 }

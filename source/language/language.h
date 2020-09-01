@@ -29,7 +29,10 @@ class InterpreterVisitor : public lambdaBaseVisitor {
 };
 
 ast::node_reference construct_syntax_tree(const std::string& source);
+ast::node_reference construct_syntax_tree(const std::istream& source);
 
+ast::node_reference evaluate(ast::node_reference ast, ast::scope_reference scope);
+ast::node_reference import_file(const std::string& source_file, ast::scope_reference scope);
 }
 
 #endif

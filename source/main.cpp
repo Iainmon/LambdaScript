@@ -61,7 +61,7 @@ void run_loop(const std::string &pre_load = "") {
         
         // Evaluation
         ast::scope_reference global_scope = make_shared<ast::Scope>();
-        ast::node_reference evaluated_ast = ast::evaluate(ast, global_scope);
+        ast::node_reference evaluated_ast = language::evaluate(ast, global_scope);
         // if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
         //     shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
         //     if (!grouping->nodes.empty()) {
@@ -106,7 +106,7 @@ int main(int argc, const char *argv[]) {
         if (verbose_print)
             print(ast->to_string());
 
-        ast::node_reference evaluated_ast = ast::evaluate(ast, global_scope);
+        ast::node_reference evaluated_ast = language::evaluate(ast, global_scope);
 
         if (verbose_print)
             print(evaluated_ast->to_string());
@@ -123,7 +123,7 @@ int main(int argc, const char *argv[]) {
                 if (last_group_count != grouping->nodes.size()) {
                     ast::node_reference last_node = grouping->nodes.back();
                     std::shared_ptr<ast::PrintInstruction> print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
-                    ast::evaluate(print_instruction, global_scope);
+                    language::evaluate(print_instruction, global_scope);
                     // print(grouping->nodes.back()->to_string());
                     last_group_count = grouping->nodes.size();
                 }
