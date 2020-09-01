@@ -10,11 +10,45 @@ using namespace std;
 //     return ast::evaluate(lhs->body, lhs->scope);
 // }
 
+int apply_operation(ast::OperationType op_type, int lhs, int rhs) {
+    switch (op_type) {
+        case ast::OperationType::ADD:
+            return lhs + rhs;
+            break;
+        case ast::OperationType::SUBTRACT:
+            return lhs - rhs;
+            break;
+        case ast::OperationType::MULTIPLY:
+            return lhs * rhs;
+            break;
+        case ast::OperationType::DIVIDE:
+            return lhs / rhs;
+            break;
+        case ast::OperationType::NO_OP:
+            cout << "NO OPERATION" << endl;
+            return 0;
+    }
+    return 0;
+}
+
 ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
     // while (true) {
         if (ast->type == ast::ASTNodeType::APPLICATION) {
             // Reduce both sides, then apply beta reduction.
             shared_ptr<ast::Application> application = static_pointer_cast<ast::Application>(ast);
+            
+            // cout << application->to_string() << endl;
+            // if (application->lhs == nullptr)
+            //     cout << "LHS is nullptr" << endl;
+
+            ast::node_reference evaluated_lhs = ast::evaluate(application->lhs, scope);
+
+            if (evaluated_lhs->type == ast::ASTNodeType::LITERAL || evaluated_lhs->type == ast::ASTNodeType::GROUPING) {
+                shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
+                grouping->nodes.push_back(application->lhs);
+                grouping->nodes.push_back(application->rhs);
+                return (ast::node_reference)grouping;
+            }
 
             shared_ptr<ast::Abstraction> lhs;
             if (application->lhs->type != ast::ASTNodeType::ABSTRACTION) {
@@ -25,9 +59,12 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
             ast::node_reference rhs = ast::evaluate(application->rhs, scope);
             // ast::node_reference rhs = application->rhs;
 
-            ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
-            child_scope->set(lhs->argument, rhs);
-            return ast::evaluate(lhs->body, child_scope);
+            // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
+            // child_scope->set(lhs->argument, rhs);
+            // return ast::evaluate(lhs->body, child_scope);
+            scope->set(lhs->argument, rhs);
+            return ast::evaluate(lhs->body, scope);
+
 
             // return apply_beta_reduction(application);
             // return ast;
@@ -90,6 +127,30 @@ ast::node_reference ast::evaluate(node_reference ast, scope_reference scope) {
             // return base_literal;
             ast::node_reference nil_literal = make_shared<ast::Literal>('l');
             return nil_literal;
+        } else if (ast->type == ast::ASTNodeType::OPERATION) {
+            shared_ptr<ast::Operation> operation = static_pointer_cast<ast::Operation>(ast);
+            ast::node_reference lhs = ast::evaluate(operation->lhs, scope);
+            ast::node_reference rhs = ast::evaluate(operation->rhs, scope);
+            if (lhs->type == ast::ASTNodeType::LITERAL && rhs->type == ast::ASTNodeType::LITERAL) {
+                shared_ptr<ast::Literal> lhs_literal = static_pointer_cast<ast::Literal>(lhs);
+                shared_ptr<ast::Literal> rhs_literal = static_pointer_cast<ast::Literal>(rhs);
+                if (lhs_literal->valueType == rhs_literal->valueType) {
+                    ast::LiteralType type = lhs_literal->valueType;
+                    if (type == ast::LiteralType::Int) {
+                        int result = apply_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
+                        ast::node_reference result_literal = make_shared<ast::Literal>(result);
+                        return result_literal;
+                    } else {
+                        cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
+                    }
+                } else {
+                    cout << "Arithmetic cannot be applied becauese LHS and RHS are not the same type!" << endl;
+                    return (ast::node_reference)operation;
+                }
+            } else {
+                cout << "LHS or RHS is not a literal!" << endl;
+                return (ast::node_reference)operation;
+            }
         }
         // cout << "No evaluation rule defined." << ast->to_string() << endl;
         return ast;
