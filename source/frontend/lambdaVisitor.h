@@ -23,6 +23,8 @@ public:
 
     virtual antlrcpp::Any visitBinaryExpression(lambdaParser::BinaryExpressionContext *context) = 0;
 
+    virtual antlrcpp::Any visitImportInstruction(lambdaParser::ImportInstructionContext *context) = 0;
+
     virtual antlrcpp::Any visitConditional(lambdaParser::ConditionalContext *context) = 0;
 
     virtual antlrcpp::Any visitApplication(lambdaParser::ApplicationContext *context) = 0;

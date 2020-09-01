@@ -23,6 +23,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitImportInstruction(lambdaParser::ImportInstructionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitConditional(lambdaParser::ConditionalContext *ctx) override {
     return visitChildren(ctx);
   }

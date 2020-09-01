@@ -21,7 +21,7 @@ namespace ast {
 string bool_as_text(const bool &b);
 bool text_as_bool(const string &b);
 
-enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL, GROUPING, ASSIGNMENT };
+enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL, GROUPING, ASSIGNMENT, IMPORT };
 class ASTNode {
     public:
     ASTNodeType type;
@@ -139,6 +139,14 @@ class Assignment : public ASTNode {
     string pretty_print() override;
 };
 
+
+class ImportInstruction : public ASTNode {
+    public:
+    string file_name;
+    ImportInstruction(const string &_file_name);
+    string to_string() override;
+    string pretty_print() override;
+};
 
 
 } // namespace ast

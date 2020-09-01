@@ -13,8 +13,8 @@ class  lambdaParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, Lambda = 11, Bool = 12, Int = 13, Identifier = 14, 
-    Operator = 15, WS = 16, NL = 17
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, Lambda = 12, Bool = 13, Int = 14, 
+    Identifier = 15, Operator = 16, WS = 17, NL = 18
   };
 
   enum {
@@ -85,6 +85,17 @@ public:
     antlr4::tree::TerminalNode *Operator();
     std::vector<ExpressionContext *> expression();
     ExpressionContext* expression(size_t i);
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  ImportInstructionContext : public ExpressionContext {
+  public:
+    ImportInstructionContext(ExpressionContext *ctx);
+
+    antlr4::tree::TerminalNode *Identifier();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 

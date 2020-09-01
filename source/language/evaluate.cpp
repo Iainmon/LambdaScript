@@ -160,6 +160,10 @@ ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_refer
                 cout << "LHS or RHS is not a literal!" << endl;
                 return (ast::node_reference)operation;
             }
+        } else if (ast->type == ast::ASTNodeType::IMPORT) {
+            shared_ptr<ast::ImportInstruction> import = static_pointer_cast<ast::ImportInstruction>(ast);
+            ast::node_reference imported_ast = language::import_file(import->file_name, scope);
+            return imported_ast;
         }
         // cout << "No evaluation rule defined." << ast->to_string() << endl;
         return ast;

@@ -103,8 +103,13 @@ antlrcpp::Any InterpreterVisitor::visitBrackets(lambdaParser::BracketsContext *c
 }
 antlrcpp::Any InterpreterVisitor::visitPrintInstruction(lambdaParser::PrintInstructionContext *ctx)  {
     // cout << "PrintInstruction" << endl;
-    cout << ctx->expression()->getText() << endl;
     ast::node_reference valueToPrint = ctx->expression()->accept(this);
     ast::node_reference printInstr = make_shared<ast::PrintInstruction>(valueToPrint);
     return printInstr;
+}
+antlrcpp::Any InterpreterVisitor::visitImportInstruction(lambdaParser::ImportInstructionContext *ctx) {
+    // return ctx->imports()->accept(this);
+    string file_name = ctx->Identifier()->getText();
+    ast::node_reference importInstr = make_shared<ast::ImportInstruction>(file_name);
+    return importInstr;
 }

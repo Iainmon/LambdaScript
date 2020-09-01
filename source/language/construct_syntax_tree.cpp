@@ -20,17 +20,17 @@ ast::node_reference language::construct_syntax_tree(const std::string &source) {
     return ast;
 }
 
-// ast::node_reference language::construct_syntax_tree(const std::istream &source) {
+ast::node_reference language::construct_syntax_tree(std::ifstream &source) {
 
-//     ANTLRInputStream input(source);
-//     lambdaLexer lexer(&input);
-//     CommonTokenStream tokens(&lexer);
-//     lambdaParser parser(&tokens);
+    ANTLRInputStream input(source);
+    lambdaLexer lexer(&input);
+    CommonTokenStream tokens(&lexer);
+    lambdaParser parser(&tokens);
 
-//     tree::ParseTree *tree = parser.program();
+    tree::ParseTree *tree = parser.program();
 
-//     language::InterpreterVisitor visitor;
-//     ast::node_reference ast = visitor.visit(tree);
+    language::InterpreterVisitor visitor;
+    ast::node_reference ast = visitor.visit(tree);
 
-//     return ast;
-// }
+    return ast;
+}

@@ -12,6 +12,7 @@ expression:
 	| condition                                 # conditional // used to be ifThenElse
 	| Operator expression expression			# binaryExpression
     | 'print' expression                        # printInstruction
+	| 'import' Identifier						# importInstruction
 	| '(' expression ')'						# brackets;
 
 body: expression ;

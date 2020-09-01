@@ -22,6 +22,9 @@ public:
   virtual void enterBinaryExpression(lambdaParser::BinaryExpressionContext * /*ctx*/) override { }
   virtual void exitBinaryExpression(lambdaParser::BinaryExpressionContext * /*ctx*/) override { }
 
+  virtual void enterImportInstruction(lambdaParser::ImportInstructionContext * /*ctx*/) override { }
+  virtual void exitImportInstruction(lambdaParser::ImportInstructionContext * /*ctx*/) override { }
+
   virtual void enterConditional(lambdaParser::ConditionalContext * /*ctx*/) override { }
   virtual void exitConditional(lambdaParser::ConditionalContext * /*ctx*/) override { }
 

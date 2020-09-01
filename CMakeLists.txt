@@ -56,3 +56,11 @@ add_executable(lcalc ${SOURCES}
                )
 # target_link_libraries(lcalc antlr4_static)
 target_link_libraries(lcalc antlr4_shared)
+
+
+set(STD_SOURCE ${PROJECT_SOURCE_DIR}/language/std.la)
+
+add_custom_command(TARGET lcalc PRE_BUILD
+    COMMAND cp ${STD_SOURCE} ${CMAKE_BINARY_DIR}
+    COMMENT "Coppied standard library to build directory."
+)

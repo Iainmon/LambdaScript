@@ -272,3 +272,19 @@ string Assignment::pretty_print() {
     ss << "(" << cyan << identifier << blue << " = " << reset << value->pretty_print() << ")";
     return ss.str();
 }
+
+ImportInstruction::ImportInstruction(const string &_file_name) {
+    type = IMPORT;
+    file_name = _file_name;
+}
+
+string ImportInstruction::to_string() {
+    stringstream ss;
+    ss << "Import ( " << file_name << " )";
+    return ss.str();
+}
+string ImportInstruction::pretty_print() {
+    stringstream ss;
+    ss << "(" << green << "import " << blue << file_name << reset << ")";
+    return ss.str();
+}

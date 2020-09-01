@@ -1,0 +1,13 @@
+id = (\x.x)
+
+add = (\a.\b.(+ a b))
+sub = (\a.\b.(- a b))
+mul = (\a.\b.(* a b))
+div = (\a.\b.(/ a b))
+
+inc = add 1
+dec = (\n.sub n 1)
+
+ass = (\x.(state = x))
+
+nil

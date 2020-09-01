@@ -20,6 +20,9 @@ public:
   virtual void enterBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) = 0;
   virtual void exitBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) = 0;
 
+  virtual void enterImportInstruction(lambdaParser::ImportInstructionContext *ctx) = 0;
+  virtual void exitImportInstruction(lambdaParser::ImportInstructionContext *ctx) = 0;
+
   virtual void enterConditional(lambdaParser::ConditionalContext *ctx) = 0;
   virtual void exitConditional(lambdaParser::ConditionalContext *ctx) = 0;
 
