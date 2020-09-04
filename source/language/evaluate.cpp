@@ -78,6 +78,11 @@ ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_refer
 
             ast::node_reference evaluated_lhs = language::evaluate(application->lhs, scope);
 
+            if (evaluated_lhs->type == ast::ASTNodeType::NATIVE_ABSTRACTION) {
+                shared_ptr<ast::NativeAbstraction> native_abstraction = static_pointer_cast<ast::NativeAbstraction>(evaluated_lhs);
+                return native_abstraction->apply(language::evaluate(application->rhs, scope), scope);
+            }
+
             if (evaluated_lhs->type == ast::ASTNodeType::LITERAL || evaluated_lhs->type == ast::ASTNodeType::GROUPING) {
                 if (evaluated_lhs->type == ast::ASTNodeType::LITERAL) {
                     shared_ptr<ast::Literal> literal = static_pointer_cast<ast::Literal>(evaluated_lhs);

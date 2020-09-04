@@ -293,3 +293,7 @@ string ImportInstruction::pretty_print() {
     ss << "(" << green << "import " << blue << file_name << reset << ")";
     return ss.str();
 }
+
+node_reference NativeAbstraction::apply(node_reference argument, scope_reference scope) {
+    return argument;
+}

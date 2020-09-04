@@ -21,7 +21,7 @@ namespace ast {
 string bool_as_text(const bool &b);
 bool text_as_bool(const string &b);
 
-enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL, GROUPING, ASSIGNMENT, IMPORT };
+enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL, GROUPING, ASSIGNMENT, IMPORT, NATIVE_ABSTRACTION };
 class ASTNode {
     public:
     ASTNodeType type;
@@ -150,11 +150,13 @@ class ImportInstruction : public ASTNode {
     string pretty_print() override;
 };
 
-// class NativeAbstraction : public ASTNode {
-//     public:
-//     NativeAbstraction();
-//     virtual node_reference apply(node_reference argument, scope_reference scope) = 0;
-// };
+class NativeAbstraction : public ASTNode {
+    public:
+    // ASTNodeType type;
+    // virtual string to_string();
+    // virtual string pretty_print();
+    virtual node_reference apply(node_reference argument, scope_reference scope);
+};
 
 
 } // namespace ast

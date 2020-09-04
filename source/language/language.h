@@ -4,6 +4,7 @@
 #include "../frontend/frontend.h"
 #include "../ast/ast.h"
 #include <string>
+#include <vector>
 
 namespace language {
 class InterpreterVisitor : public lambdaBaseVisitor {
@@ -35,6 +36,27 @@ ast::node_reference construct_syntax_tree(std::ifstream& source);
 
 ast::node_reference evaluate(ast::node_reference ast, ast::scope_reference scope);
 ast::node_reference import_file(const std::string& source_file, ast::scope_reference scope);
+
+namespace native_functions {
+
+class Exit : public ast::NativeAbstraction {
+    public:
+    Exit();
+    ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
+    string to_string() override;
+    string pretty_print() override;
+};
+
+class Truthy : public ast::NativeAbstraction {
+    public:
+    Truthy();
+    ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
+    string to_string() override;
+    string pretty_print() override;
+};
+
+}
+
 }
 
 #endif
