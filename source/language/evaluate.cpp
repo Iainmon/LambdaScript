@@ -10,7 +10,7 @@ using namespace std;
 //     return language::evaluate(lhs->body, lhs->scope);
 // }
 
-int apply_operation(ast::OperationType op_type, int lhs, int rhs) {
+int apply_arithmatic_operation(ast::OperationType op_type, int lhs, int rhs) {
     switch (op_type) {
         case ast::OperationType::ADD:
             return lhs + rhs;
@@ -31,6 +31,41 @@ int apply_operation(ast::OperationType op_type, int lhs, int rhs) {
     return 0;
 }
 
+bool apply_logic_operation(ast::OperationType op_type, int lhs, int rhs) {
+    switch (op_type) {
+        case ast::OperationType::EQUALS:
+            return lhs == rhs;
+            break;
+        case ast::OperationType::NO_OP:
+            cout << "NO OPERATION" << endl;
+            return false;
+    }
+    return false;
+}
+bool apply_logic_operation(ast::OperationType op_type, bool lhs, bool rhs) {
+    switch (op_type) {
+        case ast::OperationType::EQUALS:
+            return lhs == rhs;
+            break;
+        case ast::OperationType::NO_OP:
+            cout << "NO OPERATION" << endl;
+            return false;
+    }
+    return false;
+}
+
+bool apply_operation(ast::OperationType op_type, bool lhs, bool rhs) {
+    switch (op_type) {
+        case ast::OperationType::EQUALS:
+            return lhs == rhs;
+            break;
+        case ast::OperationType::NO_OP:
+            cout << "NO OPERATION" << endl;
+            return false;
+    }
+    return false;
+}
+
 ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_reference scope) {
     // while (true) {
         if (ast->type == ast::ASTNodeType::APPLICATION) {
@@ -44,26 +79,49 @@ ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_refer
             ast::node_reference evaluated_lhs = language::evaluate(application->lhs, scope);
 
             if (evaluated_lhs->type == ast::ASTNodeType::LITERAL || evaluated_lhs->type == ast::ASTNodeType::GROUPING) {
+                if (evaluated_lhs->type == ast::ASTNodeType::LITERAL) {
+                    shared_ptr<ast::Literal> literal = static_pointer_cast<ast::Literal>(evaluated_lhs);
+                    if (literal->valueType == ast::LiteralType::Bool && (scope->has("trbool") && scope->has("flbool"))) {
+                        bool truthy = literal->getBool();
+                        ast::node_reference truthy_reff = scope->get(truthy ? "trbool" : "flbool");
+                        shared_ptr<ast::Abstraction> boolean_lambda = static_pointer_cast<ast::Abstraction>(truthy_reff);
+                        ast::node_reference casted_truthy_application = make_shared<ast::Application>(boolean_lambda, application->rhs);
+                        return language::evaluate(casted_truthy_application, scope);
+                    }
+                }
                 shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
                 grouping->nodes.push_back(application->lhs);
                 grouping->nodes.push_back(application->rhs);
                 return (ast::node_reference)grouping;
             }
 
-            shared_ptr<ast::Abstraction> lhs;
-            if (application->lhs->type != ast::ASTNodeType::ABSTRACTION) {
-                lhs = static_pointer_cast<ast::Abstraction>(language::evaluate(application->lhs, scope));
-            } else {
-                lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
-            }
             ast::node_reference rhs = language::evaluate(application->rhs, scope);
+
+ /* start */if (application->lhs->type != ast::ASTNodeType::ABSTRACTION) {
+  /* dont */    shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(language::evaluate(application->lhs, scope));
+                
+                scope->set(lhs->argument, rhs);
+  /* edit */    return language::evaluate(lhs->body, scope);
+
+                // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
+                // child_scope->set(lhs->argument, rhs);
+   /* this */   // return language::evaluate(lhs->body, child_scope);
+            } else {
+                shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
+                
+                scope->set(lhs->argument, rhs);
+  /* code */    return language::evaluate(lhs->body, scope);
+
+                // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
+                // child_scope->set(lhs->argument, rhs);
+                // return language::evaluate(lhs->body, child_scope);
+  /* end */ }
             // ast::node_reference rhs = application->rhs;
 
             // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
             // child_scope->set(lhs->argument, rhs);
             // return language::evaluate(lhs->body, child_scope);
-            scope->set(lhs->argument, rhs);
-            return language::evaluate(lhs->body, scope);
+
 
 
             // return apply_beta_reduction(application);
@@ -145,16 +203,33 @@ ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_refer
                 shared_ptr<ast::Literal> rhs_literal = static_pointer_cast<ast::Literal>(rhs);
                 if (lhs_literal->valueType == rhs_literal->valueType) {
                     ast::LiteralType type = lhs_literal->valueType;
-                    if (type == ast::LiteralType::Int) {
-                        int result = apply_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
-                        ast::node_reference result_literal = make_shared<ast::Literal>(result);
-                        return result_literal;
+                    if (operation->opType != ast::OperationType::EQUALS) {
+                        if (type == ast::LiteralType::Int) {
+                            int result = apply_arithmatic_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
+                            ast::node_reference result_literal = make_shared<ast::Literal>(result);
+                            return result_literal;
+                        } else {
+                            return (ast::node_reference)operation;
+                            cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
+                        }
                     } else {
-                        cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
+                        if (type == ast::LiteralType::Int) {
+                            bool result = apply_logic_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
+                            ast::node_reference result_literal = make_shared<ast::Literal>(result);
+                            return result_literal;
+                        } else if (type == ast::LiteralType::Bool) {
+                            bool result = apply_logic_operation(operation->opType, lhs_literal->getBool(), rhs_literal->getBool());
+                            ast::node_reference result_literal = make_shared<ast::Literal>(result);
+                            return result_literal;
+                        } else {
+                            return (ast::node_reference)operation;
+                            cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
+                        }
                     }
-                } else {
-                    cout << "Arithmetic cannot be applied becauese LHS and RHS are not the same type!" << endl;
+                } else { 
                     return (ast::node_reference)operation;
+                    cout << "Arithmetic cannot be applied becauese LHS and RHS are not the same type!" << endl;
+                    
                 }
             } else {
                 cout << "LHS or RHS is not a literal!" << endl;

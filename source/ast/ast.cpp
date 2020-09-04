@@ -60,6 +60,11 @@ node_reference Scope::get(const string &name) {
 }
 bool Scope::has(const string &name) { return !(scope.find(name) == scope.end()); }
 
+string Scope::enumerated_identifier() {
+    identifier_counter++;
+    return "v" + to_string(identifier_counter);
+}
+
 
 Abstraction::Abstraction(const string &_argument, node_reference _body/*, scope_reference _scope*/) {
     type = ABSTRACTION;
@@ -92,7 +97,7 @@ string Application::to_string() {
 string Application::pretty_print() {
     // cout << "ApplicationPrint" << endl;
     stringstream ss;
-    ss << "( " << lhs->pretty_print() << " ) ( " << rhs->pretty_print() << " )";
+    ss << "(" << lhs->pretty_print() << " " << rhs->pretty_print() << ")";
     return ss.str();
 }
 
@@ -161,7 +166,7 @@ string Operation::to_string() {
 }
 string Operation::pretty_print() {
     stringstream ss;
-    ss << "# (" << lhs->pretty_print() << ") (" << rhs->pretty_print() << ")";
+    ss << red << "[native]" << reset << " (" << lhs->pretty_print() << ") (" << rhs->pretty_print() << ")";
     return ss.str();
 }
 // TODO - Change this to a map lookup.

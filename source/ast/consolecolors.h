@@ -10,6 +10,7 @@ const std::string blue("\033[0;34m");
 const std::string magenta("\033[0;35m");
 const std::string cyan("\033[0;36m");
 const std::string white("\033[0;37m");
+const std::string black("\033[0;30m");
 
 const std::string Bred("\033[1;31m");
 const std::string Bgreen("\033[1;32m");

@@ -2,6 +2,8 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 // GDB init command mac: set startup-with-shell off
 
@@ -92,6 +94,7 @@ int main(int argc, const char *argv[]) {
 
     const bool run_interactive_mode = !!cmdl[{"-i", "--interactive", "--repl"}];
     const bool verbose_print = !!cmdl[{"--verbose"}];
+    const bool show_assoc = !!cmdl[{"--show-association"}];
 
     bool main_file_done = false;
 
@@ -129,9 +132,11 @@ int main(int argc, const char *argv[]) {
                 }
             }
         }
-        
+
         std::string input_line;
         getline(std::cin, input_line);
+        if (input_line.compare(":q\n") == 0)
+            return 0;
         source << input_line << std::endl;
 
     } while (run_interactive_mode);

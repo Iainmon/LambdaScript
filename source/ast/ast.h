@@ -37,6 +37,7 @@ using scope_reference = shared_ptr<Scope>;
 class Scope {
     private:
     map<string, node_reference> scope;
+    int identifier_counter = 0;
     shared_ptr<Scope> copy(const map<string, node_reference> &_scope);
     node_reference unsafe_get(const string &name);
     public:
@@ -46,6 +47,7 @@ class Scope {
     void set(const string &name, node_reference node);
     node_reference get(const string &name);
     bool has(const string &name);
+    string enumerated_identifier();
 };
 
 class Abstraction : public ASTNode {
@@ -147,6 +149,12 @@ class ImportInstruction : public ASTNode {
     string to_string() override;
     string pretty_print() override;
 };
+
+// class NativeAbstraction : public ASTNode {
+//     public:
+//     NativeAbstraction();
+//     virtual node_reference apply(node_reference argument, scope_reference scope) = 0;
+// };
 
 
 } // namespace ast
