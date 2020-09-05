@@ -29,7 +29,7 @@ condition: 'if' expression 'then' body 'else' body
 typeBinding: ':' type;
 
 type: TypeIdentifier						#leafType
-	| TypeIdentifier '->' TypeIdentifier	#nodeType
+	| type '->' type						#nodeType
 	| '(' type ')'							#typeBrackets;
 
 // imports: 'import' Identifier | '(' imports ')';

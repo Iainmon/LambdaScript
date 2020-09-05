@@ -17,6 +17,10 @@ using namespace std;
 
 namespace ast {
 
+namespace typesystem {
+class TypeNode;
+using type_reference = shared_ptr<TypeNode>;
+}
 
 string bool_as_text(const bool &b);
 bool text_as_bool(const string &b);
@@ -24,6 +28,7 @@ bool text_as_bool(const string &b);
 enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL, GROUPING, ASSIGNMENT, IMPORT, NATIVE_ABSTRACTION };
 class ASTNode {
     public:
+    typesystem::type_reference data_type;
     ASTNodeType type;
     virtual string to_string();
     virtual string pretty_print();
@@ -182,7 +187,39 @@ class NativeAbstraction : public ASTNode {
     virtual node_reference apply(node_reference argument, scope_reference scope);
 };
 
+namespace typesystem {
 
+enum TypeNodeType { TYPE, FUNCTION };
+class TypeNode {
+    public:
+    TypeNodeType type;
+    virtual string pretty_print();
+};
+
+
+
+type_reference type_from_name(const string &name);
+
+class Type : public TypeNode {
+    public:
+    string name;
+    Type(const string &_name);
+    string pretty_print() override;
+};
+
+class FunctionType : public TypeNode {
+    public:
+    type_reference lhs;
+    type_reference rhs;
+    FunctionType(type_reference _lhs, type_reference _rhs);
+    string pretty_print() override;
+};
+
+// These will extend the Type class.
+// class Bool;
+// class Number;
+
+}
 } // namespace ast
 
 #endif

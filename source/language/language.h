@@ -39,6 +39,14 @@ class InterpreterVisitor : public lambdaBaseVisitor {
 
     antlrcpp::Any visitCondition(lambdaParser::ConditionContext *ctx) override;
 
+    antlrcpp::Any visitTypeBinding(lambdaParser::TypeBindingContext *ctx) override;
+
+    antlrcpp::Any visitTypeBrackets(lambdaParser::TypeBracketsContext *ctx) override;
+
+    antlrcpp::Any visitLeafType(lambdaParser::LeafTypeContext *ctx) override;
+
+    antlrcpp::Any visitNodeType(lambdaParser::NodeTypeContext *ctx) override;
+
 };
 
 ast::node_reference construct_syntax_tree(const std::string& source);
@@ -78,6 +86,14 @@ class Sum : public ast::NativeAbstraction, public std::enable_shared_from_this<S
 class Reduce : public ast::NativeAbstraction {
     public:
     Reduce();
+    ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
+    string to_string() override;
+    string pretty_print() override;
+};
+
+class Typeof : public ast::NativeAbstraction {
+    public:
+    Typeof();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
     string to_string() override;
     string pretty_print() override;

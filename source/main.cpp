@@ -103,10 +103,12 @@ int main(int argc, const char *argv[]) {
     ast::node_reference truthy_abstraction = make_shared<language::native_functions::Truthy>();
     ast::node_reference sum_abstraction = make_shared<language::native_functions::Sum>();
     ast::node_reference reduce_abstraction = make_shared<language::native_functions::Reduce>();
+    ast::node_reference typeof_abstraction = make_shared<language::native_functions::Typeof>();
     global_scope->set("exit", exit_abstraction);
     global_scope->set("truthy", truthy_abstraction);
     global_scope->set("sum", sum_abstraction);
     global_scope->set("reduce", reduce_abstraction);
+    global_scope->set("typeof", typeof_abstraction);
 
     int last_group_count = 0;
 

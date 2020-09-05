@@ -115,3 +115,23 @@ std::string language::native_functions::Reduce::pretty_print() {
     ss << "( native reduce )";
     return ss.str();
 }
+
+language::native_functions::Typeof::Typeof() {
+    type = ast::ASTNodeType::NATIVE_ABSTRACTION;
+}
+ast::node_reference language::native_functions::Typeof::apply(ast::node_reference argument, ast::scope_reference scope) {
+    if (argument->data_type != nullptr) {
+        cout << blue << ":: " << reset << argument->data_type->pretty_print() << endl;
+    }
+    return argument;
+}
+std::string language::native_functions::Typeof::to_string() {
+    std::stringstream ss;
+    ss << "( native typeof )";
+    return ss.str();
+}
+std::string language::native_functions::Typeof::pretty_print() {
+    std::stringstream ss;
+    ss << "( native typeof )";
+    return ss.str();
+}

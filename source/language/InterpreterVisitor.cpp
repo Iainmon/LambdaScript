@@ -83,7 +83,10 @@ antlrcpp::Any InterpreterVisitor::visitAssign(lambdaParser::AssignContext *ctx) 
 
     const string name = ctx->Identifier()->getText();
     ast::node_reference value = ctx->expression()->accept(this);
-    // assigned[name] = value;
+    if (ctx->typeBinding() != nullptr) {
+        ast::typesystem::type_reference type = ctx->typeBinding()->accept(this);
+        value->data_type = type;
+    }
 
     ast::node_reference assignment = make_shared<ast::Assignment>(name, value);
     return assignment;
@@ -134,4 +137,23 @@ antlrcpp::Any InterpreterVisitor::visitCondition(lambdaParser::ConditionContext 
     ast::node_reference application_1 = make_shared<ast::Application>(application_0, tru_expression);
     ast::node_reference application_2 = make_shared<ast::Application>(application_1, fls_expression);
     return application_2;
+}
+
+antlrcpp::Any InterpreterVisitor::visitTypeBinding(lambdaParser::TypeBindingContext *ctx) {
+    return ctx->type()->accept(this);
+}
+antlrcpp::Any InterpreterVisitor::visitTypeBrackets(lambdaParser::TypeBracketsContext *ctx) {
+    return ctx->type()->accept(this);
+}
+
+antlrcpp::Any InterpreterVisitor::visitLeafType(lambdaParser::LeafTypeContext *ctx) {
+    const string type_name = ctx->TypeIdentifier()->getText();
+    ast::typesystem::type_reference type = ast::typesystem::type_from_name(type_name);
+    return type;
+}
+antlrcpp::Any InterpreterVisitor::visitNodeType(lambdaParser::NodeTypeContext *ctx) {
+    ast::typesystem::type_reference lhs = ctx->type(0)->accept(this);
+    ast::typesystem::type_reference rhs = ctx->type(1)->accept(this);
+    ast::typesystem::type_reference node_type = make_shared<ast::typesystem::FunctionType>(lhs, rhs);
+    return node_type;
 }

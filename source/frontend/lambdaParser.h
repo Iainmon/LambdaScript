@@ -279,8 +279,8 @@ public:
   public:
     NodeTypeContext(TypeContext *ctx);
 
-    std::vector<antlr4::tree::TerminalNode *> TypeIdentifier();
-    antlr4::tree::TerminalNode* TypeIdentifier(size_t i);
+    std::vector<TypeContext *> type();
+    TypeContext* type(size_t i);
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
@@ -299,10 +299,11 @@ public:
   };
 
   TypeContext* type();
-
+  TypeContext* type(int precedence);
 
   virtual bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
   bool expressionSempred(ExpressionContext *_localctx, size_t predicateIndex);
+  bool typeSempred(TypeContext *_localctx, size_t predicateIndex);
 
 private:
   static std::vector<antlr4::dfa::DFA> _decisionToDFA;
