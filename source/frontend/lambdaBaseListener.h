@@ -55,6 +55,18 @@ public:
   virtual void enterCondition(lambdaParser::ConditionContext * /*ctx*/) override { }
   virtual void exitCondition(lambdaParser::ConditionContext * /*ctx*/) override { }
 
+  virtual void enterTypeBinding(lambdaParser::TypeBindingContext * /*ctx*/) override { }
+  virtual void exitTypeBinding(lambdaParser::TypeBindingContext * /*ctx*/) override { }
+
+  virtual void enterLeafType(lambdaParser::LeafTypeContext * /*ctx*/) override { }
+  virtual void exitLeafType(lambdaParser::LeafTypeContext * /*ctx*/) override { }
+
+  virtual void enterNodeType(lambdaParser::NodeTypeContext * /*ctx*/) override { }
+  virtual void exitNodeType(lambdaParser::NodeTypeContext * /*ctx*/) override { }
+
+  virtual void enterTypeBrackets(lambdaParser::TypeBracketsContext * /*ctx*/) override { }
+  virtual void exitTypeBrackets(lambdaParser::TypeBracketsContext * /*ctx*/) override { }
+
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
   virtual void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

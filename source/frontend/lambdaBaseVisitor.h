@@ -67,6 +67,22 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitTypeBinding(lambdaParser::TypeBindingContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitLeafType(lambdaParser::LeafTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNodeType(lambdaParser::NodeTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitTypeBrackets(lambdaParser::TypeBracketsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
 
 };
 

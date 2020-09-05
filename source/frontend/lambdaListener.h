@@ -53,6 +53,18 @@ public:
   virtual void enterCondition(lambdaParser::ConditionContext *ctx) = 0;
   virtual void exitCondition(lambdaParser::ConditionContext *ctx) = 0;
 
+  virtual void enterTypeBinding(lambdaParser::TypeBindingContext *ctx) = 0;
+  virtual void exitTypeBinding(lambdaParser::TypeBindingContext *ctx) = 0;
+
+  virtual void enterLeafType(lambdaParser::LeafTypeContext *ctx) = 0;
+  virtual void exitLeafType(lambdaParser::LeafTypeContext *ctx) = 0;
+
+  virtual void enterNodeType(lambdaParser::NodeTypeContext *ctx) = 0;
+  virtual void exitNodeType(lambdaParser::NodeTypeContext *ctx) = 0;
+
+  virtual void enterTypeBrackets(lambdaParser::TypeBracketsContext *ctx) = 0;
+  virtual void exitTypeBrackets(lambdaParser::TypeBracketsContext *ctx) = 0;
+
 
 };
 

@@ -29,6 +29,30 @@ class ASTNode {
     virtual string pretty_print();
 };
 
+// enum TypeNodeType = { TYPE, FUNCTION };
+// class TypeNode {
+//     public:
+//     TypeNodeType type;
+// };
+// using type_reference = shared_ptr<TypeNode>;
+
+// class Type : public TypeNode {
+//     public:
+//     string name;
+//     Type(const string &name);
+// };
+
+// class Function : public TypeNode {
+//     public:
+//     type_reference lhs;
+//     type_reference rhs;
+//     Function(type_reference _lhs, type_reference _rhs);
+// };
+
+// These will extend the Type class.
+// class Bool;
+// class Number;
+
 class Scope;
 
 using node_reference = shared_ptr<ASTNode>;

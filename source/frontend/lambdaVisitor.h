@@ -45,6 +45,14 @@ public:
 
     virtual antlrcpp::Any visitCondition(lambdaParser::ConditionContext *context) = 0;
 
+    virtual antlrcpp::Any visitTypeBinding(lambdaParser::TypeBindingContext *context) = 0;
+
+    virtual antlrcpp::Any visitLeafType(lambdaParser::LeafTypeContext *context) = 0;
+
+    virtual antlrcpp::Any visitNodeType(lambdaParser::NodeTypeContext *context) = 0;
+
+    virtual antlrcpp::Any visitTypeBrackets(lambdaParser::TypeBracketsContext *context) = 0;
+
 
 };
 

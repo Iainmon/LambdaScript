@@ -13,12 +13,14 @@ class  lambdaParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, Lambda = 12, Bool = 13, Int = 14, 
-    Identifier = 15, Operator = 16, WS = 17, NL = 18
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, Lambda = 13, 
+    Bool = 14, Int = 15, Identifier = 16, TypeIdentifier = 17, Operator = 18, 
+    WS = 19, NL = 20
   };
 
   enum {
-    RuleProgram = 0, RuleExpression = 1, RuleBody = 2, RuleCondition = 3
+    RuleProgram = 0, RuleExpression = 1, RuleBody = 2, RuleCondition = 3, 
+    RuleTypeBinding = 4, RuleType = 5
   };
 
   lambdaParser(antlr4::TokenStream *input);
@@ -34,7 +36,9 @@ public:
   class ProgramContext;
   class ExpressionContext;
   class BodyContext;
-  class ConditionContext; 
+  class ConditionContext;
+  class TypeBindingContext;
+  class TypeContext; 
 
   class  ProgramContext : public antlr4::ParserRuleContext {
   public:
@@ -132,6 +136,7 @@ public:
     antlr4::tree::TerminalNode *Lambda();
     antlr4::tree::TerminalNode *Identifier();
     ExpressionContext *expression();
+    TypeBindingContext *typeBinding();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
@@ -143,6 +148,7 @@ public:
     VariableContext(ExpressionContext *ctx);
 
     antlr4::tree::TerminalNode *Identifier();
+    TypeBindingContext *typeBinding();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
@@ -178,6 +184,7 @@ public:
 
     antlr4::tree::TerminalNode *Identifier();
     ExpressionContext *expression();
+    TypeBindingContext *typeBinding();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 
@@ -228,6 +235,70 @@ public:
   };
 
   ConditionContext* condition();
+
+  class  TypeBindingContext : public antlr4::ParserRuleContext {
+  public:
+    TypeBindingContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TypeContext *type();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  TypeBindingContext* typeBinding();
+
+  class  TypeContext : public antlr4::ParserRuleContext {
+  public:
+    TypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+   
+    TypeContext() = default;
+    void copyFrom(TypeContext *context);
+    using antlr4::ParserRuleContext::copyFrom;
+
+    virtual size_t getRuleIndex() const override;
+
+   
+  };
+
+  class  LeafTypeContext : public TypeContext {
+  public:
+    LeafTypeContext(TypeContext *ctx);
+
+    antlr4::tree::TerminalNode *TypeIdentifier();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  NodeTypeContext : public TypeContext {
+  public:
+    NodeTypeContext(TypeContext *ctx);
+
+    std::vector<antlr4::tree::TerminalNode *> TypeIdentifier();
+    antlr4::tree::TerminalNode* TypeIdentifier(size_t i);
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  class  TypeBracketsContext : public TypeContext {
+  public:
+    TypeBracketsContext(TypeContext *ctx);
+
+    TypeContext *type();
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
+  TypeContext* type();
 
 
   virtual bool sempred(antlr4::RuleContext *_localctx, size_t ruleIndex, size_t predicateIndex) override;
