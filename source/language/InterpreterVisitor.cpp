@@ -9,6 +9,20 @@ antlrcpp::Any InterpreterVisitor::visitAbstraction(lambdaParser::AbstractionCont
     ast::node_reference body = ctx->expression()->accept(this);
     // ast::scope_reference scope = make_shared<ast::Scope>();
     shared_ptr<ast::Abstraction> abstraction = make_shared<ast::Abstraction>(argument, body);
+
+    // [flag TODO]
+    if (ctx->typeBinding() != nullptr) {
+        // This is where the body type should be resolved, and a function type should be constructed and assigned to the abstraction here.
+        ast::typesystem::type_reference argument_type = ctx->typeBinding()->accept(this);
+        if (body->data_type != nullptr) {
+            ast::typesystem::type_reference body_type = abstraction->body->data_type;
+            ast::typesystem::type_reference abstraction_type = make_shared<ast::typesystem::FunctionType>(argument_type, body_type);
+        } else {
+            ast::typesystem::type_reference ambiguous_type = ast::typesystem::type_from_name("Ambiguous");
+            ast::typesystem::type_reference abstraction_type = make_shared<ast::typesystem::FunctionType>(argument_type, ambiguous_type);
+            abstraction->data_type = abstraction_type;
+        }
+    }
     return (ast::node_reference)abstraction;
 }
 antlrcpp::Any InterpreterVisitor::visitApplication(lambdaParser::ApplicationContext *ctx)  {
@@ -40,6 +54,12 @@ antlrcpp::Any InterpreterVisitor::visitVariable(lambdaParser::VariableContext *c
     // END
 
     ast::node_reference identifier = make_shared<ast::Variable>(name);
+
+    if (ctx->typeBinding() != nullptr) {
+        ast::typesystem::type_reference type = ctx->typeBinding()->accept(this);
+        identifier->data_type = type;
+    }
+
     return identifier;
 }
 antlrcpp::Any InterpreterVisitor::visitInstructionLine(lambdaParser::InstructionLineContext *ctx)  {
@@ -129,7 +149,8 @@ antlrcpp::Any InterpreterVisitor::visitCondition(lambdaParser::ConditionContext 
     ast::node_reference condition = ctx->expression()->accept(this);
     ast::node_reference tru_expression = ctx->body(0)->accept(this);
     ast::node_reference fls_expression = ctx->body(1)->accept(this);
-    
+
+    // [flag TODO]
     // This is not the way to go. Conditionals should exist as an AST node, instead of being encoded as truthy applications.
 
     ast::node_reference truthy = make_shared<native_functions::Truthy>();
