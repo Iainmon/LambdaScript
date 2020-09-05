@@ -5,8 +5,10 @@
 -   [x] Create language grammar rules
 -   [x] Construct Abstract Syntax Tree using the ANTLR visitor archetecture
 -   [x] Implement Untyped λ Calculus semantic rules
--   [ ] Make interactive REPL mode
--   [ ] Implement the rest of the grammar rules: conditionals, imports, operations, etc.
+-   [x] Make interactive REPL mode
+-   [x] Implement the rest of the grammar rules: conditionals, imports, operations, etc.
+-   [ ] Remove operations, print, and maybe imports from the language grammar. Symbols should parse as identifiers, and have native abstraction implementations (as well as print and import).
+-   [ ] Add string literals to language grammar
 -   [ ] Make a nice file interpreter with a good CLI
 -   [ ] Test everything before moving on to types
 -   [ ] Implement type grammar
