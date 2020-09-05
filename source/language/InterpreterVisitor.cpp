@@ -80,15 +80,18 @@ antlrcpp::Any InterpreterVisitor::visitLiteral(lambdaParser::LiteralContext *ctx
     if (ctx->Int() != nullptr) {
         const int value = stoi(ctx->Int()->getText());
         ast::node_reference integer = make_shared<ast::Literal>(value);
+        integer->data_type = ast::typesystem::type_from_name("Num");
         return integer;
     }
     if (ctx->Bool() != nullptr) {
         const string boolean = ctx->Bool()->getText();
         SWITCH(boolean)
         CASE("tru") FALL CASE("true") ast::node_reference boolean = make_shared<ast::Literal>(true);
+        boolean->data_type = ast::typesystem::type_from_name("Bool");
         return boolean;
         BREAK
         CASE("fls") FALL CASE("false") ast::node_reference boolean = make_shared<ast::Literal>(false);
+        boolean->data_type = ast::typesystem::type_from_name("Bool");
         return boolean;
         END
     }
