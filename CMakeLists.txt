@@ -15,8 +15,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 17)
 
 # required if linking to static library
-# add_definitions(-DANTLR4CPP_STATIC)
-add_definitions(-DANTLR4CPP_SHARED)
+add_definitions(-DANTLR4CPP_STATIC)
+# add_definitions(-DANTLR4CPP_SHARED)
 
 # using /MD flag for antlr4_runtime (for Visual C++ compilers only)
 set(ANTLR4_WITH_STATIC_CRT OFF)
@@ -54,8 +54,8 @@ add_executable(lcalc ${SOURCES}
                ${ANTLR_SampleGrammarParser_CXX_OUTPUTS}
                antlr4_runtime
                )
-# target_link_libraries(lcalc antlr4_static)
-target_link_libraries(lcalc antlr4_shared)
+target_link_libraries(lcalc antlr4_static)
+# target_link_libraries(lcalc antlr4_shared)
 
 
 set(STD_SOURCE ${PROJECT_SOURCE_DIR}/language/std.la)

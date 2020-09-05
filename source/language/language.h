@@ -5,6 +5,9 @@
 #include "../ast/ast.h"
 #include <string>
 #include <vector>
+#include <iostream>
+#include <sstream>
+#include <memory>
 
 namespace language {
 class InterpreterVisitor : public lambdaBaseVisitor {
@@ -50,6 +53,24 @@ class Exit : public ast::NativeAbstraction {
 class Truthy : public ast::NativeAbstraction {
     public:
     Truthy();
+    ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
+    string to_string() override;
+    string pretty_print() override;
+};
+
+class Sum : public ast::NativeAbstraction, public std::enable_shared_from_this<Sum> {
+    int accumulator;
+    public:
+    Sum();
+    ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
+    ast::node_reference reduce();
+    string to_string() override;
+    string pretty_print() override;
+};
+
+class Reduce : public ast::NativeAbstraction {
+    public:
+    Reduce();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
     string to_string() override;
     string pretty_print() override;
