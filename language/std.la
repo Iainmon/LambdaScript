@@ -10,6 +10,7 @@ div = (\a.\b.(/ a b))
 
 equ = (\a.\b.(== a b))
 
+not = (\b. if b then fls else tru)
 
 inc = add 1
 dec = (\n.sub n 1)

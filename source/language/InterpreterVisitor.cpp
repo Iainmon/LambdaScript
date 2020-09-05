@@ -113,3 +113,25 @@ antlrcpp::Any InterpreterVisitor::visitImportInstruction(lambdaParser::ImportIns
     ast::node_reference importInstr = make_shared<ast::ImportInstruction>(file_name);
     return importInstr;
 }
+
+antlrcpp::Any InterpreterVisitor::visitConditional(lambdaParser::ConditionalContext *ctx) {
+    return ctx->condition()->accept(this);
+}
+antlrcpp::Any InterpreterVisitor::visitBody(lambdaParser::BodyContext *ctx) {
+    return ctx->expression()->accept(this);
+}
+
+antlrcpp::Any InterpreterVisitor::visitCondition(lambdaParser::ConditionContext *ctx) {
+    
+    ast::node_reference condition = ctx->expression()->accept(this);
+    ast::node_reference tru_expression = ctx->body(0)->accept(this);
+    ast::node_reference fls_expression = ctx->body(1)->accept(this);
+    
+    // This is not the way to go. Conditionals should exist as an AST node, instead of being encoded as truthy applications.
+
+    ast::node_reference truthy = make_shared<native_functions::Truthy>();
+    ast::node_reference application_0 = make_shared<ast::Application>(truthy, condition);
+    ast::node_reference application_1 = make_shared<ast::Application>(application_0, tru_expression);
+    ast::node_reference application_2 = make_shared<ast::Application>(application_1, fls_expression);
+    return application_2;
+}

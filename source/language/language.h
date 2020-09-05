@@ -32,6 +32,13 @@ class InterpreterVisitor : public lambdaBaseVisitor {
     antlrcpp::Any visitPrintInstruction(lambdaParser::PrintInstructionContext *ctx) override;
 
     antlrcpp::Any visitImportInstruction(lambdaParser::ImportInstructionContext *ctx) override;
+
+    antlrcpp::Any visitConditional(lambdaParser::ConditionalContext *ctx) override;
+
+    antlrcpp::Any visitBody(lambdaParser::BodyContext *ctx) override;
+
+    antlrcpp::Any visitCondition(lambdaParser::ConditionContext *ctx) override;
+
 };
 
 ast::node_reference construct_syntax_tree(const std::string& source);
