@@ -1,7 +1,6 @@
 #include "language.h"
 
 
-
 language::native_functions::Exit::Exit() { type = ast::ASTNodeType::NATIVE_ABSTRACTION; }
 ast::node_reference language::native_functions::Exit::apply(ast::node_reference argument, ast::scope_reference scope) {
     if (argument->type == ast::ASTNodeType::LITERAL) {
@@ -133,5 +132,30 @@ std::string language::native_functions::Typeof::to_string() {
 std::string language::native_functions::Typeof::pretty_print() {
     std::stringstream ss;
     ss << "( native typeof )";
+    return ss.str();
+}
+
+language::native_functions::Time::Time() {
+    type = ast::ASTNodeType::NATIVE_ABSTRACTION;
+}
+
+void language::native_functions::Time::pre_apply_hook(ast::node_reference argument, ast::scope_reference scope) {
+    t1 = std::chrono::high_resolution_clock::now();
+}
+
+ast::node_reference language::native_functions::Time::apply(ast::node_reference argument, ast::scope_reference scope) {
+    auto t2 = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<int, std::micro> int_usec = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1);
+    ast::node_reference time_count = std::make_shared<ast::Literal>(int_usec.count());
+    return time_count;
+}
+std::string language::native_functions::Time::to_string() {
+    std::stringstream ss;
+    ss << "( native time )";
+    return ss.str();
+}
+std::string language::native_functions::Time::pretty_print() {
+    std::stringstream ss;
+    ss << "( native time )";
     return ss.str();
 }

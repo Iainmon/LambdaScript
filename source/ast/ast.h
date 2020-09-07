@@ -128,6 +128,7 @@ class Variable : public ASTNode {
 enum OperationType { NO_OP, ADD, SUBTRACT, MULTIPLY, DIVIDE, GREATER_THAN, LESS_THAN, GREATER_THAN_EQUAL, LESS_THAT_EQUAL, EQUALS };
 class Operation : public ASTNode {
     public:
+    bool arithmatic_op;
     OperationType opType;
     node_reference lhs;
     node_reference rhs;
@@ -185,6 +186,7 @@ class NativeAbstraction : public ASTNode {
     // virtual string to_string();
     // virtual string pretty_print();
     virtual node_reference apply(node_reference argument, scope_reference scope);
+    virtual void pre_apply_hook(node_reference argument, scope_reference scope);
 };
 
 namespace typesystem {
@@ -194,6 +196,7 @@ class TypeNode {
     public:
     TypeNodeType type;
     virtual string pretty_print();
+    virtual bool operator==(const TypeNode &ref);
 };
 
 
@@ -205,6 +208,7 @@ class Type : public TypeNode {
     string name;
     Type(const string &_name);
     string pretty_print() override;
+    bool operator==(const TypeNode &ref) override;
 };
 
 class FunctionType : public TypeNode {
@@ -213,6 +217,7 @@ class FunctionType : public TypeNode {
     type_reference rhs;
     FunctionType(type_reference _lhs, type_reference _rhs);
     string pretty_print() override;
+    bool operator==(const TypeNode &ref) override;
 };
 
 // These will extend the Type class.

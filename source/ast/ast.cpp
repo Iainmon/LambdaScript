@@ -157,6 +157,11 @@ Operation::Operation(OperationType _opType, node_reference _lhs, node_reference 
     opType = _opType;
     lhs = _lhs;
     rhs = _rhs;
+    if (opType == OperationType::ADD || opType == OperationType::SUBTRACT || opType == OperationType::MULTIPLY || opType == OperationType::DIVIDE) {
+        arithmatic_op = true;
+    } else {
+        arithmatic_op = false;
+    }
 }
 string Operation::to_string() {
     // cout << "OperationPrint" << endl;
@@ -297,3 +302,5 @@ string ImportInstruction::pretty_print() {
 node_reference NativeAbstraction::apply(node_reference argument, scope_reference scope) {
     return argument;
 }
+
+void NativeAbstraction::pre_apply_hook(node_reference argument, scope_reference scope) { }

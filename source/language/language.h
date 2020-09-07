@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <memory>
+#include <chrono>
 
 namespace language {
 class InterpreterVisitor : public lambdaBaseVisitor {
@@ -95,6 +96,17 @@ class Typeof : public ast::NativeAbstraction {
     public:
     Typeof();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
+    string to_string() override;
+    string pretty_print() override;
+};
+
+class Time : public ast::NativeAbstraction {
+    private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> t1;
+    public:
+    Time();
+    ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
+    void pre_apply_hook(ast::node_reference argument, ast::scope_reference scope) override;
     string to_string() override;
     string pretty_print() override;
 };

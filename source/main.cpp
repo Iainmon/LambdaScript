@@ -104,11 +104,13 @@ int main(int argc, const char *argv[]) {
     ast::node_reference sum_abstraction = make_shared<language::native_functions::Sum>();
     ast::node_reference reduce_abstraction = make_shared<language::native_functions::Reduce>();
     ast::node_reference typeof_abstraction = make_shared<language::native_functions::Typeof>();
+    ast::node_reference time_abstraction = make_shared<language::native_functions::Time>();
     global_scope->set("exit", exit_abstraction);
     global_scope->set("truthy", truthy_abstraction);
     global_scope->set("sum", sum_abstraction);
     global_scope->set("reduce", reduce_abstraction);
     global_scope->set("typeof", typeof_abstraction);
+    global_scope->set("time", time_abstraction);
 
     int last_group_count = 0;
 
@@ -135,7 +137,7 @@ int main(int argc, const char *argv[]) {
             if (!grouping->nodes.empty()) {
                 if (last_group_count != grouping->nodes.size()) {
                     ast::node_reference last_node = grouping->nodes.back();
-                    std::shared_ptr<ast::PrintInstruction> print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
+                    ast::node_reference print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
                     language::evaluate(print_instruction, global_scope);
                     // print(grouping->nodes.back()->to_string());
                     last_group_count = grouping->nodes.size();

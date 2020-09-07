@@ -10,6 +10,11 @@ div = (\a.\b.(/ a b))
 
 equ = (\a.\b.(== a b))
 
+grtr = (\a.\b.(> a b))
+less = (\a.\b.(< a b))
+gte = (\a.\b.(>= a b))
+lte = (\a.\b.(<= a b))
+
 not = (\b. if b then fls else tru)
 
 inc = add 1
@@ -23,5 +28,8 @@ cube = (\n.mul (square n) n)
 mocking = (\f.f f)
 cardinal = (\a.\b.\c.a c b)
 
+ycomb = (\f.(\x.f (x x)) (\x. f (x x)))
+
+fac = (\f.\n. if equ n 0 then 1 else mul n (f f (sub x 1)))
 
 nil

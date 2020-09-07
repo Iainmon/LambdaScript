@@ -1,0 +1,10 @@
+import std
+
+fib = (\n. if (lte n 1) then 1 else (add (fibp (sub n 1))(fibp (sub n 2))))
+fibp = fib
+
+fib = (\f.\n.(if (less n 2) then n else (add (f (sub n 1)) (f (sub n 2)))))
+
+
+ans = fib 46
+print ans

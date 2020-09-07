@@ -57,7 +57,10 @@ not tru
 
 ### ToDo
 -   Fix issue with imports needing to have an extra newline to avoid NL EOF warning.
+-   Add string literal [heres how](https://stackoverflow.com/questions/24557953/handling-string-literals-which-end-in-an-escaped-quote-in-antlr4)
+-   Add comments to language grammar
 -   Do a search for `[flag todo]`
+-   α-renaming
 
 ### Note:
 `std::bad_cast` comes from `source/InterpreterListener.cc` returning something other than `ast::node_reference`. All instances of `ASTNode` must be upcasted to `ast::node_reference`, or else a runtime error will occur.

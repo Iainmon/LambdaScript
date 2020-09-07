@@ -1,7 +1,29 @@
 #include "ast.h"
 
 
+bool ast::typesystem::TypeNode::operator==(const ast::typesystem::TypeNode &ref) {
+    if (this->type == ref.type) {
+        return *this == ref;
+    } else {
+        return false;
+    }
+}
 
+bool ast::typesystem::Type::operator==(const ast::typesystem::TypeNode &ref) {
+    if (ref.type == ast::typesystem::TypeNodeType::TYPE) {
+        return *this == ref;
+    } else {
+        return false;
+    }
+}
+bool ast::typesystem::FunctionType::operator==(const ast::typesystem::TypeNode &ref) {
+    if (ref.type == ast::typesystem::TypeNodeType::FUNCTION) {
+        const ast::typesystem::FunctionType& reference = static_cast<const ast::typesystem::FunctionType&>(ref);
+        return ((this->lhs == reference.lhs) && (this->rhs == reference.rhs));
+    } else {
+        return false;
+    }
+}
 
 std::string ast::typesystem::TypeNode::pretty_print() {
     std::stringstream ss;

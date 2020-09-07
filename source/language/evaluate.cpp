@@ -36,6 +36,18 @@ bool apply_logic_operation(ast::OperationType op_type, int lhs, int rhs) {
         case ast::OperationType::EQUALS:
             return lhs == rhs;
             break;
+        case ast::OperationType::LESS_THAN:
+            return lhs < rhs;
+            break;
+        case ast::OperationType::LESS_THAT_EQUAL:
+            return lhs <= rhs;
+            break;
+        case ast::OperationType::GREATER_THAN:
+            return lhs > rhs;
+            break;
+        case ast::OperationType::GREATER_THAN_EQUAL:
+            return lhs >= rhs;
+            break;
         case ast::OperationType::NO_OP:
             cout << "NO OPERATION" << endl;
             return false;
@@ -80,6 +92,7 @@ ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_refer
 
             if (evaluated_lhs->type == ast::ASTNodeType::NATIVE_ABSTRACTION) {
                 shared_ptr<ast::NativeAbstraction> native_abstraction = static_pointer_cast<ast::NativeAbstraction>(evaluated_lhs);
+                native_abstraction->pre_apply_hook(application->rhs, scope);
                 return native_abstraction->apply(language::evaluate(application->rhs, scope), scope);
             }
 
@@ -208,7 +221,7 @@ ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_refer
                 shared_ptr<ast::Literal> rhs_literal = static_pointer_cast<ast::Literal>(rhs);
                 if (lhs_literal->valueType == rhs_literal->valueType) {
                     ast::LiteralType type = lhs_literal->valueType;
-                    if (operation->opType != ast::OperationType::EQUALS) {
+                    if (operation->arithmatic_op) {
                         if (type == ast::LiteralType::Int) {
                             int result = apply_arithmatic_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
                             ast::node_reference result_literal = make_shared<ast::Literal>(result);
