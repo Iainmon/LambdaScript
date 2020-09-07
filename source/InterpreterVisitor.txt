@@ -7,12 +7,12 @@
 
 // using namespace std;
 
-// class InterpreterVisitor : public lambdaBaseVisitor {
+// class InterpreterVisitor : public LanguageBaseVisitor {
 //   private:
 //   public:
 //     map<string, ast::node_reference> assigned;
 
-//     antlrcpp::Any visitAbstraction(lambdaParser::AbstractionContext *ctx) override {
+//     antlrcpp::Any visitAbstraction(LanguageParser::AbstractionContext *ctx) override {
 //         const string argument = ctx->Identifier()->getText();
 //         ast::node_reference body = ctx->expression()->accept(this);
 //         // ast::scope_reference scope = make_shared<ast::Scope>();
@@ -20,7 +20,7 @@
 //         return (ast::node_reference)abstraction;
 //     }
 
-//     antlrcpp::Any visitApplication(lambdaParser::ApplicationContext *ctx) override {
+//     antlrcpp::Any visitApplication(LanguageParser::ApplicationContext *ctx) override {
         
 //         // std::bad_cast happens when node_reference is returned without being bound to variable
 //         ast::node_reference lhs = ctx->expression(0)->accept(this);
@@ -41,7 +41,7 @@
 
 //     }
 
-//     antlrcpp::Any visitVariable(lambdaParser::VariableContext *ctx) override {
+//     antlrcpp::Any visitVariable(LanguageParser::VariableContext *ctx) override {
 //         // cout << "VariableRefference " << ctx->Identifier()->getText() << endl;
 //         const string name = ctx->Identifier()->getText();
 //         // SWITCH(name)
@@ -54,20 +54,20 @@
 //         return identifier;
 //     }
 
-//     antlrcpp::Any visitInstructionLine(lambdaParser::InstructionLineContext *ctx) override {
+//     antlrcpp::Any visitInstructionLine(LanguageParser::InstructionLineContext *ctx) override {
 //         // cout << "InstructionLiteral" << endl;
 //         if (ctx->expression().size() == 1) {
 //             return ctx->expression(0)->accept(this);
 //         }
 //         shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
-//         for (lambdaParser::ExpressionContext* &line_expression : ctx->expression()) {
+//         for (LanguageParser::ExpressionContext* &line_expression : ctx->expression()) {
 //             ast::node_reference expression = line_expression->accept(this);
 //             grouping->nodes.push_back(expression);
 //         }
 //         return (ast::node_reference)grouping;
 //     }
 
-//     antlrcpp::Any visitLiteral(lambdaParser::LiteralContext *ctx) override {
+//     antlrcpp::Any visitLiteral(LanguageParser::LiteralContext *ctx) override {
 //         // cout << "Literal" << endl;
 
 //         if (ctx->Int() != nullptr) {
@@ -90,7 +90,7 @@
 //         return nilLiteral;
 //     }
 
-//     antlrcpp::Any visitAssign(lambdaParser::AssignContext *ctx) override {
+//     antlrcpp::Any visitAssign(LanguageParser::AssignContext *ctx) override {
 //         // cout << "Assignment" << endl;
 
 //         const string name = ctx->Identifier()->getText();
@@ -102,7 +102,7 @@
 //         // return value; // Returns value of assignment instead of Assignment node.
 //     }
 
-//     antlrcpp::Any visitBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) override {
+//     antlrcpp::Any visitBinaryExpression(LanguageParser::BinaryExpressionContext *ctx) override {
 //         // cout << "BinaryExpression" << endl;
 //         ast::node_reference lhs = ctx->expression(0)->accept(this);
 //         ast::node_reference rhs = ctx->expression(1)->accept(this);
@@ -112,12 +112,12 @@
 //     }
 
 //     // Atom
-//     antlrcpp::Any visitBrackets(lambdaParser::BracketsContext *ctx) override {
+//     antlrcpp::Any visitBrackets(LanguageParser::BracketsContext *ctx) override {
 //         // cout << "Brackets" << endl;
 //         return ctx->expression()->accept(this);
 //     }
 
-//     antlrcpp::Any visitPrintInstruction(lambdaParser::PrintInstructionContext *ctx) override {
+//     antlrcpp::Any visitPrintInstruction(LanguageParser::PrintInstructionContext *ctx) override {
 //         // cout << "PrintInstruction" << endl;
 //         cout << ctx->expression()->getText() << endl;
 //         ast::node_reference valueToPrint = ctx->expression()->accept(this);
@@ -126,7 +126,7 @@
 //     }
 
 //     // Print should be a listnener
-//     // antlrcpp::Any visitPrint(lambdaParser::PrintInstructionContext *ctx) override {
+//     // antlrcpp::Any visitPrint(LanguageParser::PrintInstructionContext *ctx) override {
 //     //   cout << dye::aqua() << endl;
 //     // }
 

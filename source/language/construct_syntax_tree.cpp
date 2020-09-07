@@ -8,9 +8,9 @@ using namespace antlr4;
 ast::node_reference language::construct_syntax_tree(const std::string &source) {
 
     ANTLRInputStream input(source);
-    lambdaLexer lexer(&input);
+    LanguageLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
-    lambdaParser parser(&tokens);
+    LanguageParser parser(&tokens);
 
     tree::ParseTree *tree = parser.program();
 
@@ -23,9 +23,9 @@ ast::node_reference language::construct_syntax_tree(const std::string &source) {
 ast::node_reference language::construct_syntax_tree(std::ifstream &source) {
 
     ANTLRInputStream input(source);
-    lambdaLexer lexer(&input);
+    LanguageLexer lexer(&input);
     CommonTokenStream tokens(&lexer);
-    lambdaParser parser(&tokens);
+    LanguageParser parser(&tokens);
 
     tree::ParseTree *tree = parser.program();
 

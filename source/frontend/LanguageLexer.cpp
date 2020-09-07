@@ -1,50 +1,50 @@
 
-// Generated from lambda.g4 by ANTLR 4.8
+// Generated from Language.g4 by ANTLR 4.8
 
 
-#include "lambdaLexer.h"
+#include "LanguageLexer.h"
 
 
 using namespace antlr4;
 
 
-lambdaLexer::lambdaLexer(CharStream *input) : Lexer(input) {
+LanguageLexer::LanguageLexer(CharStream *input) : Lexer(input) {
   _interpreter = new atn::LexerATNSimulator(this, _atn, _decisionToDFA, _sharedContextCache);
 }
 
-lambdaLexer::~lambdaLexer() {
+LanguageLexer::~LanguageLexer() {
   delete _interpreter;
 }
 
-std::string lambdaLexer::getGrammarFileName() const {
-  return "lambda.g4";
+std::string LanguageLexer::getGrammarFileName() const {
+  return "Language.g4";
 }
 
-const std::vector<std::string>& lambdaLexer::getRuleNames() const {
+const std::vector<std::string>& LanguageLexer::getRuleNames() const {
   return _ruleNames;
 }
 
-const std::vector<std::string>& lambdaLexer::getChannelNames() const {
+const std::vector<std::string>& LanguageLexer::getChannelNames() const {
   return _channelNames;
 }
 
-const std::vector<std::string>& lambdaLexer::getModeNames() const {
+const std::vector<std::string>& LanguageLexer::getModeNames() const {
   return _modeNames;
 }
 
-const std::vector<std::string>& lambdaLexer::getTokenNames() const {
+const std::vector<std::string>& LanguageLexer::getTokenNames() const {
   return _tokenNames;
 }
 
-dfa::Vocabulary& lambdaLexer::getVocabulary() const {
+dfa::Vocabulary& LanguageLexer::getVocabulary() const {
   return _vocabulary;
 }
 
-const std::vector<uint16_t> lambdaLexer::getSerializedATN() const {
+const std::vector<uint16_t> LanguageLexer::getSerializedATN() const {
   return _serializedATN;
 }
 
-const atn::ATN& lambdaLexer::getATN() const {
+const atn::ATN& LanguageLexer::getATN() const {
   return _atn;
 }
 
@@ -52,42 +52,42 @@ const atn::ATN& lambdaLexer::getATN() const {
 
 
 // Static vars and initialization.
-std::vector<dfa::DFA> lambdaLexer::_decisionToDFA;
-atn::PredictionContextCache lambdaLexer::_sharedContextCache;
+std::vector<dfa::DFA> LanguageLexer::_decisionToDFA;
+atn::PredictionContextCache LanguageLexer::_sharedContextCache;
 
 // We own the ATN which in turn owns the ATN states.
-atn::ATN lambdaLexer::_atn;
-std::vector<uint16_t> lambdaLexer::_serializedATN;
+atn::ATN LanguageLexer::_atn;
+std::vector<uint16_t> LanguageLexer::_serializedATN;
 
-std::vector<std::string> lambdaLexer::_ruleNames = {
+std::vector<std::string> LanguageLexer::_ruleNames = {
   u8"T__0", u8"T__1", u8"T__2", u8"T__3", u8"T__4", u8"T__5", u8"T__6", 
   u8"T__7", u8"T__8", u8"T__9", u8"T__10", u8"T__11", u8"Lambda", u8"Bool", 
   u8"Int", u8"Identifier", u8"TypeIdentifier", u8"Operator", u8"WS", u8"NL"
 };
 
-std::vector<std::string> lambdaLexer::_channelNames = {
+std::vector<std::string> LanguageLexer::_channelNames = {
   "DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 };
 
-std::vector<std::string> lambdaLexer::_modeNames = {
+std::vector<std::string> LanguageLexer::_modeNames = {
   u8"DEFAULT_MODE"
 };
 
-std::vector<std::string> lambdaLexer::_literalNames = {
+std::vector<std::string> LanguageLexer::_literalNames = {
   "", u8"'.'", u8"'='", u8"'print'", u8"'import'", u8"'('", u8"')'", u8"'if'", 
   u8"'then'", u8"'else'", u8"'->'", u8"'|'", u8"':'"
 };
 
-std::vector<std::string> lambdaLexer::_symbolicNames = {
+std::vector<std::string> LanguageLexer::_symbolicNames = {
   "", "", "", "", "", "", "", "", "", "", "", "", "", u8"Lambda", u8"Bool", 
   u8"Int", u8"Identifier", u8"TypeIdentifier", u8"Operator", u8"WS", u8"NL"
 };
 
-dfa::Vocabulary lambdaLexer::_vocabulary(_literalNames, _symbolicNames);
+dfa::Vocabulary LanguageLexer::_vocabulary(_literalNames, _symbolicNames);
 
-std::vector<std::string> lambdaLexer::_tokenNames;
+std::vector<std::string> LanguageLexer::_tokenNames;
 
-lambdaLexer::Initializer::Initializer() {
+LanguageLexer::Initializer::Initializer() {
   // This code could be in a static initializer lambda, but VS doesn't allow access to private class members from there.
 	for (size_t i = 0; i < _symbolicNames.size(); ++i) {
 		std::string name = _vocabulary.getLiteralName(i);
@@ -215,4 +215,4 @@ lambdaLexer::Initializer::Initializer() {
   }
 }
 
-lambdaLexer::Initializer lambdaLexer::_init;
+LanguageLexer::Initializer LanguageLexer::_init;

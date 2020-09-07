@@ -17,12 +17,12 @@
 
 void print(const std::string &input) { std::cout << input << std::endl; }
 
-// class TreeShapeListener : public lambdaBaseListener {
+// class TreeShapeListener : public LanguageBaseListener {
 //   private:
 //     HashMap scope;
 
 //   public:
-//     void exitShow(lambdaParser::ShowContext *ctx) override {
+//     void exitShow(LanguageParser::ShowContext *ctx) override {
 //         if (ctx->INT() != nullptr) {
 //             const std::string value = ctx->INT()->getText();
 //             print(value);
@@ -32,7 +32,7 @@ void print(const std::string &input) { std::cout << input << std::endl; }
 //             print(value);
 //         }
 //     }
-//     void exitLet(lambdaParser::LetContext *ctx) override {
+//     void exitLet(LanguageParser::LetContext *ctx) override {
 //         const string name = ctx->VAR()->getText();
 //         const string value = ctx->INT()->getText();
 //         scope[name] = value;
@@ -47,9 +47,9 @@ void run_loop(const std::string &pre_load = "") {
         ss << input_line << std::endl;
         // // ANTLRInputStream input(input_line);
         // ANTLRInputStream input(ss.str());
-        // lambdaLexer lexer(&input);
+        // LanguageLexer lexer(&input);
         // CommonTokenStream tokens(&lexer);
-        // lambdaParser parser(&tokens);
+        // LanguageParser parser(&tokens);
 
         // // Parsing
         // tree::ParseTree *tree = parser.program();

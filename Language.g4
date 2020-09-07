@@ -1,4 +1,4 @@
-grammar lambda;
+grammar Language;
 
 // program: expression|;
 program: ( expression NL )*  # instructionLine;

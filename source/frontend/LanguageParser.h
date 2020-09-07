@@ -1,5 +1,5 @@
 
-// Generated from lambda.g4 by ANTLR 4.8
+// Generated from Language.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -9,7 +9,7 @@
 
 
 
-class  lambdaParser : public antlr4::Parser {
+class  LanguageParser : public antlr4::Parser {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
@@ -23,8 +23,8 @@ public:
     RuleTypeBinding = 4, RuleType = 5
   };
 
-  lambdaParser(antlr4::TokenStream *input);
-  ~lambdaParser();
+  LanguageParser(antlr4::TokenStream *input);
+  ~LanguageParser();
 
   virtual std::string getGrammarFileName() const override;
   virtual const antlr4::atn::ATN& getATN() const override { return _atn; };

@@ -11,42 +11,42 @@
 #include <chrono>
 
 namespace language {
-class InterpreterVisitor : public lambdaBaseVisitor {
+class InterpreterVisitor : public LanguageBaseVisitor {
   public:
 
-    antlrcpp::Any visitAbstraction(lambdaParser::AbstractionContext *ctx) override;
+    antlrcpp::Any visitAbstraction(LanguageParser::AbstractionContext *ctx) override;
 
-    antlrcpp::Any visitApplication(lambdaParser::ApplicationContext *ctx) override;
+    antlrcpp::Any visitApplication(LanguageParser::ApplicationContext *ctx) override;
 
-    antlrcpp::Any visitVariable(lambdaParser::VariableContext *ctx) override;
+    antlrcpp::Any visitVariable(LanguageParser::VariableContext *ctx) override;
 
-    antlrcpp::Any visitInstructionLine(lambdaParser::InstructionLineContext *ctx) override;
+    antlrcpp::Any visitInstructionLine(LanguageParser::InstructionLineContext *ctx) override;
 
-    antlrcpp::Any visitLiteral(lambdaParser::LiteralContext *ctx) override;
+    antlrcpp::Any visitLiteral(LanguageParser::LiteralContext *ctx) override;
 
-    antlrcpp::Any visitAssign(lambdaParser::AssignContext *ctx) override;
+    antlrcpp::Any visitAssign(LanguageParser::AssignContext *ctx) override;
 
-    antlrcpp::Any visitBinaryExpression(lambdaParser::BinaryExpressionContext *ctx) override;
+    antlrcpp::Any visitBinaryExpression(LanguageParser::BinaryExpressionContext *ctx) override;
 
-    antlrcpp::Any visitBrackets(lambdaParser::BracketsContext *ctx) override;
+    antlrcpp::Any visitBrackets(LanguageParser::BracketsContext *ctx) override;
 
-    antlrcpp::Any visitPrintInstruction(lambdaParser::PrintInstructionContext *ctx) override;
+    antlrcpp::Any visitPrintInstruction(LanguageParser::PrintInstructionContext *ctx) override;
 
-    antlrcpp::Any visitImportInstruction(lambdaParser::ImportInstructionContext *ctx) override;
+    antlrcpp::Any visitImportInstruction(LanguageParser::ImportInstructionContext *ctx) override;
 
-    antlrcpp::Any visitConditional(lambdaParser::ConditionalContext *ctx) override;
+    antlrcpp::Any visitConditional(LanguageParser::ConditionalContext *ctx) override;
 
-    antlrcpp::Any visitBody(lambdaParser::BodyContext *ctx) override;
+    antlrcpp::Any visitBody(LanguageParser::BodyContext *ctx) override;
 
-    antlrcpp::Any visitCondition(lambdaParser::ConditionContext *ctx) override;
+    antlrcpp::Any visitCondition(LanguageParser::ConditionContext *ctx) override;
 
-    antlrcpp::Any visitTypeBinding(lambdaParser::TypeBindingContext *ctx) override;
+    antlrcpp::Any visitTypeBinding(LanguageParser::TypeBindingContext *ctx) override;
 
-    antlrcpp::Any visitTypeBrackets(lambdaParser::TypeBracketsContext *ctx) override;
+    antlrcpp::Any visitTypeBrackets(LanguageParser::TypeBracketsContext *ctx) override;
 
-    antlrcpp::Any visitLeafType(lambdaParser::LeafTypeContext *ctx) override;
+    antlrcpp::Any visitLeafType(LanguageParser::LeafTypeContext *ctx) override;
 
-    antlrcpp::Any visitNodeType(lambdaParser::NodeTypeContext *ctx) override;
+    antlrcpp::Any visitNodeType(LanguageParser::NodeTypeContext *ctx) override;
 
 };
 

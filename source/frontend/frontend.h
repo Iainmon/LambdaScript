@@ -2,10 +2,10 @@
 #define FRONTEND_H
 
 #include "antlr4-runtime.h"
-#include "lambdaLexer.h"
-#include "lambdaParser.h"
-#include "lambdaBaseListener.h"
-#include "lambdaVisitor.h"
-#include "lambdaBaseVisitor.h"
+#include "LanguageLexer.h"
+#include "LanguageParser.h"
+#include "LanguageBaseListener.h"
+#include "LanguageVisitor.h"
+#include "LanguageBaseVisitor.h"
 
 #endif

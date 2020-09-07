@@ -3,12 +3,12 @@
 // #include <iostream>
 // #include <map>
 
-// class ImportListener : public lambdaBaseListener {
+// class ImportListener : public LanguageBaseListener {
 //   private:
 //     HashMap imports;
 
 //   public:
-//     void exitShow(lambdaParser::ImportContext *ctx) override {
+//     void exitShow(LanguageParser::ImportContext *ctx) override {
 //         if (ctx->INT() != nullptr) {
 //             const std::string value = ctx->INT()->getText();
 //             print(value);
