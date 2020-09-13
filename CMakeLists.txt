@@ -1,5 +1,6 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.7 FATAL_ERROR)
-# set(CMAKE_CXX_COMPILER "clang")
+set(CMAKE_C_COMPILER "clang")
+set(CMAKE_CXX_COMPILER "clang++")
 
 
 # ANTLR_CMD = antlr4 -visitor lambda.g4 -o source/frontend/ -Dlanguage=Cpp

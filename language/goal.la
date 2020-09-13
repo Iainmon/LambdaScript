@@ -1,5 +1,60 @@
 import std
 
-fac = \n. if equ n 0 then 1 else mul n (fac (sub n 1))
+fac = \n: Num. if equ n 0 then 1 else mul n (fac (sub n 1))
 
 print (fac 5)
+
+type * = {
+    infix (.): 
+}
+
+type Number = {
+    (+): Number -> Number -> Number = [nativeTypeCall "addition"]
+    (-): Number -> Number -> Number = [nativeTypeCall "subtraction"]
+    (*): Number -> Number -> Number = [nativeTypeCall "multiplication"]
+    (/): Number -> Number -> Number = [nativeTypeCall "divivision"]
+    (**): Number -> Number -> Number = [nativeTypeCall "exponentation"]
+    (==): Number -> Number -> Number = [nativeTypeCall "equality"]
+    (>): Number -> Number -> Number = [nativeTypeCall "openGreater"]
+    (<): Number -> Number -> Number = [nativeTypeCall "openLess"]
+    (>=): Number -> Number -> Number = [nativeTypeCall "closedGreater"]
+    (<=): Number -> Number -> Number = [nativeTypeCall "closedLess"]
+
+    add = (+) -- Infers the same type
+    sub = (-)
+    mul = (*)
+    div = (/)
+    exp = (**)
+    equ = (==)
+    greater = (>)
+    less = (<)
+    gte = (>=)
+    lte = (<=)
+
+    inc : Number -> Number = add 1
+    dec : Number -> Number = \n: Number. sub n 1
+
+    cast : Bool -> Number = \bool: Bool. if bool then 1 else 0
+    cast : Number -> Number = id -- Must convert type of id (: * -> * ) to (: Number -> Number)
+}
+
+type Bool = {
+    tru <--> \a.\b.a
+    fls <--> \a.\b.b
+
+    cast : Number -> Bool = \n: Number. ( n > 0 -> tru | fls ) -- if n > 0 then tru else fls
+    cast : Nil -> Bool = tru fls -- Will use the tru encoding
+    cast : Bool -> Bool = id -- Must convert type of id (: * -> * ) to (: Bool -> Bool)
+    not : Bool -> Bool = \n: Bool. if n then fls else tru
+    and : Bool -> Bool -> Bool = \n.\m. if n then m else fls
+    or : Bool -> Bool -> Bool = \n.\m. if a then tru else b
+    orand = 
+}
+
+:: * <--> ( * -> * )
+
+matches : * -> * -> Bool
+pattern = matches (\arg. abst)
+pattern (\x.(\y. t)) => tru
+pattern tru => fls
+pattern \n. 1 => fls

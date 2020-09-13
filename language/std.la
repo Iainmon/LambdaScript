@@ -20,6 +20,10 @@ not = (\b. if b then fls else tru)
 inc = add 1
 dec = (\n.sub n 1)
 
+flip = (\f.\a.\b.f b a)
+dec = flip sub 1
+dec = (\n.sub n 1)
+
 ass = (\x.(state = x))
 
 square = (\n.mul n n)
