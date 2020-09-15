@@ -1,7 +1,7 @@
 grammar Language;
 
 // program: expression|;
-program: ( expression NL )*  # instructionLine;
+program: ( expression (NL | EOF) )* EOF? # instructionLine;
 
 expression:
 	(Int | Bool)                                	# literal // used to be constant

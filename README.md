@@ -32,6 +32,22 @@ not tru
 4040
 ```
 
+# Installation
+You will need:
+ * A modern C/C++ compiler (preferably clang/clang++)
+ * CMake 3.1+ installed (on a Mac, run `brew install cmake`)
+ * 
+
+```bash
+git clone https://github.com/Iainmon/extended-lambda-calculus-language.git
+cd extended-lambda-calculus-language
+mkdir build
+cd build
+cmake ..
+make -j4
+./lcalc std.la --interactive
+```
+
 # Roadmap
 -   [x] Create language grammar rules
 -   [x] Construct Abstract Syntax Tree using the ANTLR visitor archetecture

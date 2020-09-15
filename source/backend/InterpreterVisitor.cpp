@@ -34,6 +34,7 @@ ast::node_reference backend::InterpreterVisitor::visitAssignment(std::shared_ptr
 }
 ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_ptr<ast::Application> application) {
     // Do this later skater.
+    return (ast::node_reference)application;
 }
 ast::node_reference backend::InterpreterVisitor::visitAbstraction(std::shared_ptr<ast::Abstraction> abstraction) {
     return (ast::node_reference)abstraction;
@@ -42,6 +43,9 @@ ast::node_reference backend::InterpreterVisitor::visitArithmeticalOperation(std:
     return (ast::node_reference)operation;
 }
 ast::node_reference backend::InterpreterVisitor::visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction> native_abstraction) {
+    // Will call the native_abstractions .apply() method, where it will construct an AST tree
+    // Sometimes the use of a new Curryable object will be used to keep track of previously provided arguments, until all are met, and the expression can be executed internally.
+    // For example, the add function (+) will need to do this. Exit will not. Print will not.
     return (ast::node_reference)native_abstraction;
 }
 ast::node_reference backend::InterpreterVisitor::visitImportInstruction(std::shared_ptr<ast::ImportInstruction> import_instruction) {

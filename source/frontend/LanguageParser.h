@@ -59,6 +59,8 @@ public:
 
     std::vector<ExpressionContext *> expression();
     ExpressionContext* expression(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> EOF();
+    antlr4::tree::TerminalNode* EOF(size_t i);
     std::vector<antlr4::tree::TerminalNode *> NL();
     antlr4::tree::TerminalNode* NL(size_t i);
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;

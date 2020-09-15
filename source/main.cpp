@@ -125,13 +125,7 @@ int main(int argc, const char *argv[]) {
 
         if (verbose_print)
             print(evaluated_ast->to_string());
-        
-        if (!run_interactive_mode)
-            return 0;
-
-        if (!main_file_done)
-            main_file_done = true;
-
+            
         if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
             std::shared_ptr<ast::Grouping> grouping = std::static_pointer_cast<ast::Grouping>(evaluated_ast);
             if (!grouping->nodes.empty()) {
@@ -144,6 +138,12 @@ int main(int argc, const char *argv[]) {
                 }
             }
         }
+        
+        if (!run_interactive_mode)
+            return 0;
+
+        if (!main_file_done)
+            main_file_done = true;
 
         std::string input_line;
         getline(std::cin, input_line);
