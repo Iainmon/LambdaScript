@@ -120,7 +120,7 @@ int main(int argc, const char *argv[]) {
 
         if (verbose_print)
             print(ast->to_string());
-
+        // ast::scope_reference program_scope = std::make_shared<ast::Scope>(*global_scope);
         ast::node_reference evaluated_ast = language::evaluate(ast, global_scope);
 
         if (verbose_print)
@@ -150,6 +150,10 @@ int main(int argc, const char *argv[]) {
         if (input_line.compare(":q\n") == 0)
             return 0;
         source << input_line << std::endl;
+        // std::string myGraphJson = "{\"kind\":{\"graph\":true},"
+        // "\"nodes\":[{\"id\":\"1\"},{\"id\":\"2\"}],"
+        // "\"edges\":[{\"from\":\"1\",\"to\":\"2\"}]}";
+        // std::cout << myGraphJson;
 
     } while (run_interactive_mode);
 

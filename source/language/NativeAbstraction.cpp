@@ -119,6 +119,7 @@ language::native_functions::Typeof::Typeof() {
     type = ast::ASTNodeType::NATIVE_ABSTRACTION;
 }
 ast::node_reference language::native_functions::Typeof::apply(ast::node_reference argument, ast::scope_reference scope) {
+    // For this to work the way it is supposed to, Types have to have an specific AST node
     if (argument->data_type != nullptr) {
         cout << blue << ":: " << reset << argument->data_type->pretty_print() << endl;
     }

@@ -3,7 +3,7 @@ set(CMAKE_C_COMPILER "clang")
 set(CMAKE_CXX_COMPILER "clang++")
 
 
-# ANTLR_CMD = antlr4 -visitor lambda.g4 -o source/frontend/ -Dlanguage=Cpp
+# ANTLR_CMD = antlr4 -visitor Language.g4 -o source/frontend/ -Dlanguage=Cpp
 
 
 project(LambdaCalculus)
