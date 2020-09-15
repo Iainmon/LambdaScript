@@ -7,7 +7,7 @@
 
 // using namespace std;
 
-// class InterpreterVisitor : public LanguageBaseVisitor {
+// class ConstructorVisitor : public LanguageBaseVisitor {
 //   private:
 //   public:
 //     map<string, ast::node_reference> assigned;

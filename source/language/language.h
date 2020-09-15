@@ -11,7 +11,7 @@
 #include <chrono>
 
 namespace language {
-class InterpreterVisitor : public LanguageBaseVisitor {
+class ConstructorVisitor : public LanguageBaseVisitor {
   public:
 
     antlrcpp::Any visitAbstraction(LanguageParser::AbstractionContext *ctx) override;

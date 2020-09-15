@@ -54,7 +54,7 @@ void run_loop() {
         // tree::ParseTree *tree = parser.program();
 
         // // AST Construction
-        // language::InterpreterVisitor visitor;
+        // language::ConstructorVisitor visitor;
         // ast::node_reference ast = visitor.visit(tree);
         ast::node_reference ast = language::construct_syntax_tree(ss.str());
         print("-- Constructed AST --");
@@ -92,7 +92,7 @@ int main(int argc, const char *argv[]) {
     std::wcout << "Parse Tree: " << s << std::endl;
 
     print("Interpreting...");
-    language::InterpreterVisitor visitor;
+    language::ConstructorVisitor visitor;
     ast::node_reference ast = visitor.visit(tree);
     print("-- Abstract Syntax Tree --");
     print(ast->to_string());

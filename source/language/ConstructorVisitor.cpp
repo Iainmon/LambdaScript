@@ -4,7 +4,7 @@
 using namespace std;
 using namespace language;
 
-antlrcpp::Any InterpreterVisitor::visitAbstraction(LanguageParser::AbstractionContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitAbstraction(LanguageParser::AbstractionContext *ctx) {
     const string argument = ctx->Identifier()->getText();
     ast::node_reference body = ctx->expression()->accept(this);
     // ast::scope_reference scope = make_shared<ast::Scope>();
@@ -25,7 +25,7 @@ antlrcpp::Any InterpreterVisitor::visitAbstraction(LanguageParser::AbstractionCo
     }
     return (ast::node_reference)abstraction;
 }
-antlrcpp::Any InterpreterVisitor::visitApplication(LanguageParser::ApplicationContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitApplication(LanguageParser::ApplicationContext *ctx)  {
 
     // std::bad_cast happens when node_reference is returned without being bound to variable
     ast::node_reference lhs = ctx->expression(0)->accept(this);
@@ -44,7 +44,7 @@ antlrcpp::Any InterpreterVisitor::visitApplication(LanguageParser::ApplicationCo
     //     return (ast::node_reference)grouping;
     // }
 }
-antlrcpp::Any InterpreterVisitor::visitVariable(LanguageParser::VariableContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitVariable(LanguageParser::VariableContext *ctx)  {
     // cout << "VariableRefference " << ctx->Identifier()->getText() << endl;
     const string name = ctx->Identifier()->getText();
     // SWITCH(name)
@@ -62,7 +62,7 @@ antlrcpp::Any InterpreterVisitor::visitVariable(LanguageParser::VariableContext 
 
     return identifier;
 }
-antlrcpp::Any InterpreterVisitor::visitInstructionLine(LanguageParser::InstructionLineContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitInstructionLine(LanguageParser::InstructionLineContext *ctx)  {
     // cout << "InstructionLiteral" << endl;
     if (ctx->expression().size() == 1) {
         return ctx->expression(0)->accept(this);
@@ -74,7 +74,7 @@ antlrcpp::Any InterpreterVisitor::visitInstructionLine(LanguageParser::Instructi
     }
     return (ast::node_reference)grouping;
 }
-antlrcpp::Any InterpreterVisitor::visitLiteral(LanguageParser::LiteralContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitLiteral(LanguageParser::LiteralContext *ctx)  {
     // cout << "Literal" << endl;
 
     if (ctx->Int() != nullptr) {
@@ -101,7 +101,7 @@ antlrcpp::Any InterpreterVisitor::visitLiteral(LanguageParser::LiteralContext *c
     ast::node_reference base_literal = make_shared<ast::Literal>('l');
     return base_literal;
 }
-antlrcpp::Any InterpreterVisitor::visitAssign(LanguageParser::AssignContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitAssign(LanguageParser::AssignContext *ctx)  {
     // cout << "Assignment" << endl;
 
     const string name = ctx->Identifier()->getText();
@@ -115,7 +115,7 @@ antlrcpp::Any InterpreterVisitor::visitAssign(LanguageParser::AssignContext *ctx
     return assignment;
     // return value; // Returns value of assignment instead of Assignment node.
 }
-antlrcpp::Any InterpreterVisitor::visitBinaryExpression(LanguageParser::BinaryExpressionContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitBinaryExpression(LanguageParser::BinaryExpressionContext *ctx)  {
     // cout << "BinaryExpression" << endl;
     ast::node_reference lhs = ctx->expression(0)->accept(this);
     ast::node_reference rhs = ctx->expression(1)->accept(this);
@@ -123,31 +123,31 @@ antlrcpp::Any InterpreterVisitor::visitBinaryExpression(LanguageParser::BinaryEx
     ast::node_reference operationNode = make_shared<ast::Operation>(opType, lhs, rhs);
     return operationNode;
 }
-antlrcpp::Any InterpreterVisitor::visitBrackets(LanguageParser::BracketsContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitBrackets(LanguageParser::BracketsContext *ctx)  {
     // cout << "Brackets" << endl;
     return ctx->expression()->accept(this);
 }
-antlrcpp::Any InterpreterVisitor::visitPrintInstruction(LanguageParser::PrintInstructionContext *ctx)  {
+antlrcpp::Any ConstructorVisitor::visitPrintInstruction(LanguageParser::PrintInstructionContext *ctx)  {
     // cout << "PrintInstruction" << endl;
     ast::node_reference valueToPrint = ctx->expression()->accept(this);
     ast::node_reference printInstr = make_shared<ast::PrintInstruction>(valueToPrint);
     return printInstr;
 }
-antlrcpp::Any InterpreterVisitor::visitImportInstruction(LanguageParser::ImportInstructionContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitImportInstruction(LanguageParser::ImportInstructionContext *ctx) {
     // return ctx->imports()->accept(this);
     string file_name = ctx->Identifier()->getText();
     ast::node_reference importInstr = make_shared<ast::ImportInstruction>(file_name);
     return importInstr;
 }
 
-antlrcpp::Any InterpreterVisitor::visitConditional(LanguageParser::ConditionalContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitConditional(LanguageParser::ConditionalContext *ctx) {
     return ctx->condition()->accept(this);
 }
-antlrcpp::Any InterpreterVisitor::visitBody(LanguageParser::BodyContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitBody(LanguageParser::BodyContext *ctx) {
     return ctx->expression()->accept(this);
 }
 
-antlrcpp::Any InterpreterVisitor::visitCondition(LanguageParser::ConditionContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitCondition(LanguageParser::ConditionContext *ctx) {
     
     ast::node_reference condition = ctx->expression()->accept(this);
     ast::node_reference tru_expression = ctx->body(0)->accept(this);
@@ -163,19 +163,19 @@ antlrcpp::Any InterpreterVisitor::visitCondition(LanguageParser::ConditionContex
     return application_2;
 }
 
-antlrcpp::Any InterpreterVisitor::visitTypeBinding(LanguageParser::TypeBindingContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitTypeBinding(LanguageParser::TypeBindingContext *ctx) {
     return ctx->type()->accept(this);
 }
-antlrcpp::Any InterpreterVisitor::visitTypeBrackets(LanguageParser::TypeBracketsContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitTypeBrackets(LanguageParser::TypeBracketsContext *ctx) {
     return ctx->type()->accept(this);
 }
 
-antlrcpp::Any InterpreterVisitor::visitLeafType(LanguageParser::LeafTypeContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitLeafType(LanguageParser::LeafTypeContext *ctx) {
     const string type_name = ctx->TypeIdentifier()->getText();
     ast::typesystem::type_reference type = ast::typesystem::type_from_name(type_name);
     return type;
 }
-antlrcpp::Any InterpreterVisitor::visitNodeType(LanguageParser::NodeTypeContext *ctx) {
+antlrcpp::Any ConstructorVisitor::visitNodeType(LanguageParser::NodeTypeContext *ctx) {
     ast::typesystem::type_reference lhs = ctx->type(0)->accept(this);
     ast::typesystem::type_reference rhs = ctx->type(1)->accept(this);
     ast::typesystem::type_reference node_type = make_shared<ast::typesystem::FunctionType>(lhs, rhs);

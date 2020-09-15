@@ -55,7 +55,7 @@ void run_loop(const std::string &pre_load = "") {
         // tree::ParseTree *tree = parser.program();
 
         // // AST Construction
-        // language::InterpreterVisitor visitor;
+        // language::ConstructorVisitor visitor;
         // ast::node_reference ast = visitor.visit(tree);
         ast::node_reference ast = language::construct_syntax_tree(ss.str());
         print("-- Constructed AST --");

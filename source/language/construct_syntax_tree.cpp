@@ -14,7 +14,7 @@ ast::node_reference language::construct_syntax_tree(const std::string &source) {
 
     tree::ParseTree *tree = parser.program();
 
-    language::InterpreterVisitor visitor;
+    language::ConstructorVisitor visitor;
     ast::node_reference ast = visitor.visit(tree);
 
     return ast;
@@ -29,7 +29,7 @@ ast::node_reference language::construct_syntax_tree(std::ifstream &source) {
 
     tree::ParseTree *tree = parser.program();
 
-    language::InterpreterVisitor visitor;
+    language::ConstructorVisitor visitor;
     ast::node_reference ast = visitor.visit(tree);
 
     return ast;
