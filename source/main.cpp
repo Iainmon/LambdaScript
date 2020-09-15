@@ -62,10 +62,10 @@ void run_loop(const std::string &pre_load = "") {
         print(ast->to_string());
         
         // Evaluation
-        ast::scope_reference global_scope = make_shared<ast::Scope>();
+        ast::scope_reference global_scope = std::make_shared<ast::Scope>();
         ast::node_reference evaluated_ast = language::evaluate(ast, global_scope);
         // if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
-        //     shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
+        //     shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
         //     if (!grouping->nodes.empty()) {
         //         print(grouping->nodes.front()->to_string());
         //     } // else {
@@ -98,13 +98,13 @@ int main(int argc, const char *argv[]) {
 
     bool main_file_done = false;
 
-    ast::scope_reference global_scope = make_shared<ast::Scope>();
-    ast::node_reference exit_abstraction = make_shared<language::native_functions::Exit>();
-    ast::node_reference truthy_abstraction = make_shared<language::native_functions::Truthy>();
-    ast::node_reference sum_abstraction = make_shared<language::native_functions::Sum>();
-    ast::node_reference reduce_abstraction = make_shared<language::native_functions::Reduce>();
-    ast::node_reference typeof_abstraction = make_shared<language::native_functions::Typeof>();
-    ast::node_reference time_abstraction = make_shared<language::native_functions::Time>();
+    ast::scope_reference global_scope = std::make_shared<ast::Scope>();
+    ast::node_reference exit_abstraction = std::make_shared<language::native_functions::Exit>();
+    ast::node_reference truthy_abstraction = std::make_shared<language::native_functions::Truthy>();
+    ast::node_reference sum_abstraction = std::make_shared<language::native_functions::Sum>();
+    ast::node_reference reduce_abstraction = std::make_shared<language::native_functions::Reduce>();
+    ast::node_reference typeof_abstraction = std::make_shared<language::native_functions::Typeof>();
+    ast::node_reference time_abstraction = std::make_shared<language::native_functions::Time>();
     global_scope->set("exit", exit_abstraction);
     global_scope->set("truthy", truthy_abstraction);
     global_scope->set("sum", sum_abstraction);

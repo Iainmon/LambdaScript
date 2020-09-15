@@ -62,42 +62,42 @@ class Exit : public ast::NativeAbstraction {
     public:
     Exit();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
-    string to_string() override;
-    string pretty_print() override;
+    std::string to_string() override;
+    std::string pretty_print() override;
 };
 
 class Truthy : public ast::NativeAbstraction {
     public:
     Truthy();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
-    string to_string() override;
-    string pretty_print() override;
+    std::string to_string() override;
+    std::string pretty_print() override;
 };
 
-class Sum : public ast::NativeAbstraction, public std::enable_shared_from_this<Sum> {
+class Sum : public ast::NativeAbstraction {
     int accumulator;
     public:
     Sum();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
     ast::node_reference reduce();
-    string to_string() override;
-    string pretty_print() override;
+    std::string to_string() override;
+    std::string pretty_print() override;
 };
 
 class Reduce : public ast::NativeAbstraction {
     public:
     Reduce();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
-    string to_string() override;
-    string pretty_print() override;
+    std::string to_string() override;
+    std::string pretty_print() override;
 };
 
 class Typeof : public ast::NativeAbstraction {
     public:
     Typeof();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
-    string to_string() override;
-    string pretty_print() override;
+    std::string to_string() override;
+    std::string pretty_print() override;
 };
 
 class Time : public ast::NativeAbstraction {
@@ -107,8 +107,8 @@ class Time : public ast::NativeAbstraction {
     Time();
     ast::node_reference apply(ast::node_reference argument, ast::scope_reference scope) override;
     void pre_apply_hook(ast::node_reference argument, ast::scope_reference scope) override;
-    string to_string() override;
-    string pretty_print() override;
+    std::string to_string() override;
+    std::string pretty_print() override;
 };
 
 }

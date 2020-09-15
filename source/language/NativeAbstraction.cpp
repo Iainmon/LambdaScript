@@ -1,5 +1,5 @@
 #include "language.h"
-
+using namespace std;
 
 language::native_functions::Exit::Exit() { type = ast::ASTNodeType::NATIVE_ABSTRACTION; }
 ast::node_reference language::native_functions::Exit::apply(ast::node_reference argument, ast::scope_reference scope) {
@@ -73,7 +73,7 @@ ast::node_reference language::native_functions::Sum::apply(ast::node_reference a
             accumulator += literal->getBool() ? 1 : 0;
         }
     }
-    ast::node_reference self = shared_from_this();
+    ast::node_reference self = std::static_pointer_cast<language::native_functions::Sum>(shared_from_this());
     return self;
 }
 std::string language::native_functions::Sum::to_string() {

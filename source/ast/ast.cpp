@@ -30,6 +30,10 @@ string ASTNode::pretty_print() {
     ss << "( * )";
     return ss.str();
 }
+node_reference ASTNode::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<ASTNode> self = static_pointer_cast<ASTNode>(shared_from_this());
+    return visitor->visitGenericASTNode(self);
+}
 
 shared_ptr<Scope> Scope::copy(const map<string, node_reference> &_scope) {
     shared_ptr<Scope> duplicate = make_shared<Scope>(_scope);
@@ -82,6 +86,10 @@ string Abstraction::pretty_print() {
     ss << "(" << Bmagenta << "λ" << cyan << argument << reset << "." << body->pretty_print() << ")";
     return ss.str();
 }
+node_reference Abstraction::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Abstraction> self = static_pointer_cast<Abstraction>(shared_from_this());
+    return visitor->visitAbstraction(self);
+}
 
 Application::Application(node_reference _lhs, node_reference _rhs) {
     type = APPLICATION;
@@ -99,6 +107,10 @@ string Application::pretty_print() {
     stringstream ss;
     ss << "(" << lhs->pretty_print() << " " << rhs->pretty_print() << ")";
     return ss.str();
+}
+node_reference Application::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Application> self = static_pointer_cast<Application>(shared_from_this());
+    return visitor->visitApplication(self);
 }
 
 Literal::Literal(bool val) {
@@ -135,6 +147,10 @@ string Literal::pretty_print() {
     ss << yellow << value << reset;
     return ss.str();
 }
+node_reference Literal::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Literal> self = static_pointer_cast<Literal>(shared_from_this());
+    return visitor->visitLiteral(self);
+}
 
 Variable::Variable(const string &name) {
     type = VARIABLE;
@@ -150,6 +166,10 @@ string Variable::pretty_print() {
     stringstream ss;
     ss << cyan << identifier << reset;
     return ss.str();
+}
+node_reference Variable::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Variable> self = static_pointer_cast<Variable>(shared_from_this());
+    return visitor->visitVariable(self);
 }
 
 Operation::Operation(OperationType _opType, node_reference _lhs, node_reference _rhs) {
@@ -200,21 +220,9 @@ OperationType Operation::matchOperationType(const string &op) {
     END
     return opType;
 }
-
-Main::Main(node_reference main) {
-    type = MAIN;
-    entry = main;
-}
-string Main::to_string() {
-    cout << "MainPrint" << endl;
-    stringstream ss;
-    ss << "( main = " << entry->to_string() << " )";
-    return ss.str();
-}
-string Main::pretty_print() {
-    stringstream ss;
-    ss << "( main = " << entry->pretty_print() << " )";
-    return ss.str();
+node_reference Operation::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Operation> self = static_pointer_cast<Operation>(shared_from_this());
+    return visitor->visitArithmeticalOperation(self);
 }
 
 PrintInstruction::PrintInstruction(node_reference valueToPrint) {
@@ -233,6 +241,10 @@ string PrintInstruction::pretty_print() {
     stringstream ss;
     ss << "print " << value->pretty_print();
     return ss.str();
+}
+node_reference PrintInstruction::accept(backend::NodeVisitor *visitor) {
+    // shared_ptr<Abstraction> self = static_pointer_cast<Abstraction>(shared_from_this());
+    return visitor->visitGenericASTNode(shared_from_this());
 }
 
 Grouping::Grouping() {
@@ -265,6 +277,10 @@ string Grouping::pretty_print() {
     ss << ")";
     return ss.str();
 }
+node_reference Grouping::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Grouping> self = static_pointer_cast<Grouping>(shared_from_this());
+    return visitor->visitGrouping(self);
+}
 
 Assignment::Assignment(const string &_identifier, node_reference _value) {
     type = ASSIGNMENT;
@@ -281,6 +297,10 @@ string Assignment::pretty_print() {
     stringstream ss;
     ss << "(" << cyan << identifier << blue << " = " << reset << value->pretty_print() << ")";
     return ss.str();
+}
+node_reference Assignment::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Assignment> self = static_pointer_cast<Assignment>(shared_from_this());
+    return visitor->visitAssignment(self);
 }
 
 ImportInstruction::ImportInstruction(const string &_file_name) {
@@ -299,8 +319,18 @@ string ImportInstruction::pretty_print() {
     return ss.str();
 }
 
+node_reference ImportInstruction::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<ImportInstruction> self = static_pointer_cast<ImportInstruction>(shared_from_this());
+    return visitor->visitImportInstruction(self);
+}
+
 node_reference NativeAbstraction::apply(node_reference argument, scope_reference scope) {
     return argument;
 }
 
 void NativeAbstraction::pre_apply_hook(node_reference argument, scope_reference scope) { }
+
+node_reference NativeAbstraction::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<NativeAbstraction> self = static_pointer_cast<NativeAbstraction>(shared_from_this());
+    return visitor->visitNativeAbstraction(self);
+}
