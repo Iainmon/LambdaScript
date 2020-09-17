@@ -80,112 +80,113 @@ bool apply_operation(ast::OperationType op_type, bool lhs, bool rhs) {
 
 ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_reference scope) {
     // while (true) {
-        if (ast->type == ast::ASTNodeType::APPLICATION) {
-            // Reduce both sides, then apply beta reduction.
-            shared_ptr<ast::Application> application = static_pointer_cast<ast::Application>(ast);
+//         if (ast->type == ast::ASTNodeType::APPLICATION) {
+//             // Reduce both sides, then apply beta reduction.
+//             shared_ptr<ast::Application> application = static_pointer_cast<ast::Application>(ast);
             
-            // cout << application->to_string() << endl;
-            // if (application->lhs == nullptr)
-            //     cout << "LHS is nullptr" << endl;
+//             // cout << application->to_string() << endl;
+//             // if (application->lhs == nullptr)
+//             //     cout << "LHS is nullptr" << endl;
 
-            ast::node_reference evaluated_lhs = language::evaluate(application->lhs, scope);
+//             ast::node_reference evaluated_lhs = language::evaluate(application->lhs, scope);
 
-            if (evaluated_lhs->type == ast::ASTNodeType::NATIVE_ABSTRACTION) {
-                shared_ptr<ast::NativeAbstraction> native_abstraction = static_pointer_cast<ast::NativeAbstraction>(evaluated_lhs);
-                native_abstraction->pre_apply_hook(application->rhs, scope);
-                return native_abstraction->apply(language::evaluate(application->rhs, scope), scope);
-            }
+//             if (evaluated_lhs->type == ast::ASTNodeType::NATIVE_ABSTRACTION) {
+//                 shared_ptr<ast::NativeAbstraction> native_abstraction = static_pointer_cast<ast::NativeAbstraction>(evaluated_lhs);
+//                 native_abstraction->pre_apply_hook(application->rhs, scope);
+//                 return native_abstraction->apply(language::evaluate(application->rhs, scope), scope);
+//             }
 
-            if (evaluated_lhs->type == ast::ASTNodeType::LITERAL || evaluated_lhs->type == ast::ASTNodeType::GROUPING) {
-                if (evaluated_lhs->type == ast::ASTNodeType::LITERAL) {
-                    shared_ptr<ast::Literal> literal = static_pointer_cast<ast::Literal>(evaluated_lhs);
-                    if (literal->valueType == ast::LiteralType::Bool && (scope->has("trbool") && scope->has("flbool"))) {
-                        bool truthy = literal->getBool();
-                        ast::node_reference truthy_reff = scope->get(truthy ? "trbool" : "flbool");
-                        shared_ptr<ast::Abstraction> boolean_lambda = static_pointer_cast<ast::Abstraction>(truthy_reff);
-                        ast::node_reference casted_truthy_application = make_shared<ast::Application>(boolean_lambda, application->rhs);
-                        return language::evaluate(casted_truthy_application, scope);
-                    }
-                }
-                shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
-                grouping->nodes.push_back(application->lhs);
-                grouping->nodes.push_back(application->rhs);
-                return (ast::node_reference)grouping;
-            }
+//             if (evaluated_lhs->type == ast::ASTNodeType::LITERAL || evaluated_lhs->type == ast::ASTNodeType::GROUPING) {
+//                 if (evaluated_lhs->type == ast::ASTNodeType::LITERAL) {
+//                     shared_ptr<ast::Literal> literal = static_pointer_cast<ast::Literal>(evaluated_lhs);
+//                     if (literal->valueType == ast::LiteralType::Bool && (scope->has("trbool") && scope->has("flbool"))) {
+//                         bool truthy = literal->getBool();
+//                         ast::node_reference truthy_reff = scope->get(truthy ? "trbool" : "flbool");
+//                         shared_ptr<ast::Abstraction> boolean_lambda = static_pointer_cast<ast::Abstraction>(truthy_reff);
+//                         ast::node_reference casted_truthy_application = make_shared<ast::Application>(boolean_lambda, application->rhs);
+//                         return language::evaluate(casted_truthy_application, scope);
+//                     }
+//                 }
+//                 shared_ptr<ast::Grouping> grouping = make_shared<ast::Grouping>();
+//                 grouping->nodes.push_back(application->lhs);
+//                 grouping->nodes.push_back(application->rhs);
+//                 return (ast::node_reference)grouping;
+//             }
 
-            ast::node_reference rhs = language::evaluate(application->rhs, scope);
+//             ast::node_reference rhs = language::evaluate(application->rhs, scope);
 
- /* start */if (application->lhs->type != ast::ASTNodeType::ABSTRACTION) {
-  /* dont */    shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(language::evaluate(application->lhs, scope));
+//  /* start */if (application->lhs->type != ast::ASTNodeType::ABSTRACTION) {
+//   /* dont */    shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(language::evaluate(application->lhs, scope));
                 
-                scope->set(lhs->argument, rhs);
-  /* edit */    return language::evaluate(lhs->body, scope);
+//                 scope->set(lhs->argument, rhs);
+//   /* edit */    return language::evaluate(lhs->body, scope);
 
-                // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
-                // child_scope->set(lhs->argument, rhs);
-   /* this */   // return language::evaluate(lhs->body, child_scope);
-            } else {
-                shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
+//                 // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
+//                 // child_scope->set(lhs->argument, rhs);
+//    /* this */   // return language::evaluate(lhs->body, child_scope);
+//             } else {
+//                 shared_ptr<ast::Abstraction> lhs = static_pointer_cast<ast::Abstraction>(application->lhs);
                 
-                scope->set(lhs->argument, rhs);
-  /* code */    return language::evaluate(lhs->body, scope);
+//                 scope->set(lhs->argument, rhs);
+//   /* code */    return language::evaluate(lhs->body, scope);
 
-                // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
-                // child_scope->set(lhs->argument, rhs);
-                // return language::evaluate(lhs->body, child_scope);
-  /* end */ }
-            // ast::node_reference rhs = application->rhs;
+//                 // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
+//                 // child_scope->set(lhs->argument, rhs);
+//                 // return language::evaluate(lhs->body, child_scope);
+//   /* end */ }
+//             // ast::node_reference rhs = application->rhs;
 
-            // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
-            // child_scope->set(lhs->argument, rhs);
-            // return language::evaluate(lhs->body, child_scope);
+//             // ast::scope_reference child_scope = make_shared<ast::Scope>(*scope);
+//             // child_scope->set(lhs->argument, rhs);
+//             // return language::evaluate(lhs->body, child_scope);
 
 
 
-            // return apply_beta_reduction(application);
-            // return ast;
-        } 
-        else if (ast->type == ast::ASTNodeType::ABSTRACTION) {
-            shared_ptr<ast::Abstraction> abstraction = static_pointer_cast<ast::Abstraction>(ast);
-            // abstraction->scope->set(abstraction->argument, abstraction->body);
-            // abstraction->scope = scope;
+//             // return apply_beta_reduction(application);
+//             // return ast;
+//         } 
+//         else if (ast->type == ast::ASTNodeType::ABSTRACTION) {
+//             shared_ptr<ast::Abstraction> abstraction = static_pointer_cast<ast::Abstraction>(ast);
+//             // abstraction->scope->set(abstraction->argument, abstraction->body);
+//             // abstraction->scope = scope;
 
-            return (ast::node_reference)abstraction;
-        } 
-        else if (ast->type == ast::ASTNodeType::GROUPING) {
-            // cout << "GROUPING" << endl;
-            shared_ptr<ast::Grouping> grouping = static_pointer_cast<ast::Grouping>(ast);
-            shared_ptr<ast::Grouping> evaluated_grouping = make_shared<ast::Grouping>();
-            for (ast::node_reference &node : grouping->nodes) {
-                ast::node_reference evaluated_node = language::evaluate(node, scope);
-                // evaluated_grouping->nodes.push_back(evaluated_node);
-                node = evaluated_node;
-            }
-            // return (ast::node_reference)evaluated_grouping;
-            return (ast::node_reference)grouping;
-        } else if (ast->type == ast::ASTNodeType::ASSIGNMENT) {
-            // cout << "ASSIGNMENT" << endl;
-            shared_ptr<ast::Assignment> assignment = static_pointer_cast<ast::Assignment>(ast);
-            ast::node_reference value = language::evaluate(assignment->value, scope);
-            scope->set(assignment->identifier, value);
-            return (ast::node_reference)assignment;
-        } else if (ast->type == ast::ASTNodeType::VARIABLE) {
-            // cout << "IDENTIFIER" << endl;
-            shared_ptr<ast::Variable> variable = static_pointer_cast<ast::Variable>(ast);
-            ast::node_reference variable_reference = scope->get(variable->identifier);
-            if (variable_reference == nullptr) {
-                cout << yellow << "Reference to undefined " << red << "[ " << reset << variable->to_string() << red << " ]" << reset << endl;
-                throw "Reference to undefined value.";
-            }
-            ast::node_reference value = static_pointer_cast<ast::Literal>(variable_reference);
-            return value;
+//             return (ast::node_reference)abstraction;
+//         } 
+//         else if (ast->type == ast::ASTNodeType::GROUPING) {
+//             // cout << "GROUPING" << endl;
+//             shared_ptr<ast::Grouping> grouping = static_pointer_cast<ast::Grouping>(ast);
+//             shared_ptr<ast::Grouping> evaluated_grouping = make_shared<ast::Grouping>();
+//             for (ast::node_reference &node : grouping->nodes) {
+//                 ast::node_reference evaluated_node = language::evaluate(node, scope);
+//                 // evaluated_grouping->nodes.push_back(evaluated_node);
+//                 node = evaluated_node;
+//             }
+//             // return (ast::node_reference)evaluated_grouping;
+//             return (ast::node_reference)grouping;
+//         } else if (ast->type == ast::ASTNodeType::ASSIGNMENT) {
+//             // cout << "ASSIGNMENT" << endl;
+//             shared_ptr<ast::Assignment> assignment = static_pointer_cast<ast::Assignment>(ast);
+//             ast::node_reference value = language::evaluate(assignment->value, scope);
+//             scope->set(assignment->identifier, value);
+//             return (ast::node_reference)assignment;
+//         } else if (ast->type == ast::ASTNodeType::VARIABLE) {
+//             // cout << "IDENTIFIER" << endl;
+//             shared_ptr<ast::Variable> variable = static_pointer_cast<ast::Variable>(ast);
+//             ast::node_reference variable_reference = scope->get(variable->identifier);
+//             if (variable_reference == nullptr) {
+//                 cout << yellow << "Reference to undefined " << red << "[ " << reset << variable->to_string() << red << " ]" << reset << endl;
+//                 throw "Reference to undefined value.";
+//             }
+//             ast::node_reference value = static_pointer_cast<ast::Literal>(variable_reference);
+//             return value;
 
-        } else if (ast->type == ast::ASTNodeType::LITERAL) {
-            // cout << "LITERAL" << endl;
+//         } else if (ast->type == ast::ASTNodeType::LITERAL) {
+//             // cout << "LITERAL" << endl;
 
-            ast::node_reference literal = static_pointer_cast<ast::Literal>(ast);
-            return (ast::node_reference)literal;
-        } else if (ast->type == ast::ASTNodeType::PRINT) {
+//             ast::node_reference literal = static_pointer_cast<ast::Literal>(ast);
+//             return (ast::node_reference)literal;
+//         } else 
+        if (ast->type == ast::ASTNodeType::PRINT) {
             // cout << "PRINT" << endl;
             cout << magenta << "λ -> " << reset;
             shared_ptr<ast::PrintInstruction> print_instruction = static_pointer_cast<ast::PrintInstruction>(ast);

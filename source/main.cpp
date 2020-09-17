@@ -11,72 +11,11 @@
 #include "frontend/frontend.h"
 #include "ast/ast.h"
 #include "language/language.h"
+#include "backend/backend.h"
 
 #include "argh.h"
 
-
 void print(const std::string &input) { std::cout << input << std::endl; }
-
-// class TreeShapeListener : public LanguageBaseListener {
-//   private:
-//     HashMap scope;
-
-//   public:
-//     void exitShow(LanguageParser::ShowContext *ctx) override {
-//         if (ctx->INT() != nullptr) {
-//             const std::string value = ctx->INT()->getText();
-//             print(value);
-//         } else if (ctx->VAR() != nullptr) {
-//             const string name = ctx->VAR()->getText();
-//             const string value = scope[name];
-//             print(value);
-//         }
-//     }
-//     void exitLet(LanguageParser::LetContext *ctx) override {
-//         const string name = ctx->VAR()->getText();
-//         const string value = ctx->INT()->getText();
-//         scope[name] = value;
-//     }
-// };
-
-void run_loop(const std::string &pre_load = "") {
-    std::stringstream ss;
-    while (true) {
-        std::string input_line;
-        getline(std::cin, input_line);
-        ss << input_line << std::endl;
-        // // ANTLRInputStream input(input_line);
-        // ANTLRInputStream input(ss.str());
-        // LanguageLexer lexer(&input);
-        // CommonTokenStream tokens(&lexer);
-        // LanguageParser parser(&tokens);
-
-        // // Parsing
-        // tree::ParseTree *tree = parser.program();
-
-        // // AST Construction
-        // language::ConstructorVisitor visitor;
-        // ast::node_reference ast = visitor.visit(tree);
-        ast::node_reference ast = language::construct_syntax_tree(ss.str());
-        print("-- Constructed AST --");
-        print(ast->to_string());
-        
-        // Evaluation
-        ast::scope_reference global_scope = std::make_shared<ast::Scope>();
-        ast::node_reference evaluated_ast = language::evaluate(ast, global_scope);
-        // if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
-        //     shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
-        //     if (!grouping->nodes.empty()) {
-        //         print(grouping->nodes.front()->to_string());
-        //     } // else {
-        //         print(grouping->to_string());
-        //     // }
-        // } else {
-            print("-- Evaluated AST --");
-            print(evaluated_ast->to_string());
-        // }
-    }
-}
 
 int main(int argc, const char *argv[]) {
 
@@ -121,7 +60,8 @@ int main(int argc, const char *argv[]) {
         if (verbose_print)
             print(ast->to_string());
         // ast::scope_reference program_scope = std::make_shared<ast::Scope>(*global_scope);
-        ast::node_reference evaluated_ast = language::evaluate(ast, global_scope);
+        std::unique_ptr<backend::InterpreterVisitor> interpreter = std::make_unique<backend::InterpreterVisitor>(global_scope);
+        ast::node_reference evaluated_ast = ast->accept(interpreter.get());
 
         if (verbose_print)
             print(evaluated_ast->to_string());
@@ -132,7 +72,8 @@ int main(int argc, const char *argv[]) {
                 if (last_group_count != grouping->nodes.size()) {
                     ast::node_reference last_node = grouping->nodes.back();
                     ast::node_reference print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
-                    language::evaluate(print_instruction, global_scope);
+                    language::evaluate(print_instruction->accept(interpreter.get()), global_scope);
+                    // print_instruction->accept(interpreter.get());
                     // print(grouping->nodes.back()->to_string());
                     last_group_count = grouping->nodes.size();
                 }

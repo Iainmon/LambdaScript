@@ -8,6 +8,10 @@
 namespace backend {
     // AKA EvaluationVisitor
     class InterpreterVisitor {
+        private:
+        void push_stack_frame();
+        void pop_stack_frame();
+
         public:
         std::stack<ast::scope_reference> stack;
 
@@ -23,6 +27,7 @@ namespace backend {
         ast::node_reference visitGrouping(std::shared_ptr<ast::Grouping>);
         ast::node_reference visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction>);
         ast::node_reference visitImportInstruction(std::shared_ptr<ast::ImportInstruction>);
+        ast::node_reference visitPrintInstruction(std::shared_ptr<ast::PrintInstruction>);
         ast::node_reference visitGenericASTNode(std::shared_ptr<ast::ASTNode>);
 
     };

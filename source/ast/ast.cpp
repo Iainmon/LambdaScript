@@ -243,8 +243,8 @@ string PrintInstruction::pretty_print() {
     return ss.str();
 }
 node_reference PrintInstruction::accept(backend::NodeVisitor *visitor) {
-    // shared_ptr<Abstraction> self = static_pointer_cast<Abstraction>(shared_from_this());
-    return visitor->visitGenericASTNode(shared_from_this());
+    shared_ptr<PrintInstruction> self = static_pointer_cast<PrintInstruction>(shared_from_this());
+    return visitor->visitPrintInstruction(self);
 }
 
 Grouping::Grouping() {
