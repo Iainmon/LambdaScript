@@ -36,13 +36,21 @@ ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_pt
     // Do this later skater.
     // Before every evaluation, a new stack frame should be pushed, so functions cannot declare globals.
     ast::node_reference reduced_lhs = application->lhs->accept(this);
-    std::cout << "Is this code even being called?" << std::endl;
-    if (!(typeid(std::static_pointer_cast<ast::Abstraction>(reduced_lhs)) == typeid(std::shared_ptr<ast::Abstraction>))){
+    // std::cout << "Is this code even being called? " << typeid(*reduced_lhs).name() << std::endl;
+    if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {
+        if (typeid(*reduced_lhs) == typeid(ast::Literal) || typeid(*reduced_lhs) == typeid(ast::Grouping)) {
+            std::shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
+            grouping->nodes.push_back(reduced_lhs);
+            grouping->nodes.push_back(application->rhs->accept(this));
+            return (ast::node_reference)grouping;
+        }
         std::cout << "LHS is not an abstraction. " << reduced_lhs->pretty_print() << std::endl;
         return (ast::node_reference)application;
     }
+
     std::shared_ptr<ast::Abstraction> lhs = std::static_pointer_cast<ast::Abstraction>(reduced_lhs);
-    ast::node_reference rhs = application->rhs;
+    // ast::node_reference rhs = application->rhs; // Lazy
+    ast::node_reference rhs = application->rhs->accept(this);
 
     // Pushes a new stack frame
     ast::scope_reference scope = std::make_shared<ast::Scope>(*(stack.top()));
