@@ -3,3 +3,4 @@
 #include "NodeVisitor.h"
 #include "InterpreterVisitor.h"
 #include "BetaReductionVisitor.h"
+#include "generator/CodeGenerationVisitor.h"

@@ -91,7 +91,7 @@ string Abstraction::to_string() {
 }
 string Abstraction::pretty_print() {
     stringstream ss;
-    ss << "(" << Bmagenta << "λ" << cyan << argument << reset << "." << body->pretty_print() << ")";
+    ss << "(" << magenta << "λ" << cyan << argument << reset << "." << body->pretty_print() << ")";
     return ss.str();
 }
 node_reference Abstraction::accept(backend::NodeVisitor *visitor) {

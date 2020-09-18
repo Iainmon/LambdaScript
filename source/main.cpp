@@ -17,6 +17,23 @@
 
 void print(const std::string &input) { std::cout << input << std::endl; }
 
+int compile(const std::string &source, const std::string &out_file_name) {
+    backend::codegen::CodeGenerationVisitor code_gen;
+
+    ast::node_reference ast = language::construct_syntax_tree(source);
+    ast->accept(&code_gen);
+    const std::string generated_source = code_gen.source.str();
+
+    std::ofstream out_file;
+    out_file.open(out_file_name);
+    out_file << generated_source;
+    out_file.close();
+
+    std::cout << green << "Output file written to " << Bgreen << out_file_name << green << "." << reset<< std::endl;
+
+    return 0;
+}
+
 int main(int argc, const char *argv[]) {
 
     argh::parser cmdl(argv);
@@ -35,6 +52,11 @@ int main(int argc, const char *argv[]) {
     const bool verbose_print = !!cmdl[{"--verbose"}];
     const bool show_assoc = !!cmdl[{"--show-association"}];
 
+    std::string out_file_name;
+    if (cmdl({"-o", "--out"}) >> out_file_name) {
+        return compile(source.str(), out_file_name);
+    }
+
     bool main_file_done = false;
 
     ast::scope_reference global_scope = std::make_shared<ast::Scope>();
@@ -52,6 +74,8 @@ int main(int argc, const char *argv[]) {
     global_scope->set("time", time_abstraction);
 
     int last_group_count = 0;
+
+
 
     do {
 
