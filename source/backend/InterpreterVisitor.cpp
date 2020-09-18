@@ -9,12 +9,14 @@ backend::InterpreterVisitor::InterpreterVisitor(ast::scope_reference scope) {
 }
 
 ast::node_reference backend::InterpreterVisitor::visitLiteral(std::shared_ptr<ast::Literal> literal) {
+    // std::cout << "[lit] " << literal->pretty_print() << std::endl;
     return (ast::node_reference)literal;
 }
 ast::node_reference backend::InterpreterVisitor::visitVariable(std::shared_ptr<ast::Variable> variable) {
     // Lazy evaluation. Returns the node without that was referenced, without evaluating it.
     // return stack.top()->get(variable->identifier);
     // Other?
+    // std::cout << "[var] " << variable->pretty_print() << std::endl;
     return stack.top()->get(variable->identifier);
 }
 ast::node_reference backend::InterpreterVisitor::visitAssignment(std::shared_ptr<ast::Assignment> assignment) {
@@ -33,19 +35,23 @@ ast::node_reference backend::InterpreterVisitor::visitAssignment(std::shared_ptr
     // return (ast::node_reference)assignment;
 }
 ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_ptr<ast::Application> application) {
+    // std::cout << "[app] " << application->pretty_print() << std::endl;
     // Do this later skater.
     // Before every evaluation, a new stack frame should be pushed, so functions cannot declare globals.
+
     ast::node_reference reduced_lhs = application->lhs->accept(this);
     // std::cout << "Is this code even being called? " << typeid(*reduced_lhs).name() << std::endl;
     if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {
         if (typeid(*reduced_lhs) == typeid(ast::Literal) || typeid(*reduced_lhs) == typeid(ast::Grouping)) {
+            std::cout << "LHS is a literal or grouping: " << reduced_lhs->pretty_print() << std::endl;
             std::shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
             grouping->nodes.push_back(reduced_lhs);
             grouping->nodes.push_back(application->rhs->accept(this));
             return (ast::node_reference)grouping;
         }
         std::cout << "LHS is not an abstraction. " << reduced_lhs->pretty_print() << std::endl;
-        return (ast::node_reference)application;
+        ast::node_reference preserved_application = std::make_shared<ast::Application>(application->lhs->accept(this), application->rhs->accept(this));
+        return preserved_application;
     }
 
     std::shared_ptr<ast::Abstraction> lhs = std::static_pointer_cast<ast::Abstraction>(reduced_lhs);
@@ -53,7 +59,7 @@ ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_pt
     ast::node_reference rhs = application->rhs->accept(this);
 
     // Pushes a new stack frame
-    ast::scope_reference scope = std::make_shared<ast::Scope>(*(stack.top()));
+    ast::scope_reference scope = stack.top();// std::make_shared<ast::Scope>(*(stack.top()));
     scope->set(lhs->argument, rhs);
     stack.push(scope);
     // Applies the argument, β-reduction
@@ -65,6 +71,7 @@ ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_pt
     return normal_expression;
 }
 ast::node_reference backend::InterpreterVisitor::visitAbstraction(std::shared_ptr<ast::Abstraction> abstraction) {
+    // std::cout << "[abs] " << abstraction->pretty_print() << std::endl;
     return (ast::node_reference)abstraction;
 }
 ast::node_reference backend::InterpreterVisitor::visitArithmeticalOperation(std::shared_ptr<ast::Operation> operation) {
@@ -82,7 +89,7 @@ ast::node_reference backend::InterpreterVisitor::visitImportInstruction(std::sha
 }
 ast::node_reference backend::InterpreterVisitor::visitPrintInstruction(std::shared_ptr<ast::PrintInstruction> print_instruction) {
     ast::node_reference value = print_instruction->value->accept(this);
-    std::cout << value->pretty_print() << std::endl;
+    std::cout << magenta << "λ -> " << reset << value->pretty_print() << std::endl;
     return value;
 }
 ast::node_reference backend::InterpreterVisitor::visitGrouping(std::shared_ptr<ast::Grouping> grouping) {

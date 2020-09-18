@@ -1,10 +1,9 @@
 #ifndef BACKEND_H
 #define BACKEND_H
 
-namespace backend {
-    class InterpreterVisitor;
-    using NodeVisitor = InterpreterVisitor;
-}
+#include "../ast/ast.h"
+#include "NodeVisitor.h"
 #include "InterpreterVisitor.h"
+#include "BetaReductionVisitor.h"
 
 #endif

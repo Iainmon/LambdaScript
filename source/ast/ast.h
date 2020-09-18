@@ -1,3 +1,6 @@
+#ifndef AST_H
+#define AST_H
+
 #include <iostream>
 #include <map>
 #include <memory>
@@ -8,10 +11,6 @@
 
 #include "consolecolors.h"
 #include "../backend/backend.h"
-
-
-#ifndef AST_H
-#define AST_H
 
 std::string int_to_string(int &in);
 
@@ -87,8 +86,10 @@ class Abstraction : public ASTNode {
     public:
     std::string argument;
     node_reference body;
-    // scope_reference scope = nullptr;
-    Abstraction(const std::string &_argument, node_reference _body/*, scope_reference _scope*/);
+    scope_reference closure;
+    Abstraction(const std::string &_argument, node_reference _body);
+    Abstraction(const std::string &_argument, node_reference _body, scope_reference _closure);
+    void capture(scope_reference scope);
     std::string to_string() override;
     std::string pretty_print() override;
     node_reference accept(backend::NodeVisitor *visitor) override;

@@ -1,6 +1,5 @@
 #include "ast.h"
 
-
 std::string int_to_string(int &in) {
     return std::to_string(in);
 }
@@ -74,7 +73,16 @@ Abstraction::Abstraction(const string &_argument, node_reference _body/*, scope_
     type = ABSTRACTION;
     argument = _argument;
     body = _body;
-    // scope = _scope;
+    closure = make_shared<Scope>();
+}
+Abstraction::Abstraction(const string &_argument, node_reference _body, scope_reference _closure) {
+    type = ABSTRACTION;
+    argument = _argument;
+    body = _body;
+    closure = make_shared<Scope>(*_closure);
+}
+void Abstraction::capture(scope_reference scope) {
+    closure = make_shared<Scope>(*scope);
 }
 string Abstraction::to_string() {
     stringstream ss;
