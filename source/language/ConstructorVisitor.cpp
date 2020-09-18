@@ -120,8 +120,13 @@ antlrcpp::Any ConstructorVisitor::visitBinaryExpression(LanguageParser::BinaryEx
     ast::node_reference lhs = ctx->expression(0)->accept(this);
     ast::node_reference rhs = ctx->expression(1)->accept(this);
     ast::OperationType opType = ast::Operation::matchOperationType(ctx->Operator()->getText());
-    ast::node_reference operationNode = make_shared<ast::Operation>(opType, lhs, rhs);
-    return operationNode;
+    ast::node_reference operation_node = make_shared<ast::Operation>(opType, lhs, rhs);
+
+    // Sets the operation symbol as a string.
+    shared_ptr<ast::Operation> op_node = static_pointer_cast<ast::Operation>(operation_node);
+    op_node->operation_character = ctx->Operator()->getText();
+
+    return operation_node;
 }
 antlrcpp::Any ConstructorVisitor::visitBrackets(LanguageParser::BracketsContext *ctx)  {
     // cout << "Brackets" << endl;

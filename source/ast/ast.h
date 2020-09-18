@@ -157,6 +157,7 @@ class Operation : public ASTNode {
     public:
     bool arithmatic_op;
     OperationType opType;
+    std::string operation_character;
     node_reference lhs;
     node_reference rhs;
     Operation(OperationType _opType, node_reference _lhs, node_reference _rhs);

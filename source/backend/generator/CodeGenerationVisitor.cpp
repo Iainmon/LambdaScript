@@ -33,21 +33,29 @@ ast::node_reference backend::codegen::CodeGenerationVisitor::visitApplication(st
     return (ast::node_reference)application;
 }
 ast::node_reference backend::codegen::CodeGenerationVisitor::visitAbstraction(std::shared_ptr<ast::Abstraction> abstraction) {
-    source << "((" << abstraction->argument << ") => ";
+    source << "(" << abstraction->argument << " => ";
     abstraction->body->accept(this);
-    source << " )";
+    source << ")";
 
     return (ast::node_reference)abstraction;
 }
-// ast::node_reference backend::codegen::CodeGenerationVisitor::visitArithmeticalOperation(std::shared_ptr<ast::Operation> operation) {
-//     source << literal->value;
+ast::node_reference backend::codegen::CodeGenerationVisitor::visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction> native_abstraction) {
+
+    return (ast::node_reference)native_abstraction;
+}
+ast::node_reference backend::codegen::CodeGenerationVisitor::visitArithmeticalOperation(std::shared_ptr<ast::Operation> operation) {
+    source << "(";
+    operation->lhs->accept(this);
+    source << " " << operation->operation_character << " ";
+    operation->rhs->accept(this);
+    source << ")";
     
-//     return (ast::node_reference)literal;
-// }
+    return (ast::node_reference)operation;
+}
 ast::node_reference backend::codegen::CodeGenerationVisitor::visitPrintInstruction(std::shared_ptr<ast::PrintInstruction> print_instruction) {
     source << "print(";
-    print_instruction->accept(this);
-    source << ")";
+    print_instruction->value->accept(this);
+    source << ")" << std::endl;
     
     return (ast::node_reference)print_instruction;
 }
