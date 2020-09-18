@@ -23,6 +23,8 @@ ast::node_reference backend::NodeVisitor::visitAbstraction(std::shared_ptr<ast::
 ast::node_reference backend::NodeVisitor::visitArithmeticalOperation(std::shared_ptr<ast::Operation> operation) {
     // The Operation ASTNode should be converted to a NativeAbstraction
     ast::node_reference op = std::make_shared<ast::Operation>(operation->opType, operation->lhs->accept(this), operation->rhs->accept(this));
+    std::shared_ptr<ast::Operation> op_node = std::static_pointer_cast<ast::Operation>(op);
+    op_node->operation_character = operation->operation_character;
     return (ast::node_reference)op;
 }
 ast::node_reference backend::NodeVisitor::visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction> native_abstraction) {

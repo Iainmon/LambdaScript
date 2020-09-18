@@ -12,6 +12,7 @@
 #include "ast/ast.h"
 #include "language/language.h"
 #include "backend/backend.h"
+#include "tools/format.h"
 
 #include "argh.h"
 
@@ -34,12 +35,29 @@ int compile(const std::string &source, const std::string &out_file_name) {
     return 0;
 }
 
+void format_file(const std::string &file_name) {
+    std::ifstream input_stream;
+    std::ofstream output_stream;
+    std::stringstream contents;
+
+    input_stream.open(file_name);
+    contents << input_stream.rdbuf() << std::endl;
+    input_stream.close();
+
+    output_stream.open(file_name);
+    output_stream << tools::format_lambda_symbols(contents.str());
+    output_stream.close();
+}
+
 int main(int argc, const char *argv[]) {
 
     argh::parser cmdl(argv);
 
     std::string file_name;
-    cmdl(1, "program.la") >> file_name;
+    cmdl(1) >> file_name;
+
+    if (file_name.empty())
+        std::cout << "No input file was provided." << std::endl;
 
     std::ifstream file_stream;
     file_stream.open(file_name);
@@ -51,10 +69,15 @@ int main(int argc, const char *argv[]) {
     const bool run_interactive_mode = !!cmdl[{"-i", "--interactive", "--repl"}];
     const bool verbose_print = !!cmdl[{"--verbose"}];
     const bool show_assoc = !!cmdl[{"--show-association"}];
+    const bool format_document = !!cmdl[{"--format"}];
 
     std::string out_file_name;
     if (cmdl({"-o", "--out"}) >> out_file_name) {
         return compile(source.str(), out_file_name);
+    }
+
+    if (format_document) {
+        format_file(file_name);
     }
 
     bool main_file_done = false;
@@ -110,6 +133,7 @@ int main(int argc, const char *argv[]) {
         if (!main_file_done)
             main_file_done = true;
 
+        std::cout << yellow << "λ" << blue << " ] " << reset;
         std::string input_line;
         getline(std::cin, input_line);
         if (input_line.compare(":q\n") == 0)

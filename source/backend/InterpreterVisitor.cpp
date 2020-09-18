@@ -26,9 +26,9 @@ ast::node_reference backend::InterpreterVisitor::visitAssignment(std::shared_ptr
     
     // Whatever I am doing
     ast::node_reference value = assignment->value->accept(this);
-
-    stack.top()->set(assignment->identifier, value);
-    
+    if (!stack.top()->has(assignment->identifier)) {
+        stack.top()->set(assignment->identifier, value);
+    }
     // Walrus operator like
     return value;
 
@@ -37,9 +37,6 @@ ast::node_reference backend::InterpreterVisitor::visitAssignment(std::shared_ptr
 }
 ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_ptr<ast::Application> application) {
     // std::cout << "[app] " << application->pretty_print() << std::endl;
-    // Do this later skater.
-    // Before every evaluation, a new stack frame should be pushed, so functions cannot declare globals.
-
     ast::node_reference reduced_lhs = application->lhs->accept(this);
     // std::cout << "Is this code even being called? " << typeid(*reduced_lhs).name() << std::endl;
     if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {

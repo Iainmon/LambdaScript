@@ -34,12 +34,12 @@ node_reference ASTNode::accept(backend::NodeVisitor *visitor) {
     return visitor->visitGenericASTNode(self);
 }
 
-shared_ptr<Scope> Scope::copy(const map<string, node_reference> &_scope) {
+shared_ptr<Scope> Scope::copy(const unordered_map<string, node_reference> &_scope) {
     shared_ptr<Scope> duplicate = make_shared<Scope>(_scope);
     return duplicate;
 }
 Scope::Scope() { }
-Scope::Scope(const map<string, node_reference> &_scope) { scope = _scope; }
+Scope::Scope(const unordered_map<string, node_reference> &_scope) { scope = _scope; }
 shared_ptr<Scope> Scope::copy() {
     shared_ptr<Scope> duplicate = make_shared<Scope>(scope);
     return duplicate;
@@ -199,7 +199,7 @@ string Operation::to_string() {
 }
 string Operation::pretty_print() {
     stringstream ss;
-    ss << red << "[native]" << reset << " (" << lhs->pretty_print() << ") (" << rhs->pretty_print() << ")";
+    ss << "(" << lhs->pretty_print() << " " << operation_character << " " << rhs->pretty_print() << ")";
     return ss.str();
 }
 // TODO - Change this to a map lookup.

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <memory>
 #include <sstream>
 #include <string>
@@ -86,13 +86,13 @@ class ASTNode : public std::enable_shared_from_this<ASTNode> {
 
 class Scope {
     private:
-    std::map<std::string, node_reference> scope;
+    std::unordered_map<std::string, node_reference> scope;
     int identifier_counter = 0;
-    std::shared_ptr<Scope> copy(const std::map<std::string, node_reference> &_scope);
+    std::shared_ptr<Scope> copy(const std::unordered_map<std::string, node_reference> &_scope);
     node_reference unsafe_get(const std::string &name);
     public:
     Scope();
-    Scope(const std::map<std::string, node_reference> &_scope);
+    Scope(const std::unordered_map<std::string, node_reference> &_scope);
     std::shared_ptr<Scope> copy();
     void set(const std::string &name, node_reference node);
     node_reference get(const std::string &name);
