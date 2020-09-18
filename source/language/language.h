@@ -1,5 +1,4 @@
-#ifndef LANGUAGE_H
-#define LANGUAGE_H
+#pragma once
 
 #include "../frontend/frontend.h"
 #include "../ast/ast.h"
@@ -114,5 +113,3 @@ class Time : public ast::NativeAbstraction {
 }
 
 }
-
-#endif

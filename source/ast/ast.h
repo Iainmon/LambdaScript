@@ -1,5 +1,4 @@
-#ifndef AST_H
-#define AST_H
+#pragma once
 
 #include <iostream>
 #include <map>
@@ -10,7 +9,30 @@
 #include <switch>
 
 #include "consolecolors.h"
-#include "../backend/backend.h"
+
+namespace ast {
+class Scope;
+class ASTNode;
+class Application;
+class Abstraction;
+class Grouping;
+class Literal;
+class Variable;
+class PrintInstruction;
+class ImportInstruction;
+class Operation;
+class Assignment;
+class NativeAbstraction;
+
+using node_reference = std::shared_ptr<ASTNode>;
+using scope_reference = std::shared_ptr<Scope>;
+}
+
+#include "../backend/NodeVisitor.h"
+
+namespace backend {
+    class NodeVisitor;
+}
 
 std::string int_to_string(int &in);
 
@@ -25,11 +47,7 @@ std::string bool_as_text(const bool &b);
 bool text_as_bool(const std::string &b);
 
 
-class Scope;
-class ASTNode;
 
-using node_reference = std::shared_ptr<ASTNode>;
-using scope_reference = std::shared_ptr<Scope>;
 
 enum ASTNodeType { MAIN, ABSTRACTION, APPLICATION, CONDITION, PRINT, VARIABLE, OPERATION, LITERAL, GROUPING, ASSIGNMENT, IMPORT, NATIVE_ABSTRACTION };
 class ASTNode : public std::enable_shared_from_this<ASTNode> {
@@ -233,5 +251,3 @@ class FunctionType : public TypeNode {
 
 }
 } // namespace ast
-
-#endif

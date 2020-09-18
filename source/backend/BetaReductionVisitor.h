@@ -1,8 +1,7 @@
 // This class will replace the evaluate function.
-#ifndef BETA_REDUCTION_VISITOR_H
-#define BETA_REDUCTION_VISITOR_H
+#pragma once
 
-#include "../ast/ast.h"
+#include "NodeVisitor.h"
 #include <stack>
 
 namespace backend {
@@ -23,5 +22,3 @@ namespace backend {
     };
 
 }
-
-#endif

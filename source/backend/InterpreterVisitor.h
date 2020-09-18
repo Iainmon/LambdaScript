@@ -1,8 +1,7 @@
 // This class will replace the evaluate function.
-#ifndef INTERPRETER_VISITOR_H
-#define INTERPRETER_VISITOR_H
+#pragma once
 
-#include "../ast/ast.h"
+#include "NodeVisitor.h"
 #include <stack>
 
 namespace backend {
@@ -33,5 +32,3 @@ namespace backend {
     };
 
 }
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef NODE_VISITOR_H
-#define NODE_VISITOR_H
+#pragma once
 
 #include "../ast/ast.h"
 #include <memory>
@@ -26,5 +25,3 @@ namespace backend {
     };
 
 }
-
-#endif

@@ -1,7 +1,6 @@
-#include <iostream>
+#pragma once
 
-#ifndef CONSOLE_COLORS_H
-#define CONSOLE_COLORS_H
+#include <iostream>
 
 const std::string red("\033[0;31m");
 const std::string green("\033[0;32m");
@@ -22,7 +21,6 @@ const std::string Bwhite("\033[1;37m");
 
 const std::string reset("\033[0m");
 
-#endif
 // /* FOREGROUND */
 // #define RST  "\x1B[0m"
 // #define KRED  "\x1B[31m"
