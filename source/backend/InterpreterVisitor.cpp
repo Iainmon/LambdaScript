@@ -1,4 +1,5 @@
 #include "InterpreterVisitor.h"
+#include "BetaReductionVisitor.h"
 
 backend::InterpreterVisitor::InterpreterVisitor() {
     ast::scope_reference scope = std::make_shared<ast::Scope>();
@@ -59,11 +60,12 @@ ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_pt
     ast::node_reference rhs = application->rhs->accept(this);
 
     // Pushes a new stack frame
-    ast::scope_reference scope = stack.top();// std::make_shared<ast::Scope>(*(stack.top()));
+    ast::scope_reference scope = std::make_shared<ast::Scope>(*(stack.top()));
     scope->set(lhs->argument, rhs);
     stack.push(scope);
     // Applies the argument, β-reduction
-    ast::node_reference normal_expression = lhs->body->accept(this);
+    BetaReductionVisitor beta_reducer(scope);
+    ast::node_reference normal_expression = lhs->body->accept(&beta_reducer)->accept(this);
     // Pops the stack frame
     stack.pop();
 
