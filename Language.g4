@@ -10,7 +10,7 @@ expression:
 	| Lambda Identifier typeBinding? '.' expression # abstraction
 	| Identifier typeBinding? '=' expression        # assign
 	| condition                                 	# conditional // used to be ifThenElse
-	| Operator expression expression				# binaryExpression
+	| expression Operator expression				# binaryExpression
     | 'print' expression                        	# printInstruction
 	| 'import' Identifier							# importInstruction
 	| '(' expression ')'							# brackets;

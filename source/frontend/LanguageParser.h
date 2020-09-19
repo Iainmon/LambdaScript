@@ -88,9 +88,9 @@ public:
   public:
     BinaryExpressionContext(ExpressionContext *ctx);
 
-    antlr4::tree::TerminalNode *Operator();
     std::vector<ExpressionContext *> expression();
     ExpressionContext* expression(size_t i);
+    antlr4::tree::TerminalNode *Operator();
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
 

@@ -8,6 +8,8 @@ namespace backend {
     // AKA EvaluationVisitor
     class BetaReductionVisitor : public NodeVisitor {
         private:
+        std::string enumerate_name(const std::string &name);
+
         public:
         ast::scope_reference replacement_table;
 

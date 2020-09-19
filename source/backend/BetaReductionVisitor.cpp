@@ -26,6 +26,33 @@ ast::node_reference backend::BetaReductionVisitor::visitApplication(std::shared_
     return app;
 }
 ast::node_reference backend::BetaReductionVisitor::visitAbstraction(std::shared_ptr<ast::Abstraction> abstraction) {
-    ast::node_reference abs = std::make_shared<ast::Abstraction>(abstraction->argument, abstraction->body->accept(this));
-    return (ast::node_reference)abs;
+    if (replacement_table->has(abstraction->argument)) {
+        // Creates variable node with renamed identifier
+        const std::string& collided_argument = abstraction->argument;
+        const std::string renamed_argument = enumerate_name(abstraction->argument);
+        std::shared_ptr<ast::Variable> renamed_variable = std::make_shared<ast::Variable>(renamed_argument);
+
+        // Renames all occurances inside of the abstraction body
+        ast::scope_reference rename_table = std::make_shared<ast::Scope>();
+        rename_table->set(collided_argument, renamed_variable);
+        BetaReductionVisitor alpha_renamer(rename_table);
+        ast::node_reference renamed_body = abstraction->body->accept(&alpha_renamer);
+
+        // Constructs new abstraction node
+        ast::node_reference abs = std::make_shared<ast::Abstraction>(renamed_argument, renamed_body);
+        return (ast::node_reference)abs;
+    } else {
+        ast::node_reference abs = std::make_shared<ast::Abstraction>(abstraction->argument, abstraction->body->accept(this));
+        return (ast::node_reference)abs;
+    }
+}
+
+std::string backend::BetaReductionVisitor::enumerate_name(const std::string &name) {
+    int suffix = 0;
+    std::string renamed;
+    do {
+        renamed = name + std::to_string(suffix);
+        suffix++;
+    } while (replacement_table->has(renamed));
+    return renamed;
 }
