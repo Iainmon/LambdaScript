@@ -23,4 +23,6 @@ namespace backend {
 
     };
 
+    using AlphaRenamingVisitor = BetaReductionVisitor;
+
 }

@@ -35,7 +35,7 @@ ast::node_reference backend::BetaReductionVisitor::visitAbstraction(std::shared_
         // Renames all occurances inside of the abstraction body
         ast::scope_reference rename_table = std::make_shared<ast::Scope>();
         rename_table->set(collided_argument, renamed_variable);
-        BetaReductionVisitor alpha_renamer(rename_table);
+        backend::AlphaRenamingVisitor alpha_renamer(rename_table);
         ast::node_reference renamed_body = abstraction->body->accept(&alpha_renamer);
 
         // Constructs new abstraction node

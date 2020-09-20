@@ -1,5 +1,6 @@
 #include "InterpreterVisitor.h"
 #include "BetaReductionVisitor.h"
+#include "arithmetical_evaluator.h"
 
 backend::InterpreterVisitor::InterpreterVisitor() {
     ast::scope_reference scope = std::make_shared<ast::Scope>();
@@ -41,19 +42,16 @@ ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_pt
     // std::cout << "Is this code even being called? " << typeid(*reduced_lhs).name() << std::endl;
     if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {
         if (typeid(*reduced_lhs) == typeid(ast::Literal) || typeid(*reduced_lhs) == typeid(ast::Grouping)) {
-            std::cout << "LHS is a literal or grouping: " << reduced_lhs->pretty_print() << std::endl;
             std::shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
             grouping->nodes.push_back(reduced_lhs);
             grouping->nodes.push_back(application->rhs->accept(this));
             return (ast::node_reference)grouping;
         }
-        std::cout << "LHS is not an abstraction. " << reduced_lhs->pretty_print() << std::endl;
         ast::node_reference preserved_application = std::make_shared<ast::Application>(application->lhs->accept(this), application->rhs->accept(this));
         return preserved_application;
     }
 
     std::shared_ptr<ast::Abstraction> lhs = std::static_pointer_cast<ast::Abstraction>(reduced_lhs);
-    // ast::node_reference rhs = application->rhs; // Lazy
     ast::node_reference rhs = application->rhs->accept(this);
 
     // Pushes a new stack frame
@@ -61,7 +59,7 @@ ast::node_reference backend::InterpreterVisitor::visitApplication(std::shared_pt
     scope->set(lhs->argument, rhs);
     stack.push(scope);
     // Applies the argument, β-reduction
-    BetaReductionVisitor beta_reducer(scope);
+    backend::BetaReductionVisitor beta_reducer(scope);
     ast::node_reference normal_expression = lhs->body->accept(&beta_reducer)->accept(this);
     // Pops the stack frame
     stack.pop();
@@ -75,7 +73,10 @@ ast::node_reference backend::InterpreterVisitor::visitAbstraction(std::shared_pt
 }
 ast::node_reference backend::InterpreterVisitor::visitArithmeticalOperation(std::shared_ptr<ast::Operation> operation) {
     // The Operation ASTNode should be converted to a NativeAbstraction
-    return (ast::node_reference)operation;
+    std::shared_ptr<ast::Operation> op = std::make_shared<ast::Operation>(operation->opType, operation->lhs->accept(this), operation->rhs->accept(this));
+    op->operation_character = operation->operation_character;
+    ast::node_reference operation_result = backend::evaluate_arithmetical_operation(op);
+    return operation_result;
 }
 ast::node_reference backend::InterpreterVisitor::visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction> native_abstraction) {
     // Will call the native_abstractions .apply() method, where it will construct an AST tree

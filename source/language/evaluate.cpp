@@ -10,73 +10,73 @@ using namespace std;
 //     return language::evaluate(lhs->body, lhs->scope);
 // }
 
-int apply_arithmatic_operation(ast::OperationType op_type, int lhs, int rhs) {
-    switch (op_type) {
-        case ast::OperationType::ADD:
-            return lhs + rhs;
-            break;
-        case ast::OperationType::SUBTRACT:
-            return lhs - rhs;
-            break;
-        case ast::OperationType::MULTIPLY:
-            return lhs * rhs;
-            break;
-        case ast::OperationType::DIVIDE:
-            return lhs / rhs;
-            break;
-        case ast::OperationType::NO_OP:
-            cout << "NO OPERATION" << endl;
-            return 0;
-    }
-    return 0;
-}
+// int apply_arithmatic_operation(ast::OperationType op_type, int lhs, int rhs) {
+//     switch (op_type) {
+//         case ast::OperationType::ADD:
+//             return lhs + rhs;
+//             break;
+//         case ast::OperationType::SUBTRACT:
+//             return lhs - rhs;
+//             break;
+//         case ast::OperationType::MULTIPLY:
+//             return lhs * rhs;
+//             break;
+//         case ast::OperationType::DIVIDE:
+//             return lhs / rhs;
+//             break;
+//         case ast::OperationType::NO_OP:
+//             cout << "NO OPERATION" << endl;
+//             return 0;
+//     }
+//     return 0;
+// }
 
-bool apply_logic_operation(ast::OperationType op_type, int lhs, int rhs) {
-    switch (op_type) {
-        case ast::OperationType::EQUALS:
-            return lhs == rhs;
-            break;
-        case ast::OperationType::LESS_THAN:
-            return lhs < rhs;
-            break;
-        case ast::OperationType::LESS_THAT_EQUAL:
-            return lhs <= rhs;
-            break;
-        case ast::OperationType::GREATER_THAN:
-            return lhs > rhs;
-            break;
-        case ast::OperationType::GREATER_THAN_EQUAL:
-            return lhs >= rhs;
-            break;
-        case ast::OperationType::NO_OP:
-            cout << "NO OPERATION" << endl;
-            return false;
-    }
-    return false;
-}
-bool apply_logic_operation(ast::OperationType op_type, bool lhs, bool rhs) {
-    switch (op_type) {
-        case ast::OperationType::EQUALS:
-            return lhs == rhs;
-            break;
-        case ast::OperationType::NO_OP:
-            cout << "NO OPERATION" << endl;
-            return false;
-    }
-    return false;
-}
+// bool apply_logic_operation(ast::OperationType op_type, int lhs, int rhs) {
+//     switch (op_type) {
+//         case ast::OperationType::EQUALS:
+//             return lhs == rhs;
+//             break;
+//         case ast::OperationType::LESS_THAN:
+//             return lhs < rhs;
+//             break;
+//         case ast::OperationType::LESS_THAT_EQUAL:
+//             return lhs <= rhs;
+//             break;
+//         case ast::OperationType::GREATER_THAN:
+//             return lhs > rhs;
+//             break;
+//         case ast::OperationType::GREATER_THAN_EQUAL:
+//             return lhs >= rhs;
+//             break;
+//         case ast::OperationType::NO_OP:
+//             cout << "NO OPERATION" << endl;
+//             return false;
+//     }
+//     return false;
+// }
+// bool apply_logic_operation(ast::OperationType op_type, bool lhs, bool rhs) {
+//     switch (op_type) {
+//         case ast::OperationType::EQUALS:
+//             return lhs == rhs;
+//             break;
+//         case ast::OperationType::NO_OP:
+//             cout << "NO OPERATION" << endl;
+//             return false;
+//     }
+//     return false;
+// }
 
-bool apply_operation(ast::OperationType op_type, bool lhs, bool rhs) {
-    switch (op_type) {
-        case ast::OperationType::EQUALS:
-            return lhs == rhs;
-            break;
-        case ast::OperationType::NO_OP:
-            cout << "NO OPERATION" << endl;
-            return false;
-    }
-    return false;
-}
+// bool apply_operation(ast::OperationType op_type, bool lhs, bool rhs) {
+//     switch (op_type) {
+//         case ast::OperationType::EQUALS:
+//             return lhs == rhs;
+//             break;
+//         case ast::OperationType::NO_OP:
+//             cout << "NO OPERATION" << endl;
+//             return false;
+//     }
+//     return false;
+// }
 
 ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_reference scope) {
     // while (true) {
@@ -213,48 +213,50 @@ ast::node_reference language::evaluate(ast::node_reference ast, ast::scope_refer
             // return base_literal;
             ast::node_reference nil_literal = make_shared<ast::Literal>('l');
             return nil_literal;
-        } else if (ast->type == ast::ASTNodeType::OPERATION) {
-            shared_ptr<ast::Operation> operation = static_pointer_cast<ast::Operation>(ast);
-            ast::node_reference lhs = language::evaluate(operation->lhs, scope);
-            ast::node_reference rhs = language::evaluate(operation->rhs, scope);
-            if (lhs->type == ast::ASTNodeType::LITERAL && rhs->type == ast::ASTNodeType::LITERAL) {
-                shared_ptr<ast::Literal> lhs_literal = static_pointer_cast<ast::Literal>(lhs);
-                shared_ptr<ast::Literal> rhs_literal = static_pointer_cast<ast::Literal>(rhs);
-                if (lhs_literal->valueType == rhs_literal->valueType) {
-                    ast::LiteralType type = lhs_literal->valueType;
-                    if (operation->arithmatic_op) {
-                        if (type == ast::LiteralType::Int) {
-                            int result = apply_arithmatic_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
-                            ast::node_reference result_literal = make_shared<ast::Literal>(result);
-                            return result_literal;
-                        } else {
-                            return (ast::node_reference)operation;
-                            cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
-                        }
-                    } else {
-                        if (type == ast::LiteralType::Int) {
-                            bool result = apply_logic_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
-                            ast::node_reference result_literal = make_shared<ast::Literal>(result);
-                            return result_literal;
-                        } else if (type == ast::LiteralType::Bool) {
-                            bool result = apply_logic_operation(operation->opType, lhs_literal->getBool(), rhs_literal->getBool());
-                            ast::node_reference result_literal = make_shared<ast::Literal>(result);
-                            return result_literal;
-                        } else {
-                            return (ast::node_reference)operation;
-                            cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
-                        }
-                    }
-                } else { 
-                    return (ast::node_reference)operation;
-                    cout << "Arithmetic cannot be applied becauese LHS and RHS are not the same type!" << endl;
+        }
+        // else if (ast->type == ast::ASTNodeType::OPERATION) {
+        //     shared_ptr<ast::Operation> operation = static_pointer_cast<ast::Operation>(ast);
+        //     ast::node_reference lhs = language::evaluate(operation->lhs, scope);
+        //     ast::node_reference rhs = language::evaluate(operation->rhs, scope);
+        //     if (lhs->type == ast::ASTNodeType::LITERAL && rhs->type == ast::ASTNodeType::LITERAL) {
+        //         shared_ptr<ast::Literal> lhs_literal = static_pointer_cast<ast::Literal>(lhs);
+        //         shared_ptr<ast::Literal> rhs_literal = static_pointer_cast<ast::Literal>(rhs);
+        //         if (lhs_literal->valueType == rhs_literal->valueType) {
+        //             ast::LiteralType type = lhs_literal->valueType;
+        //             if (operation->arithmatic_op) {
+        //                 if (type == ast::LiteralType::Int) {
+        //                     int result = apply_arithmatic_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
+        //                     ast::node_reference result_literal = make_shared<ast::Literal>(result);
+        //                     return result_literal;
+        //                 } else {
+        //                     return (ast::node_reference)operation;
+        //                     cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
+        //                 }
+        //             } else {
+        //                 if (type == ast::LiteralType::Int) {
+        //                     bool result = apply_logic_operation(operation->opType, lhs_literal->getInt(), rhs_literal->getInt());
+        //                     ast::node_reference result_literal = make_shared<ast::Literal>(result);
+        //                     return result_literal;
+        //                 } else if (type == ast::LiteralType::Bool) {
+        //                     bool result = apply_logic_operation(operation->opType, lhs_literal->getBool(), rhs_literal->getBool());
+        //                     ast::node_reference result_literal = make_shared<ast::Literal>(result);
+        //                     return result_literal;
+        //                 } else {
+        //                     return (ast::node_reference)operation;
+        //                     cout << "No arithmetic defined for " << lhs_literal->to_string() << " and " << rhs_literal->to_string() << "." << endl;
+        //                 }
+        //             }
+        //         } else { 
+        //             return (ast::node_reference)operation;
+        //             cout << "Arithmetic cannot be applied becauese LHS and RHS are not the same type!" << endl;
                     
-                }
-            } else {
-                cout << "LHS or RHS is not a literal!" << endl;
-                return (ast::node_reference)operation;
-            }
-        } else if (ast->type == ast::ASTNodeType::IMPORT) {
+        //         }
+        //     } else {
+        //         cout << "LHS or RHS is not a literal!" << endl;
+        //         return (ast::node_reference)operation;
+        //     }
+        // } 
+        else if (ast->type == ast::ASTNodeType::IMPORT) {
             shared_ptr<ast::ImportInstruction> import = static_pointer_cast<ast::ImportInstruction>(ast);
             ast::node_reference imported_ast = language::import_file(import->file_name, scope);
             return imported_ast;

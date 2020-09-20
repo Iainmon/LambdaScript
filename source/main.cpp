@@ -138,6 +138,12 @@ int main(int argc, const char *argv[]) {
         getline(std::cin, input_line);
         if (input_line.compare(":q\n") == 0)
             return 0;
+        if (input_line.compare(":write\n") == 0) {
+            std::ofstream write_out_file;
+            write_out_file.open(file_name);
+            write_out_file << source.str();
+            write_out_file.close();
+        }
         source << input_line << std::endl;
         // std::string myGraphJson = "{\"kind\":{\"graph\":true},"
         // "\"nodes\":[{\"id\":\"1\"},{\"id\":\"2\"}],"
