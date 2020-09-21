@@ -24,7 +24,11 @@ class ImportInstruction;
 class Operation;
 class Assignment;
 class NativeAbstraction;
+// class Conditional;
 
+namespace typesystem {
+    class TypeNode;
+}
 using node_reference = std::shared_ptr<ASTNode>;
 using scope_reference = std::shared_ptr<Scope>;
 }
@@ -220,11 +224,11 @@ class NativeAbstraction : public ASTNode {
 namespace typesystem {
 
 enum TypeNodeType { TYPE, FUNCTION };
-class TypeNode {
+class TypeNode : public ASTNode {
     public:
-    TypeNodeType type;
     virtual std::string pretty_print();
     virtual bool operator==(const TypeNode &ref);
+    node_reference accept(backend::NodeVisitor *visitor) override;
 };
 
 

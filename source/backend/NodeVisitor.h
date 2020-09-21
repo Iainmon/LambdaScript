@@ -20,7 +20,7 @@ namespace backend {
         virtual ast::node_reference visitImportInstruction(std::shared_ptr<ast::ImportInstruction>);
         virtual ast::node_reference visitPrintInstruction(std::shared_ptr<ast::PrintInstruction>);
         virtual ast::node_reference visitGenericASTNode(std::shared_ptr<ast::ASTNode>);
-
+        virtual ast::node_reference visitTypeNode(std::shared_ptr<ast::typesystem::TypeNode>);
 
     };
 

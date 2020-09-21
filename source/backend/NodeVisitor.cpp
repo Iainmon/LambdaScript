@@ -49,6 +49,10 @@ ast::node_reference backend::NodeVisitor::visitGrouping(std::shared_ptr<ast::Gro
     return (ast::node_reference)evaluated_grouping;
 }
 
+ast::node_reference backend::NodeVisitor::visitTypeNode(std::shared_ptr<ast::typesystem::TypeNode> type_node) {
+    return (ast::node_reference)type_node;
+}
+
 ast::node_reference backend::NodeVisitor::visitGenericASTNode(std::shared_ptr<ast::ASTNode> ast_node) {
     return ast_node;
 }

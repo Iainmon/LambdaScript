@@ -105,10 +105,14 @@ ast::node_reference backend::interpreter::native_library::Typeof::apply(ast::nod
 }
 ast::node_reference backend::interpreter::native_library::Typeof::execute_with_argument_queue(std::queue<ast::node_reference> arguments) {
     ast::node_reference argument = arguments.back();
+    // if (argument->data_type != nullptr) {
+    //     cout << blue << ":: " << reset << argument->data_type->pretty_print() << endl;
+    // }
     if (argument->data_type != nullptr) {
-        cout << blue << ":: " << reset << argument->data_type->pretty_print() << endl;
+        return argument->data_type;
+    } else {
+        return argument;
     }
-    return argument;
 }
 std::string backend::interpreter::native_library::Typeof::to_string() {
     std::stringstream ss;
