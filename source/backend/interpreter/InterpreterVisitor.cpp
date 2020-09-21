@@ -1,5 +1,5 @@
 #include "InterpreterVisitor.h"
-#include "../BetaReductionVisitor.h"
+#include "BetaReductionVisitor.h"
 #include "logic/arithmetical_evaluator.h"
 
 backend::interpreter::InterpreterVisitor::InterpreterVisitor() {
@@ -59,7 +59,7 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitApplication(s
     scope->set(lhs->argument, rhs);
     stack.push(scope);
     // Applies the argument, β-reduction
-    backend::BetaReductionVisitor beta_reducer(scope);
+    backend::interpreter::BetaReductionVisitor beta_reducer(scope);
     ast::node_reference normal_expression = lhs->body->accept(&beta_reducer)->accept(this);
     // Pops the stack frame
     stack.pop();

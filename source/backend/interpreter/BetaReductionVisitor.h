@@ -1,11 +1,12 @@
 // This class will replace the evaluate function.
 #pragma once
 
-#include "NodeVisitor.h"
+#include "../NodeVisitor.h"
 #include <stack>
 
 namespace backend {
     // AKA EvaluationVisitor
+    namespace interpreter {
     class BetaReductionVisitor : public NodeVisitor {
         private:
         std::string enumerate_name(const std::string &name);
@@ -23,6 +24,7 @@ namespace backend {
 
     };
 
-    using AlphaRenamingVisitor = BetaReductionVisitor;
+    }
+
 
 }

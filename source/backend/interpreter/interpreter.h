@@ -9,3 +9,4 @@ namespace backend {
 
 #include "Curried.h"
 #include "InterpreterVisitor.h"
+#include "BetaReductionVisitor.h"

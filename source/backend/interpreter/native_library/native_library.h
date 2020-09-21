@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../../../ast/ast.h"
 #include <chrono>
 #include <memory>
