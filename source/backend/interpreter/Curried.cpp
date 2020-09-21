@@ -1,5 +1,10 @@
 #include "Curried.h"
 
+// template <typename T> 
+// void clear_queue(std::queue<T>& queue) {
+//     queue = std::queue<T>();
+// }
+
 backend::interpreter::Curried::Curried(std::shared_ptr<ast::NativeAbstraction> _target_native_abstraction, const int &_argument_count) {
     type = ast::ASTNodeType::ABSTRACTION;
     target_native_abstraction = _target_native_abstraction;
@@ -12,7 +17,9 @@ std::shared_ptr<backend::interpreter::Curried> backend::interpreter::Curried::ap
 }
 ast::node_reference backend::interpreter::Curried::accept(backend::NodeVisitor* visitor) {
     if (arguments.size() > argument_count) {
-        return target_native_abstraction->execute_with_argument_queue(arguments)->accept(visitor);
+        ast::node_reference result = target_native_abstraction->execute_with_argument_queue(arguments)->accept(visitor);
+        arguments = std::queue<ast::node_reference>(); // Clears the argument list
+        return result;
     } else {
         
         ast::node_reference generic_self = shared_from_this();

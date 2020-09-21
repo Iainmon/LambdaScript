@@ -90,7 +90,7 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitNativeAbstrac
     return (ast::node_reference)native_abstraction;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitCurried(std::shared_ptr<backend::interpreter::Curried> curried) {
-    std::cout << "[cur] " << curried->pretty_print() << std::endl;
+    // std::cout << "[cur] " << curried->pretty_print() << std::endl;
     return (ast::node_reference)curried;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitImportInstruction(std::shared_ptr<ast::ImportInstruction> import_instruction) {
