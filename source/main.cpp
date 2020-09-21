@@ -114,9 +114,10 @@ int main(int argc, const char *argv[]) {
 
         if (verbose_print)
             print(ast->to_string());
-        // ast::scope_reference program_scope = std::make_shared<ast::Scope>(*global_scope);
+
         std::unique_ptr<backend::interpreter::InterpreterVisitor> interpreter = std::make_unique<backend::interpreter::InterpreterVisitor>(global_scope);
         ast::node_reference evaluated_ast = ast->accept(interpreter.get());
+        // ast::node_reference evaluated_ast = backend::interpreter::interpret_syntax_tree(ast, global_scope);
 
         if (verbose_print)
             print(evaluated_ast->to_string());
