@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <switch>
+#include <queue>
 
 #include "consolecolors.h"
 
@@ -212,6 +213,7 @@ class NativeAbstraction : public ASTNode {
     // virtual std::string pretty_print();
     virtual node_reference apply(node_reference argument, scope_reference scope);
     virtual void pre_apply_hook(node_reference argument, scope_reference scope);
+    virtual node_reference execute_with_argument_queue(std::queue<ast::node_reference> arguments);
     node_reference accept(backend::NodeVisitor *visitor) override;
 };
 

@@ -1,6 +1,6 @@
 #include "language.h"
 #include "../ast/ast.h"
-
+#include "../backend/interpreter/native_library/native_library.h"
 using namespace std;
 using namespace language;
 
@@ -161,7 +161,7 @@ antlrcpp::Any ConstructorVisitor::visitCondition(LanguageParser::ConditionContex
     // [flag TODO]
     // This is not the way to go. Conditionals should exist as an AST node, instead of being encoded as truthy applications.
 
-    ast::node_reference truthy = make_shared<native_functions::Truthy>();
+    ast::node_reference truthy = make_shared<backend::interpreter::native_library::Truthy>();
     ast::node_reference application_0 = make_shared<ast::Application>(truthy, condition);
     ast::node_reference application_1 = make_shared<ast::Application>(application_0, tru_expression);
     ast::node_reference application_2 = make_shared<ast::Application>(application_1, fls_expression);

@@ -12,6 +12,7 @@
 #include "ast/ast.h"
 #include "language/language.h"
 #include "backend/backend.h"
+#include "backend/interpreter/native_library/native_library.h"
 #include "tools/format.h"
 
 #include "argh.h"
@@ -83,18 +84,18 @@ int main(int argc, const char *argv[]) {
     bool main_file_done = false;
 
     ast::scope_reference global_scope = std::make_shared<ast::Scope>();
-    ast::node_reference exit_abstraction = std::make_shared<language::native_functions::Exit>();
-    ast::node_reference truthy_abstraction = std::make_shared<language::native_functions::Truthy>();
-    ast::node_reference sum_abstraction = std::make_shared<language::native_functions::Sum>();
-    ast::node_reference reduce_abstraction = std::make_shared<language::native_functions::Reduce>();
-    ast::node_reference typeof_abstraction = std::make_shared<language::native_functions::Typeof>();
-    ast::node_reference time_abstraction = std::make_shared<language::native_functions::Time>();
+    ast::node_reference exit_abstraction = std::make_shared<backend::interpreter::native_library::Exit>();
+    ast::node_reference truthy_abstraction = std::make_shared<backend::interpreter::native_library::Truthy>();
+    // ast::node_reference sum_abstraction = std::make_shared<backend::interpreter::native_library::Sum>();
+    // ast::node_reference reduce_abstraction = std::make_shared<backend::interpreter::native_library::Reduce>();
+    ast::node_reference typeof_abstraction = std::make_shared<backend::interpreter::native_library::Typeof>();
+    // ast::node_reference time_abstraction = std::make_shared<backend::interpreter::native_library::Time>();
     global_scope->set("exit", exit_abstraction);
     global_scope->set("truthy", truthy_abstraction);
-    global_scope->set("sum", sum_abstraction);
-    global_scope->set("reduce", reduce_abstraction);
+    // global_scope->set("sum", sum_abstraction);
+    // global_scope->set("reduce", reduce_abstraction);
     global_scope->set("typeof", typeof_abstraction);
-    global_scope->set("time", time_abstraction);
+    // global_scope->set("time", time_abstraction);
 
     int last_group_count = 0;
 
@@ -107,7 +108,7 @@ int main(int argc, const char *argv[]) {
         if (verbose_print)
             print(ast->to_string());
         // ast::scope_reference program_scope = std::make_shared<ast::Scope>(*global_scope);
-        std::unique_ptr<backend::InterpreterVisitor> interpreter = std::make_unique<backend::InterpreterVisitor>(global_scope);
+        std::unique_ptr<backend::interpreter::InterpreterVisitor> interpreter = std::make_unique<backend::interpreter::InterpreterVisitor>(global_scope);
         ast::node_reference evaluated_ast = ast->accept(interpreter.get());
 
         if (verbose_print)

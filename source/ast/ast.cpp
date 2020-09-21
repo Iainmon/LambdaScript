@@ -337,7 +337,9 @@ node_reference NativeAbstraction::apply(node_reference argument, scope_reference
 }
 
 void NativeAbstraction::pre_apply_hook(node_reference argument, scope_reference scope) { }
-
+node_reference NativeAbstraction::execute_with_argument_queue(std::queue<ast::node_reference> arguements) {
+    return shared_from_this();
+}
 node_reference NativeAbstraction::accept(backend::NodeVisitor *visitor) {
     shared_ptr<NativeAbstraction> self = static_pointer_cast<NativeAbstraction>(shared_from_this());
     return visitor->visitNativeAbstraction(self);
