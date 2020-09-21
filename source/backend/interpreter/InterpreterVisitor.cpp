@@ -41,6 +41,10 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitApplication(s
     ast::node_reference reduced_lhs = application->lhs->accept(this);
     // std::cout << "Is this code even being called? " << typeid(*reduced_lhs).name() << std::endl;
     if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {
+        if (typeid(*reduced_lhs) == typeid(backend::interpreter::Curried)) {
+            std::shared_ptr<backend::interpreter::Curried> curried = std::static_pointer_cast<backend::interpreter::Curried>(reduced_lhs);
+            return curried->apply_argument(application->rhs->accept(this))->accept(this);
+        }
         if (typeid(*reduced_lhs) == typeid(ast::Literal) || typeid(*reduced_lhs) == typeid(ast::Grouping)) {
             std::shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
             grouping->nodes.push_back(reduced_lhs);
@@ -82,9 +86,11 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitNativeAbstrac
     // Will call the native_abstractions .apply() method, where it will construct an AST tree
     // Sometimes the use of a new Curryable object will be used to keep track of previously provided arguments, until all are met, and the expression can be executed internally.
     // For example, the add function (+) will need to do this. Exit will not. Print will not.
+    // std::cout << "[nab] " << native_abstraction->pretty_print() << std::endl;
     return (ast::node_reference)native_abstraction;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitCurried(std::shared_ptr<backend::interpreter::Curried> curried) {
+    std::cout << "[cur] " << curried->pretty_print() << std::endl;
     return (ast::node_reference)curried;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitImportInstruction(std::shared_ptr<ast::ImportInstruction> import_instruction) {

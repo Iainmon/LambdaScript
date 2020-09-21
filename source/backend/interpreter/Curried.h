@@ -18,7 +18,9 @@ namespace backend {
             
             public:
             Curried(std::shared_ptr<ast::NativeAbstraction> _target_native_abstraction, const int &_argument_count);
+            std::shared_ptr<backend::interpreter::Curried> apply_argument(ast::node_reference);
             ast::node_reference accept(backend::NodeVisitor*) override;
+            std::string pretty_print() override;
         };
     }
 }

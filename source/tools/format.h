@@ -4,5 +4,5 @@
 
 
 namespace tools {
-    std::string format_lambda_symbols(const std::string &input);
+    auto format_lambda_symbols(const std::string &input) -> std::string;
 }

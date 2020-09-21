@@ -83,19 +83,26 @@ int main(int argc, const char *argv[]) {
 
     bool main_file_done = false;
 
+    // ast::scope_reference global_scope = std::make_shared<ast::Scope>();
+    // ast::node_reference exit_abstraction = std::make_shared<backend::interpreter::native_library::Exit>();
+    // ast::node_reference truthy_abstraction = std::make_shared<backend::interpreter::native_library::Truthy>();
+    // ast::node_reference typeof_abstraction = std::make_shared<backend::interpreter::native_library::Typeof>();
+    // global_scope->set("exit", exit_abstraction);
+    // global_scope->set("truthy", truthy_abstraction);
+    // global_scope->set("typeof", typeof_abstraction);
+
+
     ast::scope_reference global_scope = std::make_shared<ast::Scope>();
-    ast::node_reference exit_abstraction = std::make_shared<backend::interpreter::native_library::Exit>();
-    ast::node_reference truthy_abstraction = std::make_shared<backend::interpreter::native_library::Truthy>();
-    // ast::node_reference sum_abstraction = std::make_shared<backend::interpreter::native_library::Sum>();
-    // ast::node_reference reduce_abstraction = std::make_shared<backend::interpreter::native_library::Reduce>();
-    ast::node_reference typeof_abstraction = std::make_shared<backend::interpreter::native_library::Typeof>();
-    // ast::node_reference time_abstraction = std::make_shared<backend::interpreter::native_library::Time>();
-    global_scope->set("exit", exit_abstraction);
-    global_scope->set("truthy", truthy_abstraction);
-    // global_scope->set("sum", sum_abstraction);
-    // global_scope->set("reduce", reduce_abstraction);
-    global_scope->set("typeof", typeof_abstraction);
-    // global_scope->set("time", time_abstraction);
+
+    std::shared_ptr<ast::NativeAbstraction> exit_abstraction = std::make_shared<backend::interpreter::native_library::Exit>();
+    ast::node_reference native_exit = std::make_shared<backend::interpreter::Curried>(exit_abstraction, 1);
+    std::shared_ptr<ast::NativeAbstraction> truthy_abstraction = std::make_shared<backend::interpreter::native_library::Truthy>();
+    ast::node_reference native_truthy = std::make_shared<backend::interpreter::Curried>(truthy_abstraction, 1);
+    std::shared_ptr<ast::NativeAbstraction> typeof_abstraction = std::make_shared<backend::interpreter::native_library::Typeof>();
+    ast::node_reference native_typeof = std::make_shared<backend::interpreter::Curried>(typeof_abstraction, 1);
+    global_scope->set("exit", native_exit);
+    global_scope->set("truthy", native_truthy);
+    global_scope->set("typeof", native_typeof);
 
     int last_group_count = 0;
 
