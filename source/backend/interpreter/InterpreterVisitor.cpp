@@ -12,20 +12,18 @@ backend::interpreter::InterpreterVisitor::InterpreterVisitor(ast::scope_referenc
 
 ast::node_reference backend::interpreter::InterpreterVisitor::visitLiteral(std::shared_ptr<ast::Literal> literal) {
     // std::cout << "[lit] " << literal->pretty_print() << std::endl;
-    return (ast::node_reference)literal;
+    return literal;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitVariable(std::shared_ptr<ast::Variable> variable) {
     // Lazy evaluation. Returns the node without that was referenced, without evaluating it.
     // return stack.top()->get(variable->identifier);
     // Other?
     // std::cout << "[var] " << variable->pretty_print() << std::endl;
-    return stack.top()->get(variable->identifier);
+    
+    // Coppies the value referenced.
+    return stack.top()->get(variable->identifier)->accept(&copy_visitor);
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitAssignment(std::shared_ptr<ast::Assignment> assignment) {
-    // Lazy
-    // ast::node_reference value = assignment->value;
-    
-    // Whatever I am doing
     ast::node_reference value = assignment->value->accept(this);
     if (!stack.top()->has(assignment->identifier)) {
         stack.top()->set(assignment->identifier, value);
@@ -73,7 +71,7 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitApplication(s
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitAbstraction(std::shared_ptr<ast::Abstraction> abstraction) {
     // std::cout << "[abs] " << abstraction->pretty_print() << std::endl;
-    return (ast::node_reference)abstraction;
+    return abstraction;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitArithmeticalOperation(std::shared_ptr<ast::Operation> operation) {
     // The Operation ASTNode should be converted to a NativeAbstraction
@@ -87,14 +85,14 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitNativeAbstrac
     // Sometimes the use of a new Curryable object will be used to keep track of previously provided arguments, until all are met, and the expression can be executed internally.
     // For example, the add function (+) will need to do this. Exit will not. Print will not.
     // std::cout << "[nab] " << native_abstraction->pretty_print() << std::endl;
-    return (ast::node_reference)native_abstraction;
+    return native_abstraction;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitCurried(std::shared_ptr<backend::interpreter::Curried> curried) {
     // std::cout << "[cur] " << curried->pretty_print() << std::endl;
-    return (ast::node_reference)curried;
+    return curried;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitImportInstruction(std::shared_ptr<ast::ImportInstruction> import_instruction) {
-    return (ast::node_reference)import_instruction;
+    return import_instruction;
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitPrintInstruction(std::shared_ptr<ast::PrintInstruction> print_instruction) {
     ast::node_reference value = print_instruction->value->accept(this);
@@ -109,7 +107,7 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitGrouping(std:
         node = evaluated_node;
     }
     // return (ast::node_reference)evaluated_grouping;
-    return (ast::node_reference)grouping;
+    return grouping;
 }
 
 ast::node_reference backend::interpreter::InterpreterVisitor::visitGenericASTNode(std::shared_ptr<ast::ASTNode> ast_node) {

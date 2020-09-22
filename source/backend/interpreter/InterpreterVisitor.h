@@ -2,6 +2,7 @@
 #pragma once
 
 #include "../NodeVisitor.h"
+#include "CopyVisitor.h"
 #include "Curried.h"
 #include <stack>
 
@@ -11,6 +12,7 @@ namespace interpreter {
 class Curried;
 class InterpreterVisitor : public NodeVisitor {
   private:
+    CopyVisitor copy_visitor;
     void push_stack_frame();
     void pop_stack_frame();
 

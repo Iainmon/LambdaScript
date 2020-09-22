@@ -3,14 +3,14 @@
 backend::NodeVisitor::NodeVisitor() {}
 
 ast::node_reference backend::NodeVisitor::visitLiteral(std::shared_ptr<ast::Literal> literal) {
-    return (ast::node_reference)literal;
+    return literal;
 }
 ast::node_reference backend::NodeVisitor::visitVariable(std::shared_ptr<ast::Variable> variable) {
-    return (ast::node_reference)variable;
+    return variable;
 }
 ast::node_reference backend::NodeVisitor::visitAssignment(std::shared_ptr<ast::Assignment> assignment) {
     ast::node_reference ass = std::make_shared<ast::Assignment>(assignment->identifier, assignment->value->accept(this));
-    return (ast::node_reference)assignment;
+    return assignment;
 }
 ast::node_reference backend::NodeVisitor::visitApplication(std::shared_ptr<ast::Application> application) {
     ast::node_reference app = std::make_shared<ast::Application>(application->lhs->accept(this), application->rhs->accept(this));
@@ -25,7 +25,7 @@ ast::node_reference backend::NodeVisitor::visitArithmeticalOperation(std::shared
     ast::node_reference op = std::make_shared<ast::Operation>(operation->opType, operation->lhs->accept(this), operation->rhs->accept(this));
     std::shared_ptr<ast::Operation> op_node = std::static_pointer_cast<ast::Operation>(op);
     op_node->operation_character = operation->operation_character;
-    return (ast::node_reference)op;
+    return op;
 }
 ast::node_reference backend::NodeVisitor::visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction> native_abstraction) {
     // Will call the native_abstractions .apply() method, where it will construct an AST tree
@@ -46,11 +46,11 @@ ast::node_reference backend::NodeVisitor::visitGrouping(std::shared_ptr<ast::Gro
         ast::node_reference evaluated_node = node->accept(this);
         evaluated_grouping->nodes.push_back(evaluated_node);
     }
-    return (ast::node_reference)evaluated_grouping;
+    return evaluated_grouping;
 }
 
 ast::node_reference backend::NodeVisitor::visitTypeNode(std::shared_ptr<ast::typesystem::TypeNode> type_node) {
-    return (ast::node_reference)type_node;
+    return type_node;
 }
 
 ast::node_reference backend::NodeVisitor::visitGenericASTNode(std::shared_ptr<ast::ASTNode> ast_node) {
