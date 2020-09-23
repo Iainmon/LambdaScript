@@ -21,7 +21,7 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitVariable(std:
     // std::cout << "[var] " << variable->pretty_print() << std::endl;
     
     // Coppies the value referenced.
-    return stack.top()->get(variable->identifier)->accept(&copy_visitor);
+    return stack.top()->get(variable->identifier);// ->accept(&copy_visitor);
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitAssignment(std::shared_ptr<ast::Assignment> assignment) {
     ast::node_reference value = assignment->value->accept(this);
