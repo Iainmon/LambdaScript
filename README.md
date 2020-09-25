@@ -8,17 +8,33 @@ id = (λx.x)
 id 103
 λ -> 103
 
+add = λa.λb.(a + b)
+
 add 2 3
 λ -> 5
 
 inc = add 1
-λ -> [meta] (inc = (add 1))
 
 inc 6
 λ -> 7
 
 not tru 
 λ -> fls
+
+neg = λn.(0 - n)
+neg 100
+λ -> -100
+
+sub = λa.λb.(a - b)
+
+flip = λf.λa.λb.(f b a)
+
+sub 0 1
+λ -> -1
+
+flip sub 0 1
+λ -> 1
+
 ```
 
 ```haskell
