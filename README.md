@@ -1,4 +1,4 @@
-# LambdaScript (ELC)
+# LambdaScript
 Examples:
 ```haskell
 -- interactive mode
