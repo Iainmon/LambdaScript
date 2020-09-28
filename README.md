@@ -70,16 +70,19 @@ make -j4
 -   [x] Implement Untyped λ Calculus semantic rules
 -   [x] Make interactive REPL mode
 -   [x] Implement the rest of the grammar rules: conditionals, imports, operations, etc.
+-   [ ] Make lexer match custom operators
 -   [ ] Remove operations, print, and maybe imports from the language grammar. Symbols should parse as identifiers, and have native abstraction implementations (as well as print and import).
 -   [ ] Add string literals to language grammar
 -   [ ] Make a nice file interpreter with a good CLI
 -   [ ] Test everything before moving on to types
 -   [x] Implement type grammar
 -   [x] Implement type annotations
--   [x] Implement type resolution
+-   [ ] Implement type resolution
 -   [ ] Implement type checking
 -   [ ] Implement stacks and module system (blocks, modules, exposures)
 -   [ ] Make LLVM IR code generator
+-   [ ] JavaScript code generation
+-   [ ] Handle lexing and parsing errors properly
 
 # Third Party Dependencies
 -   Antlr4 (a copy of the JAR and entire project as zip)
