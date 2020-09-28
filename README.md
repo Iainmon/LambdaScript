@@ -70,7 +70,7 @@ make -j4
 -   [x] Implement Untyped λ Calculus semantic rules
 -   [x] Make interactive REPL mode
 -   [x] Implement the rest of the grammar rules: conditionals, imports, operations, etc.
--   [ ] Make lexer match custom operators
+-   [x] Make lexer match custom operators
 -   [ ] Remove operations, print, and maybe imports from the language grammar. Symbols should parse as identifiers, and have native abstraction implementations (as well as print and import).
 -   [ ] Add string literals to language grammar
 -   [ ] Make a nice file interpreter with a good CLI
