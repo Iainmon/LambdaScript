@@ -64,6 +64,11 @@ ast::node_reference backend::interpreter::native_library::Truthy::execute_with_a
 
     bool truthy;
 
+    std::shared_ptr<ast::Abstraction> tru_body = std::make_shared<ast::Abstraction>("b", std::make_shared<ast::Variable>("a"));
+    std::shared_ptr<ast::Abstraction> fls_body = std::make_shared<ast::Abstraction>("b", std::make_shared<ast::Variable>("b"));
+    std::shared_ptr<ast::Abstraction> tru_encoding = std::make_shared<ast::Abstraction>("a", tru_body);
+    std::shared_ptr<ast::Abstraction> fls_encoding = std::make_shared<ast::Abstraction>("a", fls_body);
+
     if (argument->type == ast::ASTNodeType::LITERAL) {
         std::shared_ptr<ast::Literal> literal = std::static_pointer_cast<ast::Literal>(argument);
         if (literal->valueType == ast::LiteralType::Int) {
@@ -78,8 +83,7 @@ ast::node_reference backend::interpreter::native_library::Truthy::execute_with_a
     } else {
         truthy = false;
     }
-    ast::node_reference boolean_literal = std::make_shared<ast::Literal>(truthy);
-    return boolean_literal;
+    return truthy ? tru_encoding : fls_encoding;
 }
 std::string backend::interpreter::native_library::Truthy::to_string() {
     std::stringstream ss;

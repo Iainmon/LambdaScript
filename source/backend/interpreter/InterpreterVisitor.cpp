@@ -41,7 +41,7 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitApplication(s
     if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {
         if (typeid(*reduced_lhs) == typeid(backend::interpreter::Curried)) {
             std::shared_ptr<backend::interpreter::Curried> curried = std::static_pointer_cast<backend::interpreter::Curried>(reduced_lhs);
-            return curried->apply_argument(application->rhs->accept(this))->accept(this);
+            return curried->apply_argument(application->rhs->accept(this))->accept(this)->accept(this);
         }
         if (typeid(*reduced_lhs) == typeid(ast::Literal) || typeid(*reduced_lhs) == typeid(ast::Grouping)) {
             std::shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
@@ -49,6 +49,7 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitApplication(s
             grouping->nodes.push_back(application->rhs->accept(this));
             return (ast::node_reference)grouping;
         }
+        std::cout << typeid(*reduced_lhs).name() << std::endl; 
         ast::node_reference preserved_application = std::make_shared<ast::Application>(application->lhs->accept(this), application->rhs->accept(this));
         return preserved_application;
     }
