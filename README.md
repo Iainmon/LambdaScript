@@ -1,3 +1,5 @@
+<img src=".github/LambdaScript.svg" width="200" height="200">
+
 # LambdaScript
 
 Dear reader,
