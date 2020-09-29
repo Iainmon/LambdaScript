@@ -2,7 +2,7 @@
 
 Dear reader,
 
-I challenged myself to make a programming language during the summer before I started college. This project implemented the semantic rules of the lambda calculus, but with a few extra features. I have written a javascript code compiler for it, and an interpreter. The interpreter works well, but does not throw proper errors (haven't implemented exceptions), unable to evaluate conditionals that exist inside of abstractions, and resolve types properly. It is fully functional if you wish to only use pure lambda encodings, rather than the native arithmetical evaluation engine. 
+I challenged myself to make a programming language during the summer before I started college. This project implemented the semantic rules of the lambda calculus, but with a few extra features. I have written a javascript code compiler for it, and an interpreter. The interpreter works well, but does not throw proper errors (haven't implemented exceptions), and resolve types properly. It is fully functional if you wish to only use pure lambda encodings, rather than the native arithmetical evaluation engine (infix +, -, *, / are supported). 
 
 Examples:
 ```haskell
@@ -12,6 +12,11 @@ id = (λx.x) (λx.x)
 
 id 103
 λ -> 103
+
+not = \b.(if b then fls else tru)
+
+not tru
+λ -> fls
 
 add = λa.λb.(a + b)
 
