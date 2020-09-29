@@ -15,6 +15,7 @@ namespace backend {
         virtual ast::node_reference visitAbstraction(std::shared_ptr<ast::Abstraction>);
         virtual ast::node_reference visitAssignment(std::shared_ptr<ast::Assignment>);
         virtual ast::node_reference visitArithmeticalOperation(std::shared_ptr<ast::Operation>);
+        virtual ast::node_reference visitCondition(std::shared_ptr<ast::Condition>);
         virtual ast::node_reference visitGrouping(std::shared_ptr<ast::Grouping>);
         virtual ast::node_reference visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction>);
         virtual ast::node_reference visitImportInstruction(std::shared_ptr<ast::ImportInstruction>);

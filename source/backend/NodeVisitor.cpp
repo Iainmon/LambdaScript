@@ -27,6 +27,10 @@ ast::node_reference backend::NodeVisitor::visitArithmeticalOperation(std::shared
     op_node->operation_character = operation->operation_character;
     return op;
 }
+ast::node_reference backend::NodeVisitor::visitCondition(std::shared_ptr<ast::Condition> condition) {
+    std::shared_ptr<ast::Condition> con = std::make_shared<ast::Condition>(condition->condition->accept(this), condition->consequent->accept(this), condition->alternative->accept(this));
+    return con;
+}
 ast::node_reference backend::NodeVisitor::visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction> native_abstraction) {
     // Will call the native_abstractions .apply() method, where it will construct an AST tree
     // Sometimes the use of a new Curryable object will be used to keep track of previously provided arguments, until all are met, and the expression can be executed internally.

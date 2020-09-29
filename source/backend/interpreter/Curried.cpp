@@ -30,8 +30,8 @@ ast::node_reference backend::interpreter::Curried::accept(backend::NodeVisitor* 
             return interpreter_visitor->visitCurried(self);
         } else {
             // return visitor->visitGenericASTNode(generic_self);
-            // return generic_self;
-            return target_native_abstraction->accept(visitor);
+            return std::static_pointer_cast<backend::interpreter::Curried>(generic_self);
+            // return target_native_abstraction->accept(visitor);
         }
     }
 }

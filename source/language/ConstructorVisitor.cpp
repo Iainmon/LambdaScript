@@ -156,18 +156,12 @@ antlrcpp::Any ConstructorVisitor::visitBody(LanguageParser::BodyContext *ctx) {
 antlrcpp::Any ConstructorVisitor::visitCondition(LanguageParser::ConditionContext *ctx) {
     
     ast::node_reference condition = ctx->expression()->accept(this);
-    ast::node_reference tru_expression = ctx->body(0)->accept(this);
-    ast::node_reference fls_expression = ctx->body(1)->accept(this);
+    ast::node_reference consequent = ctx->body(0)->accept(this);
+    ast::node_reference alternitive = ctx->body(1)->accept(this);
 
-    // [flag TODO]
-    // This is not the way to go. Conditionals should exist as an AST node, instead of being encoded as truthy applications.
+    ast::node_reference condition_node = std::make_shared<ast::Condition>(condition, consequent, alternitive);
 
-    ast::node_reference native_truthy = std::make_shared<backend::interpreter::Curried>(std::make_shared<backend::interpreter::native_library::Truthy>(), 1);
-
-    ast::node_reference application_0 = make_shared<ast::Application>(native_truthy, condition);
-    ast::node_reference application_1 = make_shared<ast::Application>(application_0, tru_expression);
-    ast::node_reference application_2 = make_shared<ast::Application>(application_1, fls_expression);
-    return application_2;
+    return condition_node;
 }
 
 antlrcpp::Any ConstructorVisitor::visitTypeBinding(LanguageParser::TypeBindingContext *ctx) {

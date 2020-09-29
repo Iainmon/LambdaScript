@@ -1,9 +1,14 @@
 # LambdaScript
+
+Dear reader,
+
+I challenged myself to make a programming language during the summer before I started college. This project implemented the semantic rules of the lambda calculus, but with a few extra features. I have written a javascript code compiler for it, and an interpreter. The interpreter works well, but does not throw proper errors (haven't implemented exceptions), unable to evaluate conditionals that exist inside of abstractions, and resolve types properly. It is fully functional if you wish to only use pure lambda encodings, rather than the native arithmetical evaluation engine. 
+
 Examples:
 ```haskell
 -- interactive mode
-id = (λx.x)
-λ -> [ λ function ] (λx.x)
+id = (λx.x) (λx.x)
+λ -> (λx.x)
 
 id 103
 λ -> 103

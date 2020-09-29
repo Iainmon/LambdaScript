@@ -38,11 +38,15 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitApplication(s
     // std::cout << "[app] " << application->pretty_print() << std::endl;
     ast::node_reference reduced_lhs = application->lhs->accept(this);
     // std::cout << "Is this code even being called? " << typeid(*reduced_lhs).name() << std::endl;
-    if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {
-        if (typeid(*reduced_lhs) == typeid(backend::interpreter::Curried)) {
-            std::shared_ptr<backend::interpreter::Curried> curried = std::static_pointer_cast<backend::interpreter::Curried>(reduced_lhs);
-            return curried->apply_argument(application->rhs->accept(this))->accept(this)->accept(this);
+    if (typeid(*reduced_lhs) == typeid(backend::interpreter::Curried)) {
+        std::shared_ptr<backend::interpreter::Curried> curried = std::static_pointer_cast<backend::interpreter::Curried>(reduced_lhs);
+        ast::node_reference reduced_rhs = application->rhs->accept(this);
+        if (typeid(*reduced_rhs) == typeid(ast::Variable)) {
+            return application;
         }
+        return curried->apply_argument(reduced_rhs)->accept(this);
+    }
+    if (!(typeid(*reduced_lhs) == typeid(ast::Abstraction))) {
         if (typeid(*reduced_lhs) == typeid(ast::Literal) || typeid(*reduced_lhs) == typeid(ast::Grouping)) {
             std::shared_ptr<ast::Grouping> grouping = std::make_shared<ast::Grouping>();
             grouping->nodes.push_back(reduced_lhs);
@@ -80,6 +84,25 @@ ast::node_reference backend::interpreter::InterpreterVisitor::visitArithmeticalO
     op->operation_character = operation->operation_character;
     ast::node_reference operation_result = backend::evaluate_arithmetical_operation(op);
     return operation_result;
+}
+ast::node_reference backend::interpreter::InterpreterVisitor::visitCondition(std::shared_ptr<ast::Condition> condition) {
+    ast::node_reference con = condition->condition->accept(this);
+    bool truthy;
+    if (typeid(*con) == typeid(ast::Literal)) {
+        std::shared_ptr<ast::Literal> literal = std::static_pointer_cast<ast::Literal>(con);
+        if (literal->valueType == ast::LiteralType::Int) {
+            truthy = literal->getInt() > 0;
+        } else if (literal->valueType == ast::LiteralType::Bool) {
+            truthy = literal->getBool();
+        } else if (literal->valueType == ast::LiteralType::Nil) {
+            truthy = false;
+        } else {
+            truthy = false;
+        }
+    } else {
+        truthy = false;
+    }
+    return truthy ? condition->consequent->accept(this) : condition->alternative->accept(this);
 }
 ast::node_reference backend::interpreter::InterpreterVisitor::visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction> native_abstraction) {
     // Will call the native_abstractions .apply() method, where it will construct an AST tree

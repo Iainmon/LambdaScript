@@ -24,7 +24,7 @@ class ImportInstruction;
 class Operation;
 class Assignment;
 class NativeAbstraction;
-// class Conditional;
+class Condition;
 
 namespace typesystem {
     class TypeNode;
@@ -167,6 +167,17 @@ class Operation : public ASTNode {
     node_reference rhs;
     Operation(OperationType _opType, node_reference _lhs, node_reference _rhs);
     static OperationType matchOperationType(const std::string &op);
+    std::string to_string() override;
+    std::string pretty_print() override;
+    node_reference accept(backend::NodeVisitor *visitor) override;
+};
+
+class Condition : public ASTNode {
+    public:
+    node_reference condition;
+    node_reference consequent;
+    node_reference alternative;
+    Condition(node_reference _condition, node_reference _consequent, node_reference _alternative);
     std::string to_string() override;
     std::string pretty_print() override;
     node_reference accept(backend::NodeVisitor *visitor) override;

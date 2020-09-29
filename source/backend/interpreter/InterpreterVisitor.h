@@ -30,6 +30,7 @@ class InterpreterVisitor : public NodeVisitor {
     ast::node_reference visitArithmeticalOperation(std::shared_ptr<ast::Operation>) override;
     ast::node_reference visitGrouping(std::shared_ptr<ast::Grouping>) override;
     ast::node_reference visitNativeAbstraction(std::shared_ptr<ast::NativeAbstraction>) override;
+    ast::node_reference visitCondition(std::shared_ptr<ast::Condition>) override;
     ast::node_reference visitImportInstruction(std::shared_ptr<ast::ImportInstruction>) override;
     ast::node_reference visitPrintInstruction(std::shared_ptr<ast::PrintInstruction>) override;
     ast::node_reference visitGenericASTNode(std::shared_ptr<ast::ASTNode>) override;

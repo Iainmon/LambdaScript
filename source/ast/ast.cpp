@@ -233,6 +233,24 @@ node_reference Operation::accept(backend::NodeVisitor *visitor) {
     return visitor->visitArithmeticalOperation(self);
 }
 
+Condition::Condition(node_reference _condition, node_reference _consequent, node_reference _alternative) {
+    condition = _condition;
+    consequent = _consequent;
+    alternative = _alternative;
+}
+
+std::string Condition::to_string() {
+    return "if " + condition->to_string() + " then " + consequent->to_string() + " else " + alternative->to_string();
+}
+std::string Condition::pretty_print() {
+    return "(" + condition->pretty_print() + blue + " -> " + reset + consequent->pretty_print() + blue + " | " + reset + alternative->pretty_print() + ")";
+    return blue + "if " + reset + condition->pretty_print() + blue + " then " + reset + consequent->pretty_print() + blue + " else " + reset + alternative->pretty_print();
+}
+node_reference Condition::accept(backend::NodeVisitor *visitor) {
+    shared_ptr<Condition> self = static_pointer_cast<Condition>(shared_from_this());
+    return visitor->visitCondition(self);
+}
+
 PrintInstruction::PrintInstruction(node_reference valueToPrint) {
     type = PRINT;
     value = valueToPrint;
