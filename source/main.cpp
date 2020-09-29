@@ -101,7 +101,7 @@ int main(int argc, const char *argv[]) {
     std::shared_ptr<ast::NativeAbstraction> typeof_abstraction = std::make_shared<backend::interpreter::native_library::Typeof>();
     ast::node_reference native_typeof = std::make_shared<backend::interpreter::Curried>(typeof_abstraction, 1);
     global_scope->set("exit", native_exit);
-    global_scope->set("truthy", native_truthy);
+    // global_scope->set("truthy", native_truthy);
     global_scope->set("typeof", native_typeof);
 
     int last_group_count = 0;
@@ -122,17 +122,15 @@ int main(int argc, const char *argv[]) {
         if (verbose_print)
             print(evaluated_ast->to_string());
             
-        if (evaluated_ast->type == ast::ASTNodeType::GROUPING) {
+        if (typeid(*evaluated_ast) == typeid(ast::Grouping)) {
             std::shared_ptr<ast::Grouping> grouping = std::static_pointer_cast<ast::Grouping>(evaluated_ast);
-            if (!grouping->nodes.empty()) {
-                if (last_group_count != grouping->nodes.size()) {
-                    ast::node_reference last_node = grouping->nodes.back();
-                    ast::node_reference print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
-                    language::evaluate(print_instruction->accept(interpreter.get()), global_scope);
-                    // print_instruction->accept(interpreter.get());
-                    // print(grouping->nodes.back()->to_string());
-                    last_group_count = grouping->nodes.size();
-                }
+            if (!grouping->nodes.empty() && last_group_count != grouping->nodes.size()) {
+                ast::node_reference last_node = grouping->nodes.back();
+                ast::node_reference print_instruction = std::make_shared<ast::PrintInstruction>(last_node);
+                language::evaluate(print_instruction->accept(interpreter.get()), global_scope);
+                // print_instruction->accept(interpreter.get());
+                // print(grouping->nodes.back()->to_string());
+                last_group_count = grouping->nodes.size();
             }
         }
         

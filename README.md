@@ -45,6 +45,11 @@ sub 0 1
 flip sub 0 1
 λ -> 1
 
+fac = \n.if n < 2 then 1 else (n * (fac (n - 1)))
+
+fac 8
+λ -> 40320
+
 ```
 
 ```haskell
