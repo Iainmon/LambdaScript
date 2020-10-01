@@ -83,7 +83,7 @@ make -j4
 
 # Roadmap
 -   [x] Create language grammar rules
--   [x] Construct Abstract Syntax Tree using the ANTLR visitor archetecture
+-   [x] Construct Abstract Syntax Tree using the ANTLR visitor architecture
 -   [x] Implement Untyped λ Calculus semantic rules
 -   [x] Make interactive REPL mode
 -   [x] Implement the rest of the grammar rules: conditionals, imports, operations, etc.
@@ -113,6 +113,3 @@ make -j4
 -   Add comments to language grammar
 -   Do a search for `[flag todo]`
 -   α-renaming
-
-### Note:
-`std::bad_cast` comes from `source/InterpreterListener.cc` returning something other than `ast::node_reference`. All instances of `ASTNode` must be upcasted to `ast::node_reference`, or else a runtime error will occur.
