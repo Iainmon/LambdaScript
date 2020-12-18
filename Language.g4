@@ -37,7 +37,7 @@ type: TypeIdentifier						#leafType
 Lambda: '\\' | 'λ';
 Bool : 'tru' | 'fls' | 'true' | 'false';
 Int: [0-9]+;
-Identifier: ('a' ..'z') ('a' ..'z' | '0' ..'9')*;
+Identifier: ('a' ..'z') ('a' ..'z' | 'A' ..'Z' | '0' ..'9')*;
 TypeIdentifier: ('A' ..'Z') ('a' ..'z')*;
 Operator: ('!' | '@' | '#' | '$' | '%' | '^' | '&' | '*' | '-' | '+' | '=' | '<' | '>' | '/' | '.')+;
 	// '+'

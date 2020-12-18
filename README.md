@@ -2,13 +2,6 @@
 
 # LambdaScript
 
-### It's broken, but I know why.
-
-I tried changing the lexer rules for operators to match strings of one or more symbols. Example: (`+`, `++`, `+++`, `<>`, `<`, ...). When the fall term ends, I will fix this issue, but until then, arithmetic sounds like gibberish. 
-
-
----
-
 Dear reader,
 
 I challenged myself to make a programming language during the summer before I started college. This project implemented the semantic rules of the lambda calculus, but with a few extra features. I have written a javascript code compiler for it, and an interpreter. The interpreter works well, but does not throw proper errors (haven't implemented exceptions), and resolve types properly. It is fully functional if you wish to only use pure lambda encodings, rather than the native arithmetical evaluation engine (infix +, -, *, / are supported). 

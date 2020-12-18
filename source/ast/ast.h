@@ -237,7 +237,7 @@ namespace typesystem {
 enum TypeNodeType { TYPE, FUNCTION };
 class TypeNode : public ASTNode {
     public:
-    virtual std::string pretty_print();
+    virtual std::string pretty_print() override;
     virtual bool operator==(const TypeNode &ref);
     node_reference accept(backend::NodeVisitor *visitor) override;
 };
